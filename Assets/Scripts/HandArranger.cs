@@ -26,12 +26,12 @@ private void Update() {
 }
 public void Arrange()
 {
-        GameObject go = GameObject.Find("CardsInHandPanel");
-        Debug.Log(go.name + " has " + go.transform.childCount + " children");
+     //   GameObject go = GameObject.Find("CardsInHandPanel");
+        Debug.Log(name + " has " + transform.childCount + " children");
         zValue = 1f;
-        for (int i = 0; i < go.transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
-            go.transform.GetChild(i).position = new Vector3(go.transform.GetChild(i).position.x, go.transform.GetChild(i).position.y, zValue);
+            transform.GetChild(i).position = new Vector3(transform.GetChild(i).position.x, transform.GetChild(i).position.y, zValue);
             zValue++;
         }
         //SetSpacing(go.transform);
