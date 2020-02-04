@@ -45,6 +45,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AI_logic.cs" />
      <Compile Include="Assets\Scripts\AddCard.cs" />
      <Compile Include="Assets\Scripts\CardHover.cs" />
      <Compile Include="Assets\Scripts\Cards.cs" />
