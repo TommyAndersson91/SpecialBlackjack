@@ -32,74 +32,61 @@ public class GameLogic : MonoBehaviour
     public static PlayerList PlayerList = new PlayerList();
     public static int PassedCounter = 0;
     public static Player CurrentPlayer;
+    public static int Index = 0;
    
    
 
     // Start is called before the first frame update
     void Start()
     {
-      
-       
 
-
+        random = new System.Random();
+        PlayerList.AddPlayer("Player 1", GameObject.Find("CardsInHandPanel"));
+        PlayerList.AddPlayer("Player 2", GameObject.Find("CardsInHandPanel2"));
+        foreach (var player in PlayerList.GetPlayers())
+        {
+            player.PlayerIndex = Index;
+            Index++;
+        }
+        player1Hand = PlayerList.GetPlayers()[0].PlayerHand;
+        player2Hand = PlayerList.GetPlayers()[1].PlayerHand;  
         PassButton.onClick.AddListener(Pass);
-        DrawButton.onClick.AddListener(Draw);
-        ShuffleArray(ints);
-        AvaibleCards = new Stack(ints);
+        DrawButton.onClick.AddListener(DrawCards);
         if (FirstRound)
         {
             Setup();
             FirstRound = false;
         }
-    // Player1Passed = false;
-    // Player2Passed = false;
-     
-   
-   
-    //   player1Turn = random.Next(2) == 1;
-        //För att se blandningen
-        //  for (int i = 0; i < ints.Length; i++)
-        //  {
-        //      Debug.Log(ints[i]);
-        //  }
+        Index = 0;
        
-
-
-        winnerText.text = CurrentPlayer.PlayerName + "'s turn";
-        // if (player1Turn)
-        // {
-        //     winnerText.text = "Player 1's turn";
-        // }
-        // else
-        // {
-        //     winnerText.text = "Player 2's turn";
-        // }
-
     }
 
     private void Update() {
         player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].HandValue + " / 21";
+        
         // if (NewGame)
         // {
         //     Setup();
         // }                                                                        
-        CheckFinished();
+        // CheckFinished();
     }
 
     public void Setup()
     {
-        random = new System.Random();
+
         CurrentPlayer = new Player();
-        PlayerList.AddPlayer("Player 1", GameObject.Find("CardsInHandPanel"));
-        PlayerList.AddPlayer("Player 2", GameObject.Find("CardsInHandPanel2"));
-        player1Hand = PlayerList.GetPlayers()[0].PlayerHand;
-        player2Hand = PlayerList.GetPlayers()[1].PlayerHand;
-        foreach (var item in PlayerList.GetPlayers())
-        {
-            Debug.Log(item.PlayerName);
-        }
-        CurrentPlayer = PlayerList.GetPlayers()[random.Next(PlayerList.GetPlayers().Count)];
+
+        // CurrentPlayer.HandValue = 0;
+        // CurrentPlayer.IsPassed = false;
+        // CurrentPlayer.IsPlayersTurn = false;
+        // foreach (var item in PlayerList.GetPlayers())
+        // {
+        //     Debug.Log(item.PlayerName);
+        // }
+        ShuffleArray(ints);
+        AvaibleCards = new Stack(ints);
+        CurrentPlayer = PlayerList.GetPlayers()[random.Next(PlayerList.GetPlayers().Count-1)];
         DrawCards();
         DrawCards();
         DrawCards();
@@ -111,125 +98,82 @@ public class GameLogic : MonoBehaviour
     public void Pass()
     {
 
-        CurrentPlayer.IsPassed = true;
 
-        // player1Turn = !player1Turn;
-
-        // if  (player1Turn)
-        // {
-        //     Player2Passed = true;
-        //     winnerText.text = "Player 1's turn";
-        //     // player1Score.text = PlayerList.GetPlayers()[0].HandValue + " / 21";
-        // } 
-        // else 
-        // {
-        //     Player1Passed = true;
-        //     winnerText.text = "Player 2's turn";
-        //     // player2Score.text = PlayerList.GetPlayers()[0].HandValue + " / 21";
-        // }
-     
-        // if (player1Hand.transform.childCount < 1 || player2Hand.transform.childCount < 1)
-        // {
-        //     firstDraw = true;
-        // }
         foreach (var player in PlayerList.GetPlayers())
         {
-            if (player.IsPassed)
+            if (CurrentPlayer.PlayerName.Equals(player.PlayerName) && !player.IsPassed)
             {
-                PassedCounter++;
-                if (PassedCounter == PlayerList.GetPlayers().Count)
-                {
-                    RoundFinished();
-                }
+                PlayerList.GetPlayers()[player.PlayerIndex].IsPassed = true;
             }
         }
-        // if  (Player1Passed && Player2Passed)
-        // {
-        //     RoundFinished();
-        // }
+        PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
 
+        if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count-1)
+        {
+            CurrentPlayer = PlayerList.GetPlayers()[0];
+            winnerText.text = CurrentPlayer.PlayerName + "'s turn";
+        }
+        else
+        {
+            CurrentPlayer = PlayerList.GetPlayers()[1];
+            winnerText.text = CurrentPlayer.PlayerName + "'s turn";
+        }
+
+        CheckFinished();
+      
     }
 
     public void CheckFinished()
     {
-        if (PassedCounter == PlayerList.GetPlayers().Count)
+        int playersPassed = 0;
+        foreach (var player in PlayerList.GetPlayers())
         {
-            RoundFinished();
+            if (player.IsPassed)
+            {
+                playersPassed++;
+             if (playersPassed == PlayerList.GetPlayers().Count)
+             {
+                 RoundFinished();
+                 return;
+             }
+            }
         }
+        playersPassed = 0;
+        // winnerText.text = CurrentPlayer.PlayerName + "'s turn";
     }
 
     public void DrawCards ()
     {
-       NewGame = false;
-        //    Debug.Log(player1Turn);
+        NewGame = false;
+
+        if (!CurrentPlayer.IsPassed)
+        {
         GameObject obj = Instantiate(Resources.Load<GameObject>("1"));
         obj.transform.SetParent(CurrentPlayer.PlayerHand.transform);
         obj.transform.GetComponentInChildren<TMP_Text>().SetText(AvaibleCards.Peek().ToString());
-
-        // GameObject nextCard = GameObject.Find("" + AvaibleCards.Peek());
-        // Debug.Log(nextCard.name);
-        // nextCard.transform.SetParent(CurrentPlayer.PlayerHand.transform);
         CurrentPlayer.HandValue += int.Parse(AvaibleCards.Peek().ToString());
         CurrentPlayer.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
         AvaibleCards.Pop();
-
-
-        if (CurrentPlayer.HandValue >= 21)
-        {
-            Pass();
-
         }
-        winnerText.text = CurrentPlayer.PlayerName + "'s turn";
-        if (CurrentPlayer.PlayerName == "Player 1")
+
+        // if (CurrentPlayer.HandValue >= 21)
+        // {
+        //     Pass();
+        //     return;
+        // }
+
+        if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count-1 && !PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex-1].IsPassed)
         {
-            PlayerList.GetPlayers()[0] = CurrentPlayer;
-            CurrentPlayer = PlayerList.GetPlayers()[1];
-        }
-        else
-        {
-            PlayerList.GetPlayers()[1] = CurrentPlayer;
+            PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
             CurrentPlayer = PlayerList.GetPlayers()[0];
         }
-        // if (player1Turn && !Player1Passed)
-        // {
-        //     nextCard.transform.SetParent(player1Hand.transform);
-        //     PlayerList.GetPlayers()[0].HandValue += int.Parse(AvaibleCards.Peek().ToString());
-        //     player1Score.text = PlayerList.GetPlayers()[0].HandValue + " / 21";
-        //     AvaibleCards.Pop();
-        // }
-        // else if(!player1Turn && !Player2Passed)
-        // {
-        //     nextCard.transform.SetParent(player2Hand.transform);
-        //     PlayerList.GetPlayers()[0].HandValue += int.Parse(AvaibleCards.Peek().ToString());
-        //     player2Score.text = PlayerList.GetPlayers()[0].HandValue + " / 21";
-        //     // if (PlayerList.GetPlayers()[0].HandValue > 21)
-        //     // {
-        //     //     Pass();
-        //     // }
-        //     AvaibleCards.Pop();
-            // player1Turn = !player1Turn;
-            // winnerText.color = Color.red;
-            // winnerText.text = "Player 1's turn";
-    
-        // else if (!Player1Passed && !Player2Passed)
-        // {
-        //     player1Turn = !player1Turn;
-        //     if (player1Turn)
-        //     {
-        //         winnerText.text = "Player 1's turn";
-        //     }
-        //     else
-        //     {
-        //         winnerText.text = "Player 2's turn";
-        //     }
-        // }
-        // if (firstDraw)
-        // {
-        //     firstDraw = false;
-        //     DrawCards();
-        // }
+        else if (CurrentPlayer.PlayerIndex < PlayerList.GetPlayers().Count - 1 && !PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex+1].IsPassed)
+        {
+            PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
+            CurrentPlayer = PlayerList.GetPlayers()[1];
+        }
 
-
+        winnerText.text = CurrentPlayer.PlayerName + "'s turn";
         
     }
 
@@ -254,26 +198,43 @@ public class GameLogic : MonoBehaviour
 
     public void RoundFinished()
     {
+        Debug.Log("Player 1 Hand Value:" + PlayerList.GetPlayers()[0].HandValue);
+        Debug.Log("Player 2 Hand Value:" + PlayerList.GetPlayers()[1].HandValue);
         if (PlayerList.GetPlayers()[0].HandValue < 22 && PlayerList.GetPlayers()[1].HandValue > 21)
         {
             Player1Winner();
         }
-        else if (PlayerList.GetPlayers()[0].HandValue < 22 && PlayerList.GetPlayers()[1].HandValue > 21)
+        else if (PlayerList.GetPlayers()[1].HandValue < 22 && PlayerList.GetPlayers()[0].HandValue > 21)
         {
             Player2Winner();
         }
+
         if (PlayerList.GetPlayers()[0].HandValue > 21 && PlayerList.GetPlayers()[1].HandValue > 21)
         {
             int player1Above21 = 0;
             int player2Above21 = 0;
-            for (int i = PlayerList.GetPlayers()[0].HandValue; i < 21; i--)
+            for (int i = PlayerList.GetPlayers()[0].HandValue - 1; i >= 21; i--)
             {
                 player1Above21++;
+                Debug.Log("Test");
             }
-            for (int i = PlayerList.GetPlayers()[1].HandValue; i < 21; i--)
+
+            for (int i = PlayerList.GetPlayers()[1].HandValue - 1; i >= 21; i--)
             {
                 player2Above21++;
+                Debug.Log("Test");
             }
+
+            // for (int i = PlayerList.GetPlayers()[0].HandValue; i < 22; i--)
+            // {
+            //     player1Above21++;
+            //     Debug.Log("Test2");
+            // }
+            // for (int i = PlayerList.GetPlayers()[1].HandValue; i < 22; i--)
+            // {
+            //     player2Above21++;
+            //     Debug.Log("Test3");
+            // }
             if  (player1Above21 > player2Above21)
             { 
                 Player2Winner();
@@ -282,8 +243,10 @@ public class GameLogic : MonoBehaviour
             {
                 Player1Winner();
             }
-            else
+            else if (player1Above21 == player2Above21)
             {
+                Debug.Log(player1Above21);
+                Debug.Log(player2Above21);
                 Draw();
             }
         }
@@ -291,6 +254,8 @@ public class GameLogic : MonoBehaviour
         {
                 int player1To21 = 0;
                 int player2To21 = 0;
+
+          
                 for (int i = PlayerList.GetPlayers()[0].HandValue; i < 22; i++)
                 {
                     player1To21++;
@@ -314,7 +279,6 @@ public class GameLogic : MonoBehaviour
                 
         }
         StartCoroutine(ResetGame());
-
        
     }
 
@@ -322,24 +286,30 @@ public class GameLogic : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
         winnerText.text = "Restarting...";
-        yield return new WaitForSeconds(2);
-        // DrawButton.SetActive(true);
-        // PassButton.SetActive(true);
-        player1Hand.transform.DetachChildren();
-        player2Hand.transform.DetachChildren();
-        int[] ints = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-        // player1Turn = true;
-        ShuffleArray(ints);
-        // Player1Passed = false;
-        // Player2Passed = false;
-        AvaibleCards = new Stack(ints);
-        NewGame = true;
         foreach (var player in PlayerList.GetPlayers())
         {
             player.IsPassed = false;
             player.HandValue = 0;
+            player.PlayerHand.transform.DetachChildren();
         }
+        // player1Hand.transform.DetachChildren();
+        // player2Hand.transform.DetachChildren();
+        yield return new WaitForSeconds(2);
+        // DrawButton.SetActive(true);
+        // PassButton.SetActive(true);
+
+        // int[] ints = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+        // // // player1Turn = true;
+        // ShuffleArray(ints);
+        // // // Player1Passed = false;
+        // // // Player2Passed = false;
+        // AvaibleCards = new Stack(ints);
+        // NewGame = true;
+        PassedCounter = 0;
+       
+        FirstRound = true;
         Setup();
+      
         // Start();
     }
 

@@ -14,6 +14,7 @@ public List<Int32> DrawnCards { get; set; }
 public bool IsPassed { get; set; }
 public bool IsPlayersTurn { get; set;}
 public GameObject PlayerHand {get; set;}
+public int PlayerIndex {get; set;}
 
 public Player(string playerName, GameObject playerHand)
 {
