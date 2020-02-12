@@ -9,11 +9,24 @@ public class AI_logic : MonoBehaviour
 
 public static Boolean CalculateMove(Player AI, Player player)
 {
-        if (player.IsPassed == true && AI.HandValue > player.HandValue)
+
+        if (player.IsPassed && AI.HandValue < 21 && AI.HandValue < player.HandValue && player.HandValue <= 21)
+        {
+            return true;
+        }
+        if (player.HandValue < AI.HandValue && player.IsPassed)
         {
             return false;
         }
 
+        if (player.IsPassed && AI.HandValue > player.HandValue)
+        {
+            return false;
+        }
+        if (player.HandValue > 21)
+        {
+            return false;
+        }
         if (AI.HandValue <= 10)
         {
             return true;
@@ -67,21 +80,23 @@ public static Boolean CalculateMove(Player AI, Player player)
 public static Boolean IsContainNumber(Int32[] numbers)
 {
     int counter = 0;
+
     foreach (var number in numbers)
     {
-        if (Array.Exists(Cards.DrawnCards.ToArray(), element => element == number))
+        if (Array.Exists(GameLogic.AvaibleCards.ToArray(), element => int.Parse(element.ToString()) == number))
         {
+        Debug.Log(GameLogic.AvaibleCards.ToArray()[counter]);
           counter++;         
         }
     }
 
     if (counter == numbers.Length)
     {
-        return true;
+        return false;
     }
     else
     {
-        return false;
+        return true;
     }
      
       

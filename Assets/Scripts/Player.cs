@@ -15,6 +15,7 @@ public bool IsPassed { get; set; }
 public bool IsPlayersTurn { get; set;}
 public GameObject PlayerHand {get; set;}
 public int PlayerIndex {get; set;}
+public int PlayerWins {get; set;}
 
 public Player(string playerName, GameObject playerHand)
 {
@@ -24,6 +25,7 @@ public Player(string playerName, GameObject playerHand)
   IsPassed = false;
   IsPlayersTurn = false;
   DrawnCards = new List<Int32>();
+  PlayerWins = 0;
 }
 public Player()
 {
@@ -31,6 +33,7 @@ public Player()
   IsPassed = false;
   IsPlayersTurn = false;
   DrawnCards = new List<Int32>();
+  PlayerWins = 0;
 }  
 }
 

@@ -24,6 +24,7 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     private Button PlayAIButton;
     public TextMeshProUGUI player1Score;
+    public TextMeshProUGUI RoundScoreText;
     public TextMeshProUGUI player2Score;
     public TextMeshProUGUI winnerText;
     // public static int PlayerList.GetPlayers()[0].HandValue;
@@ -61,12 +62,15 @@ public class GameLogic : MonoBehaviour
             FirstRound = false;
         }
         Index = 0;
-       
     }
 
     private void Update() {
         player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].HandValue + " / 21";
+
+        RoundScoreText.autoSizeTextContainer = true;
+        RoundScoreText.text = "Wins \n Player 1: " + PlayerList.GetPlayers()[0].PlayerWins +
+        "\n Player 2: " + PlayerList.GetPlayers()[1].PlayerWins;
         // if (NewGame)
         // {
         //     Setup();
@@ -77,6 +81,9 @@ public class GameLogic : MonoBehaviour
 
     public void PlayAI()
     {
+        PlayerList.GetPlayers()[0].PlayerWins = 0;
+        PlayerList.GetPlayers()[1].PlayerWins = 0;
+
         PlayerList.GetPlayers()[1].PlayerName = "MasterBot";
         PlayingAgainstAI = !PlayingAgainstAI;
         if (!PlayingAgainstAI)
@@ -99,6 +106,9 @@ public class GameLogic : MonoBehaviour
         if (AI_logic.CalculateMove(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]))
         {
             DrawCards();
+            CheckAITurn();
+            CheckAITurn();
+            CheckAITurn();
             yield break;
         }
         else
@@ -145,11 +155,13 @@ public class GameLogic : MonoBehaviour
 
         if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count-1)
         {
+            PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
             CurrentPlayer = PlayerList.GetPlayers()[0];
             winnerText.text = CurrentPlayer.PlayerName + "'s turn";
         }
         else
         {
+            PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
             CurrentPlayer = PlayerList.GetPlayers()[1];
             winnerText.text = CurrentPlayer.PlayerName + "'s turn";
         }
@@ -213,17 +225,26 @@ public class GameLogic : MonoBehaviour
         // if (CurrentPlayer.HandValue >= 21)
         // {
         //     Pass();
-        //     return;
         // }
 
         if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count-1 && !PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex-1].IsPassed)
         {
             PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
+            if (CurrentPlayer.HandValue > 21 && PlayerList.GetPlayers()[0].HandValue <= 21)
+            {
+                RoundFinished();
+                return;
+            }
             CurrentPlayer = PlayerList.GetPlayers()[0];
         }
         else if (CurrentPlayer.PlayerIndex < PlayerList.GetPlayers().Count - 1 && !PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex+1].IsPassed)
         {
             PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
+            if (CurrentPlayer.HandValue > 21 && PlayerList.GetPlayers()[1].HandValue <= 21)
+            {
+                RoundFinished();
+                return;
+            }
             CurrentPlayer = PlayerList.GetPlayers()[1];
         }
 
@@ -252,15 +273,15 @@ public class GameLogic : MonoBehaviour
 
     public void RoundFinished()
     {
-        Debug.Log("Player 1 Hand Value:" + PlayerList.GetPlayers()[0].HandValue);
-        Debug.Log("Player 2 Hand Value:" + PlayerList.GetPlayers()[1].HandValue);
         if (PlayerList.GetPlayers()[0].HandValue < 22 && PlayerList.GetPlayers()[1].HandValue > 21)
         {
             Player1Winner();
+            return;
         }
         else if (PlayerList.GetPlayers()[1].HandValue < 22 && PlayerList.GetPlayers()[0].HandValue > 21)
         {
             Player2Winner();
+            return;
         }
 
         if (PlayerList.GetPlayers()[0].HandValue > 21 && PlayerList.GetPlayers()[1].HandValue > 21)
@@ -270,38 +291,27 @@ public class GameLogic : MonoBehaviour
             for (int i = PlayerList.GetPlayers()[0].HandValue - 1; i >= 21; i--)
             {
                 player1Above21++;
-                Debug.Log("Test");
             }
 
             for (int i = PlayerList.GetPlayers()[1].HandValue - 1; i >= 21; i--)
             {
                 player2Above21++;
-                Debug.Log("Test");
             }
 
-            // for (int i = PlayerList.GetPlayers()[0].HandValue; i < 22; i--)
-            // {
-            //     player1Above21++;
-            //     Debug.Log("Test2");
-            // }
-            // for (int i = PlayerList.GetPlayers()[1].HandValue; i < 22; i--)
-            // {
-            //     player2Above21++;
-            //     Debug.Log("Test3");
-            // }
             if  (player1Above21 > player2Above21)
             { 
                 Player2Winner();
+                return;
             }
             else if (player2Above21 > player1Above21)
             {
                 Player1Winner();
+                return;
             }
             else if (player1Above21 == player2Above21)
             {
-                Debug.Log(player1Above21);
-                Debug.Log(player2Above21);
                 Draw();
+                return;
             }
         }
         if (PlayerList.GetPlayers()[0].HandValue < 22 && PlayerList.GetPlayers()[1].HandValue < 22)
@@ -321,26 +331,26 @@ public class GameLogic : MonoBehaviour
                 if  (player1To21 > player2To21)
                 {
                     Player2Winner();
+                    return;
                 }
                 if (player2To21 > player1To21)
                 {
                     Player1Winner();
+                    return;
                 }
                 if (player1To21 == player2To21)
                 {
                     Draw();
+                    return; 
                 } 
                 
-        }
-        this.StopAllCoroutines();
-        StartCoroutine(ResetGame());
-       
+        }       
     }
 
     IEnumerator ResetGame()
     {
         
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
         winnerText.text = "Restarting...";
         foreach (var player in PlayerList.GetPlayers())
         {
@@ -375,16 +385,27 @@ public class GameLogic : MonoBehaviour
 
     public void Player1Winner ()
     {
+        PlayerList.GetPlayers()[0].PlayerWins++;
         winnerText.text = PlayerList.GetPlayers()[0].PlayerName + " is the winner!";
+        this.StopAllCoroutines();
+        StartCoroutine(ResetGame());
+        return;
     }
 
     public void Player2Winner()
     {
+        PlayerList.GetPlayers()[1].PlayerWins++;
         winnerText.text = PlayerList.GetPlayers()[1].PlayerName + " is the winner!";
+        this.StopAllCoroutines();
+        StartCoroutine(ResetGame());
+        return;
     }
 
     public void Draw()
     {
         winnerText.text = "It's a draw!";
+        this.StopAllCoroutines();
+        StartCoroutine(ResetGame());
+        return;
     }
 }
