@@ -11,7 +11,6 @@ public class GameLogic : MonoBehaviour
     public static Stack AvaibleCards;
     int[] ints = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     // public static bool player1Turn = true;
-    public static bool PlayingAgainstAI;
     // public static bool Player1Passed = false;
     // public static bool Player2Passed = false;
     public static bool FirstRound = true;
@@ -22,6 +21,8 @@ public class GameLogic : MonoBehaviour
     private Button PassButton;
     [SerializeField]
     private Button DrawButton;
+    [SerializeField]
+    private Button PlayAIButton;
     public TextMeshProUGUI player1Score;
     public TextMeshProUGUI player2Score;
     public TextMeshProUGUI winnerText;
@@ -33,13 +34,14 @@ public class GameLogic : MonoBehaviour
     public static int PassedCounter = 0;
     public static Player CurrentPlayer;
     public static int Index = 0;
-   
+    public static bool PlayingAgainstAI = false;
+    public static int RoundCounter = 0;
    
 
     // Start is called before the first frame update
     void Start()
     {
-
+        Cards.InitCards();
         random = new System.Random();
         PlayerList.AddPlayer("Player 1", GameObject.Find("CardsInHandPanel"));
         PlayerList.AddPlayer("Player 2", GameObject.Find("CardsInHandPanel2"));
@@ -52,6 +54,7 @@ public class GameLogic : MonoBehaviour
         player2Hand = PlayerList.GetPlayers()[1].PlayerHand;  
         PassButton.onClick.AddListener(Pass);
         DrawButton.onClick.AddListener(DrawCards);
+        PlayAIButton.onClick.AddListener(PlayAI);
         if (FirstRound)
         {
             Setup();
@@ -64,12 +67,45 @@ public class GameLogic : MonoBehaviour
     private void Update() {
         player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].HandValue + " / 21";
-        
         // if (NewGame)
         // {
         //     Setup();
         // }                                                                        
         // CheckFinished();
+       
+    }
+
+    public void PlayAI()
+    {
+        PlayerList.GetPlayers()[1].PlayerName = "MasterBot";
+        PlayingAgainstAI = !PlayingAgainstAI;
+        if (!PlayingAgainstAI)
+        {
+            PlayerList.GetPlayers()[1].PlayerName = "Player2";
+        }
+    }
+
+    public void CheckAITurn()
+    {
+        if (PlayerList.GetPlayers()[1].IsPlayersTurn && RoundCounter >= 4)
+        {
+            StartCoroutine(PlayAITUrn());
+        }
+    }
+
+    IEnumerator PlayAITUrn()
+    {
+        yield return new WaitForSeconds(2);
+        if (AI_logic.CalculateMove(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]))
+        {
+            DrawCards();
+            yield break;
+        }
+        else
+        {
+            Pass();
+            yield break; 
+        }
     }
 
     public void Setup()
@@ -90,8 +126,7 @@ public class GameLogic : MonoBehaviour
         DrawCards();
         DrawCards();
         DrawCards();
-        DrawCards();
-        
+        DrawCards();      
     }
 
 
@@ -119,8 +154,20 @@ public class GameLogic : MonoBehaviour
             winnerText.text = CurrentPlayer.PlayerName + "'s turn";
         }
 
-        CheckFinished();
-      
+        if (PlayerList.GetPlayers()[0].IsPassed)
+        {
+            PlayerList.GetPlayers()[1].IsPlayersTurn = true;
+            CheckAITurn();
+            if (PlayerList.GetPlayers()[1].IsPassed)
+            {
+                CheckFinished();
+            }
+            else 
+            {
+                return;
+            }
+        }
+        CheckFinished();     
     }
 
     public void CheckFinished()
@@ -144,7 +191,13 @@ public class GameLogic : MonoBehaviour
 
     public void DrawCards ()
     {
+        RoundCounter++;
         NewGame = false;
+
+        if (PlayingAgainstAI && !PlayerList.GetPlayers()[0].IsPassed)
+        {
+            PlayerList.GetPlayers()[1].IsPlayersTurn = !PlayerList.GetPlayers()[1].IsPlayersTurn;
+        }
 
         if (!CurrentPlayer.IsPassed)
         {
@@ -153,6 +206,7 @@ public class GameLogic : MonoBehaviour
         obj.transform.GetComponentInChildren<TMP_Text>().SetText(AvaibleCards.Peek().ToString());
         CurrentPlayer.HandValue += int.Parse(AvaibleCards.Peek().ToString());
         CurrentPlayer.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
+        Cards.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
         AvaibleCards.Pop();
         }
 
@@ -174,7 +228,7 @@ public class GameLogic : MonoBehaviour
         }
 
         winnerText.text = CurrentPlayer.PlayerName + "'s turn";
-        
+        CheckAITurn();
     }
 
     public static void ShuffleArray(int[] a)
@@ -278,12 +332,14 @@ public class GameLogic : MonoBehaviour
                 } 
                 
         }
+        this.StopAllCoroutines();
         StartCoroutine(ResetGame());
        
     }
 
     IEnumerator ResetGame()
     {
+        
         yield return new WaitForSeconds(2);
         winnerText.text = "Restarting...";
         foreach (var player in PlayerList.GetPlayers())
@@ -291,7 +347,16 @@ public class GameLogic : MonoBehaviour
             player.IsPassed = false;
             player.HandValue = 0;
             player.PlayerHand.transform.DetachChildren();
+            player.DrawnCards.Clear();
+            player.IsPlayersTurn = false;
         }
+        // PlayingAgainstAI = false;
+        PassedCounter = 0;
+        RoundCounter = 0;
+        Cards.DrawnCards.Clear();
+        FirstRound = true;
+        Setup();
+        yield break;
         // player1Hand.transform.DetachChildren();
         // player2Hand.transform.DetachChildren();
         yield return new WaitForSeconds(2);
@@ -305,22 +370,17 @@ public class GameLogic : MonoBehaviour
         // // // Player2Passed = false;
         // AvaibleCards = new Stack(ints);
         // NewGame = true;
-        PassedCounter = 0;
-       
-        FirstRound = true;
-        Setup();
-      
         // Start();
     }
 
     public void Player1Winner ()
     {
-        winnerText.text = "Player 1 is the winner!";
+        winnerText.text = PlayerList.GetPlayers()[0].PlayerName + " is the winner!";
     }
 
     public void Player2Winner()
     {
-        winnerText.text = "Player 2 is the winner!";
+        winnerText.text = PlayerList.GetPlayers()[1].PlayerName + " is the winner!";
     }
 
     public void Draw()
