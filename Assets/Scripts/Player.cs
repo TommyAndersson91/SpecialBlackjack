@@ -13,9 +13,11 @@ public int HandValue {get; set;}
 public List<Int32> DrawnCards { get; set; }
 public bool IsPassed { get; set; }
 public bool IsPlayersTurn { get; set;}
+public bool IsWinner {get; set;}
 public GameObject PlayerHand {get; set;}
 public int PlayerIndex {get; set;}
 public int PlayerWins {get; set;}
+public int TrumpCards {get; set;}
 
 public Player(string playerName, GameObject playerHand)
 {
@@ -26,6 +28,8 @@ public Player(string playerName, GameObject playerHand)
   IsPlayersTurn = false;
   DrawnCards = new List<Int32>();
   PlayerWins = 0;
+  TrumpCards = 0;
+  IsWinner = false;
 }
 public Player()
 {
@@ -33,7 +37,7 @@ public Player()
   IsPassed = false;
   IsPlayersTurn = false;
   DrawnCards = new List<Int32>();
-  PlayerWins = 0;
+  // PlayerWins = 0;
 }  
 }
 

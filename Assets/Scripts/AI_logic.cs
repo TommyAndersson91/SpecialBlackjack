@@ -14,9 +14,14 @@ public static Boolean CalculateMove(Player AI, Player player)
         {
             return true;
         }
-        if (player.HandValue < AI.HandValue && player.IsPassed)
+        if (player.IsPassed && player.HandValue < AI.HandValue)
         {
             return false;
+        }
+
+        if (player.HandValue > AI.HandValue && !player.IsPassed && player.HandValue <= 21)
+        {
+            return true;
         }
 
         if (player.IsPassed && AI.HandValue > player.HandValue)
