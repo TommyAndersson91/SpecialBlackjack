@@ -18,6 +18,8 @@ public class GameLogic : MonoBehaviour
     private GameObject player1Hand;
     [SerializeField]
     private GameObject Player1TrumpCards;
+    [SerializeField]
+    private GameObject Player2TrumpCards;
     public static GameObject player2Hand;
     [SerializeField]
     private Button PassButton;
@@ -130,10 +132,19 @@ public class GameLogic : MonoBehaviour
     IEnumerator PlayAITUrn()
     {
         yield return new WaitForSeconds(2);
+        if (AI_logic.UseTrumpCard(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]) && PlayerList.GetPlayers()[1].TrumpCards > 0)
+        {
+            UseTrumpCard();
+            if (PlayerList.GetPlayers()[0].HandValue > 21)
+            {
+            RoundFinished();
+            }
+        }
+
         if (AI_logic.CalculateMove(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]))
         {
             DrawCards();
-            if (PlayerList.GetPlayers()[0].IsPassed)
+            if (PlayerList.GetPlayers()[0].IsPassed && !RoundOver)
             {
                 CheckAITurn();
             }
@@ -160,6 +171,8 @@ public class GameLogic : MonoBehaviour
                 PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
                 PlayerList.GetPlayers()[0].HandValue = PlayerList.GetPlayers()[0].HandValue +3;
                 PlayerList.GetPlayers()[1].TrumpCards -= 1;
+                int numChildren = Player2TrumpCards.transform.childCount;
+                Destroy(Player2TrumpCards.transform.GetChild(numChildren - 1).gameObject);
                 if (!PlayerList.GetPlayers()[0].IsPassed)
                 {
                 CurrentPlayer = PlayerList.GetPlayers()[0];
@@ -180,6 +193,8 @@ public class GameLogic : MonoBehaviour
                 PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
                 PlayerList.GetPlayers()[1].HandValue = PlayerList.GetPlayers()[1].HandValue + 3;
                 PlayerList.GetPlayers()[0].TrumpCards -= 1;
+                int numChildren = Player1TrumpCards.transform.childCount;
+                Destroy(Player1TrumpCards.transform.GetChild(numChildren - 1).gameObject);
                 if (!PlayerList.GetPlayers()[1].IsPassed)
                 {
                 CurrentPlayer = PlayerList.GetPlayers()[1];
@@ -197,15 +212,28 @@ public class GameLogic : MonoBehaviour
 
     public void Setup()
     {
-        if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins+3 && PlayerList.GetPlayers()[0].TrumpCards < 3)
+        if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins +2 && PlayerList.GetPlayers()[0].TrumpCards < 3 || PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2 && PlayerList.GetPlayers()[1].TrumpCards < 3)
         {
-            PlayerList.GetPlayers()[0].TrumpCards++;
             GameObject obj = Instantiate(Resources.Load<GameObject>("1"));
+
+            if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 2)
+            {
+               PlayerList.GetPlayers()[0].TrumpCards++;
+                obj.transform.SetParent(Player1TrumpCards.transform);
+            }
+            else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2)
+            {
+                PlayerList.GetPlayers()[1].TrumpCards++;
+                obj.transform.SetParent(Player2TrumpCards.transform);
+            }
+
+           
             obj.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
             obj.transform.GetComponentInChildren<TMP_Text>().fontSize = 10;
-            obj.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
+            // obj.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
+            obj.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
             obj.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
-            obj.transform.SetParent(Player1TrumpCards.transform);
+            
         }
         CurrentPlayer = new Player();
         RoundOver = false;
@@ -222,7 +250,11 @@ public class GameLogic : MonoBehaviour
         DrawCards();
         DrawCards();
         DrawCards();
-        DrawCards();      
+        DrawCards();   
+
+        Debug.Log("Player 1 index: " + PlayerList.GetPlayers()[0].PlayerIndex);
+        Debug.Log("Player 2 index: " + PlayerList.GetPlayers()[1].PlayerIndex);
+
     }
 
 

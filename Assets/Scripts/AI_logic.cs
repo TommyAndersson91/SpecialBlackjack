@@ -6,10 +6,24 @@ using System;
 public class AI_logic : MonoBehaviour
 {
 
+public static Boolean UseTrumpCard(Player AI, Player player)
+{
+    int playerHand = 0;
+
+        for (int i = 1; i < player.DrawnCards.Count; i++)
+        {
+            playerHand += int.Parse(player.DrawnCards[i].ToString());
+        }
+            if (playerHand >= 14)
+            {
+                return true;
+            }
+        
+        return false;
+}
 
 public static Boolean CalculateMove(Player AI, Player player)
 {
-
         if (player.IsPassed && AI.HandValue < 21 && AI.HandValue < player.HandValue && player.HandValue <= 21)
         {
             return true;
