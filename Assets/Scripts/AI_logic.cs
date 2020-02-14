@@ -14,7 +14,7 @@ public static Boolean UseTrumpCard(Player AI, Player player)
         {
             playerHand += int.Parse(player.DrawnCards[i].ToString());
         }
-            if (playerHand >= 14)
+            if (playerHand >= 13)
             {
                 return true;
             }
