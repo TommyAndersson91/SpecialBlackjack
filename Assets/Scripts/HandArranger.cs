@@ -5,19 +5,65 @@ using UnityEngine.UI;
 
 public class HandArranger : MonoBehaviour
 {
-public GridLayoutGroup gridLayoutGroup;
+public static GridLayoutGroup gridLayoutGroup;
+public static GridLayoutGroup gridLayoutGroup2;
 public Vector2 vector;
 public float zValue = 1f;
+public static Vector3 NewPos;
+public static float y {get; set;}
+public static float x {get; set;}
+public static float y2 { get; set; }
+public static float x2 { get; set; }
+public static int CardCounter = 0;
+public static int CardCounter2 = 0;
 
-void setGrid()
+
+// public static Vector3 GetPos(int playerIndex)
+// {
+//     // gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount-1).Rotate(360f, 0f, 0f);   
+//     if (playerIndex == 0)
+//     {   
+//         return NewPos = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount-1).position;
+//     }
+//     else
+//     {
+//         return NewPos = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position;
+//     }
+// }
+
+public static float GetX(int playerIndex)
 {
+    gridLayoutGroup.enabled = false;
+    gridLayoutGroup2.enabled = false;
+        if (playerIndex == 0)
+        {
+            CardCounter++;
+            return x = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x+gridLayoutGroup.cellSize.x*CardCounter;
+        }
+        else
+        {
+            CardCounter2++;
+            return x2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x+gridLayoutGroup2.cellSize.x*CardCounter2;
+        }
+}
 
-
+public static float GetY(int playerIndex)
+{
+        if (playerIndex == 0)
+        {
+            return y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y;
+        }
+        else
+        {
+            return y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y;
+        }
 }
 
 private void Start() {
 
-        Arrange();
+        // Arrange();
+        gridLayoutGroup = GameObject.Find("CardsInHandPanel").GetComponentInChildren<GridLayoutGroup>();
+        gridLayoutGroup2 = GameObject.Find("CardsInHandPanel2").GetComponentInChildren<GridLayoutGroup>();
 
 }
 

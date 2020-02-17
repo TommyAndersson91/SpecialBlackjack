@@ -46,12 +46,18 @@ public class GameLogic : MonoBehaviour
     private static int HiddenValue;
     private static Boolean RoundOver = false;
     private static GameObject HiddenCard;
-    public static Animator animator;
-    public GameObject TopText;
+    [SerializeField]
+    private static Animator animator;
+    public static bool IsCoroutineFinished = true;
+    [SerializeField]
+    private Text StartPos;
+    public static Vector3 endPos;
     float speed = 30f;
     // Start is called before the first frame update
     void Start()
     {
+        animator = gameObject.GetComponent<Animator>();
+        animator.runtimeAnimatorController = Resources.Load("anim") as RuntimeAnimatorController;
         Cards.InitCards();
         random = new System.Random();
         PlayerList.AddPlayer("Player 1", GameObject.Find("CardsInHandPanel"));
@@ -77,7 +83,7 @@ public class GameLogic : MonoBehaviour
     }
 
     private void Update() {
-        HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
+         HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
 
         player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         if (!RoundOver)
@@ -118,7 +124,7 @@ public class GameLogic : MonoBehaviour
 
     public void CheckAITurn()
     {
-        if (PlayerList.GetPlayers()[1].IsPlayersTurn && RoundCounter >= 4)
+        if (PlayerList.GetPlayers()[1].IsPlayersTurn && RoundCounter >= 4 && PlayingAgainstAI)
         {
             StartCoroutine(PlayAITUrn());
         }
@@ -214,11 +220,13 @@ public class GameLogic : MonoBehaviour
             {
                PlayerList.GetPlayers()[0].TrumpCards++;
                 obj.transform.SetParent(Player1TrumpCards.transform);
+                obj.gameObject.tag = "trumpcard";
             }
             else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2)
             {
                 PlayerList.GetPlayers()[1].TrumpCards++;
                 obj.transform.SetParent(Player2TrumpCards.transform);
+                obj.gameObject.tag = "trumpcard";
             }
 
            
@@ -244,12 +252,26 @@ public class GameLogic : MonoBehaviour
         DrawCards();
         DrawCards();
         DrawCards();
-        DrawCards();   
+        DrawCards();  
+        // FirstDraws(); 
 
         Debug.Log("Player 1 index: " + PlayerList.GetPlayers()[0].PlayerIndex);
         Debug.Log("Player 2 index: " + PlayerList.GetPlayers()[1].PlayerIndex);
 
     }
+
+    // IEnumerator FirstDraws()
+    // {
+    //     DrawCards();
+    //     yield return new WaitForSeconds(2);
+    //     DrawCards();
+    //     yield return new WaitForSeconds(2);
+    //     DrawCards();
+    //     yield return new WaitForSeconds(2);
+    //     DrawCards();
+    //     yield return false;
+         
+    // }
 
     // IEnumerator MoveCards(GameObject obj)
     // {
@@ -315,16 +337,83 @@ public class GameLogic : MonoBehaviour
              }
             }
         }
+                if (PlayerList.GetPlayers()[0].HandValue > 21)
+                {
+                    RoundFinished();
+                }
+                else if (PlayerList.GetPlayers()[1].HandValue > 21)
+                {
+                    RoundFinished();
+                }
+                if (!CurrentPlayer.IsPassed)
+                {
+            if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count - 1 && !PlayerList.GetPlayers()[0].IsPassed)
+            {
+                PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
+                if (CurrentPlayer.HandValue > 21 && PlayerList.GetPlayers()[0].HandValue <= 21)
+                {
+                    RoundFinished();
+                    return;
+                }
+                CurrentPlayer = PlayerList.GetPlayers()[0];
+            }
+            else if (CurrentPlayer.PlayerIndex < PlayerList.GetPlayers().Count - 1 && !PlayerList.GetPlayers()[1].IsPassed)
+            {
+                PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
+                if (CurrentPlayer.HandValue > 21 && PlayerList.GetPlayers()[1].HandValue <= 21)
+                {
+                    RoundFinished();
+                    return;
+                }
+                PlayerList.GetPlayers()[1].IsPlayersTurn = true;
+                CurrentPlayer = PlayerList.GetPlayers()[1];
+                CheckAITurn();
+            }
+                }
         playersPassed = 0;
+        }
+       
         // winnerText.text = CurrentPlayer.PlayerName + "'s turn";
+
+    IEnumerator CardAdded(GameObject card, Transform currentPlayer)
+    {
+
+        float elapsedTime = 0;
+        float waitTime = 2f;
+        
+        endPos = new Vector3(HandArranger.GetX(CurrentPlayer.PlayerIndex), HandArranger.GetY(CurrentPlayer.PlayerIndex), 0.0f);
+        while (elapsedTime < waitTime)
+        {
+            card.transform.position = Vector3.Lerp(card.transform.position, endPos, elapsedTime / waitTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        card.transform.position = endPos;
+        // StartCoroutine(CheckFinishedWait());
+        // CheckFinished();    
+        // yield return new WaitForSeconds(3);
+        // card.transform.SetParent(currentPlayer.transform);
+        yield break;
     }
 
-    public void FlyInCard(GameObject card, GameObject playerHand)
+    IEnumerator CheckFinishedWait()
     {
-        float step = speed * Time.deltaTime;
-        card.transform.position = TopText.transform.position;
-        card.transform.position = Vector2.MoveTowards(card.transform.position, playerHand.transform.position, step);
-    }   
+        yield return new WaitForSeconds(2);
+        CheckFinished();
+    }
+
+    
+    
+    public void AnimateCardFly(GameObject card)
+    {
+        if (RoundCounter > 4)
+        {
+            card.transform.SetParent(CurrentPlayer.PlayerHand.transform.GetComponentInParent<Canvas>().transform);
+            //card.GetComponent<Animation>().Play("animfly");
+            var position = CurrentPlayer.PlayerHand.transform;
+            StartCoroutine(CardAdded(card, position));
+        }
+    }
 
     public void DrawCards ()
     {
@@ -348,55 +437,22 @@ public class GameLogic : MonoBehaviour
         }
         else
         {
-            
             GameObject obj = Instantiate(Resources.Load<GameObject>("1"));
-           
             obj.transform.GetComponentInChildren<TMP_Text>().SetText(AvaibleCards.Peek().ToString());
+            if (RoundCounter < 5)
+            {
             obj.transform.SetParent(CurrentPlayer.PlayerHand.transform);
-            // FlyInCard(obj, CurrentPlayer.PlayerHand);
-            // obj.transform.SetParent(DrawButton.transform);
-           
-           
+            }
+            obj.transform.position = StartPos.transform.position;
+            AnimateCardFly(obj);
         }
         CurrentPlayer.HandValue += int.Parse(AvaibleCards.Peek().ToString());
         CurrentPlayer.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
         Cards.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
         AvaibleCards.Pop();
-        }
-
-        // if (CurrentPlayer.HandValue >= 21)
-        // {
-        //     Pass();
-        // }
-
-        if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count-1 && !PlayerList.GetPlayers()[0].IsPassed)
-        {
-            PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
-            if (CurrentPlayer.HandValue > 21 && PlayerList.GetPlayers()[0].HandValue <= 21)
-            {
-                RoundFinished();
-                return;
-            }
-            CurrentPlayer = PlayerList.GetPlayers()[0];
-        }
-        else if (CurrentPlayer.PlayerIndex < PlayerList.GetPlayers().Count - 1 && !PlayerList.GetPlayers()[1].IsPassed)
-        {
-            PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
-            if (CurrentPlayer.HandValue > 21 && PlayerList.GetPlayers()[1].HandValue <= 21)
-            {
-                RoundFinished();
-                return;
-            }
-                PlayerList.GetPlayers()[1].IsPlayersTurn = true;
-                CurrentPlayer = PlayerList.GetPlayers()[1];
-                CheckAITurn();
-        }
         
-        if (PlayerList.GetPlayers()[0].HandValue > 21)
-        {
-            RoundFinished(); 
         }
-       
+        CheckFinished();
     }
 
     public static void ShuffleArray(int[] a)
@@ -507,11 +563,25 @@ public class GameLogic : MonoBehaviour
             player.IsPlayersTurn = false;
             player.IsWinner = false;
         }
+        HandArranger.gridLayoutGroup.enabled = true;
+        HandArranger.gridLayoutGroup2.enabled = true;
+        HandArranger.x = 0;
+        HandArranger.x2 = 0;
+        HandArranger.CardCounter = 0;
+        HandArranger.CardCounter2 = 0;
         // PlayingAgainstAI = false;
         PassedCounter = 0;
         RoundCounter = 0;
         Cards.DrawnCards.Clear();
         FirstRound = true;
+        GameObject[] cards;
+
+        cards = GameObject.FindGameObjectsWithTag("card");
+
+        foreach (GameObject card in cards)
+        {
+            Destroy(card);
+        }
         Setup();
         yield break;
         // player1Hand.transform.DetachChildren();
