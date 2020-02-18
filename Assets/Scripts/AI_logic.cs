@@ -104,7 +104,6 @@ public static Boolean IsContainNumber(Int32[] numbers)
     {
         if (Array.Exists(GameLogic.AvaibleCards.ToArray(), element => int.Parse(element.ToString()) == number))
         {
-        Debug.Log(GameLogic.AvaibleCards.ToArray()[counter]);
           counter++;         
         }
     }
