@@ -257,12 +257,12 @@ Animation:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3267650604425502832}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 16e5c26606277481f90cef7aa005c36e, type: 2}
+  m_Animation: {fileID: 7400000, guid: 2425b12dc5fc84bdf9973c817ddf8bc4, type: 2}
   m_Animations:
-  - {fileID: 7400000, guid: 16e5c26606277481f90cef7aa005c36e, type: 2}
+  - {fileID: 7400000, guid: 2425b12dc5fc84bdf9973c817ddf8bc4, type: 2}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0

@@ -6,6 +6,7 @@ using System;
 using TMPro;
 using System.Timers;
 
+
 public class GameLogic : MonoBehaviour
 {
     public static Stack AvaibleCards;
@@ -44,6 +45,7 @@ public class GameLogic : MonoBehaviour
     public static bool PlayingAgainstAI = false;
     public static int RoundCounter = 0;
     private static int HiddenValue;
+    private static bool IsLastCard = true;
     private static Boolean RoundOver = false;
     private static GameObject HiddenCard;
     [SerializeField]
@@ -52,10 +54,12 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     private Text StartPos;
     public static Vector3 endPos;
+    private static System.Timers.Timer aTimer;
     float speed = 30f;
     // Start is called before the first frame update
     void Start()
     {
+        aTimer = new System.Timers.Timer();
         animator = gameObject.GetComponent<Animator>();
         animator.runtimeAnimatorController = Resources.Load("anim") as RuntimeAnimatorController;
         Cards.InitCards();
@@ -181,12 +185,7 @@ public class GameLogic : MonoBehaviour
                 PlayerList.GetPlayers()[0].HandValue = PlayerList.GetPlayers()[0].HandValue +3;
                 PlayerList.GetPlayers()[1].TrumpCards -= 1;
                 int numChildren = Player2TrumpCards.transform.childCount;
-                Destroy(Player2TrumpCards.transform.GetChild(numChildren - 1).gameObject);
-                if (!PlayerList.GetPlayers()[0].IsPassed)
-                {
-                CurrentPlayer = PlayerList.GetPlayers()[0];
-                winnerText.text = CurrentPlayer.PlayerName + "'s turn";
-                }
+                StartCoroutine(ShrinkTrumpCard(Player2TrumpCards.transform.GetChild(numChildren - 1).gameObject));
             }
             else
             {
@@ -194,20 +193,43 @@ public class GameLogic : MonoBehaviour
                 PlayerList.GetPlayers()[1].HandValue = PlayerList.GetPlayers()[1].HandValue + 3;
                 PlayerList.GetPlayers()[0].TrumpCards -= 1;
                 int numChildren = Player1TrumpCards.transform.childCount;
-                Destroy(Player1TrumpCards.transform.GetChild(numChildren - 1).gameObject);
-                if (!PlayerList.GetPlayers()[1].IsPassed)
-                {
-                CurrentPlayer = PlayerList.GetPlayers()[1];
-                winnerText.text = CurrentPlayer.PlayerName + "'s turn";
-                }
-                if (PlayingAgainstAI)
-                {
-                PlayerList.GetPlayers()[1].IsPlayersTurn = true;
-                CheckAITurn();
-                }
+                StartCoroutine(ShrinkTrumpCard(Player1TrumpCards.transform.GetChild(numChildren - 1).gameObject));
+          
             }
         }
+    }
 
+    IEnumerator ShrinkTrumpCard(GameObject trumpCard)
+    {
+        trumpCard.GetComponent<Animation>().Play("animshrink");
+        yield return new WaitForSeconds(1);
+        if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count -1)
+        {
+            // int numChildren = Player2TrumpCards.transform.childCount;
+            // Destroy(Player2TrumpCards.transform.GetChild(numChildren - 1).gameObject);
+            Destroy(trumpCard);
+            if (!PlayerList.GetPlayers()[0].IsPassed)
+            {
+                CurrentPlayer = PlayerList.GetPlayers()[0];
+                winnerText.text = CurrentPlayer.PlayerName + "'s turn";
+            }
+        } 
+        else
+        {
+            // int numChildren = Player1TrumpCards.transform.childCount;
+            // Destroy(Player1TrumpCards.transform.GetChild(numChildren - 1).gameObject);
+            Destroy(trumpCard);
+            if (!PlayerList.GetPlayers()[1].IsPassed)
+            {
+                CurrentPlayer = PlayerList.GetPlayers()[1];
+                winnerText.text = CurrentPlayer.PlayerName + "'s turn";
+            }
+            if (PlayingAgainstAI)
+            {
+                PlayerList.GetPlayers()[1].IsPlayersTurn = true;
+                CheckAITurn();
+            }
+        }
     }
 
     public void Setup()
@@ -235,7 +257,7 @@ public class GameLogic : MonoBehaviour
             // obj.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Bold;
             obj.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
             obj.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
-            
+            // ShrinkTrumpCard(obj);
         }
         CurrentPlayer = new Player();
         RoundOver = false;
@@ -259,28 +281,6 @@ public class GameLogic : MonoBehaviour
         Debug.Log("Player 2 index: " + PlayerList.GetPlayers()[1].PlayerIndex);
 
     }
-
-    // IEnumerator FirstDraws()
-    // {
-    //     DrawCards();
-    //     yield return new WaitForSeconds(2);
-    //     DrawCards();
-    //     yield return new WaitForSeconds(2);
-    //     DrawCards();
-    //     yield return new WaitForSeconds(2);
-    //     DrawCards();
-    //     yield return false;
-         
-    // }
-
-    // IEnumerator MoveCards(GameObject obj)
-    // {
-    //     // Starting from the origin, move this object to 5 units along X by 10 units along Z, at 2.5 units per second
-    //     yield return MoveObject.use.Translation(obj.transform, Vector3.zero, new Vector3(1.0f, 0.0f, 1.0f), 1.0f, MoveObject.MoveType.Speed);
-    //     // When that's done, simultaneously move up one unit and flip 180 degrees along the Z axis, doing both in half a second
-    //     MoveObject.use.Translation(obj.transform, Vector3.up, .5f, MoveObject.MoveType.Time);
-    //     // MoveObject.use.Rotation(transform,Vector3.forward * 180.0, .5);
-    // }
 
     public void Pass()
     {
@@ -375,32 +375,33 @@ public class GameLogic : MonoBehaviour
        
         // winnerText.text = CurrentPlayer.PlayerName + "'s turn";
 
-    IEnumerator CardAdded(GameObject card, Transform currentPlayer)
+    IEnumerator CardAdded(GameObject card, Player currentPlayer)
     {
 
         float elapsedTime = 0;
         float waitTime = 2f;
         
-        endPos = new Vector3(HandArranger.GetX(CurrentPlayer.PlayerIndex), HandArranger.GetY(CurrentPlayer.PlayerIndex), 0.0f);
+        endPos = new Vector3(HandArranger.GetX(currentPlayer.PlayerIndex), HandArranger.GetY(currentPlayer.PlayerIndex), 0.0f);
         while (elapsedTime < waitTime)
         {
             card.transform.position = Vector3.Lerp(card.transform.position, endPos, elapsedTime / waitTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        card.transform.position = endPos;
+        // card.transform.position = endPos;
         // StartCoroutine(CheckFinishedWait());
-        // CheckFinished();    
-        // yield return new WaitForSeconds(3);
+
+        // yield return new WaitForSeconds(2);
+        // CheckFinished();
         // card.transform.SetParent(currentPlayer.transform);
         yield break;
     }
 
-    IEnumerator CheckFinishedWait()
-    {
-        yield return new WaitForSeconds(2);
-        CheckFinished();
-    }
+    // IEnumerator CheckFinishedWait()
+    // {
+    //     yield return new WaitForSeconds(2);
+    //     CheckFinished();
+    // }
 
     
     
@@ -410,8 +411,8 @@ public class GameLogic : MonoBehaviour
         {
             card.transform.SetParent(CurrentPlayer.PlayerHand.transform.GetComponentInParent<Canvas>().transform);
             //card.GetComponent<Animation>().Play("animfly");
-            var position = CurrentPlayer.PlayerHand.transform;
-            StartCoroutine(CardAdded(card, position));
+            // var position = CurrentPlayer.PlayerHand.transform;
+            StartCoroutine(CardAdded(card, CurrentPlayer));
         }
     }
 
@@ -450,10 +451,31 @@ public class GameLogic : MonoBehaviour
         CurrentPlayer.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
         Cards.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
         AvaibleCards.Pop();
-        
+            CheckFinished();
         }
-        CheckFinished();
+        // SetTimer();
+        // aTimer.Stop();
+        // aTimer.Dispose();
+     
     }
+
+    private static void OnTimedEvent(object source, ElapsedEventArgs e)
+    {
+       GameLogic logic;
+       logic = new GameLogic();
+       logic.CheckFinished();
+    }
+
+    private static void SetTimer()
+    {
+        // Create a timer with a two second interval.
+        aTimer = new System.Timers.Timer(2000);
+        // Hook up the Elapsed event for the timer. 
+        aTimer.Elapsed += OnTimedEvent;
+        aTimer.AutoReset = true;
+        aTimer.Enabled = true;
+    }
+
 
     public static void ShuffleArray(int[] a)
     {
@@ -569,6 +591,7 @@ public class GameLogic : MonoBehaviour
         HandArranger.x2 = 0;
         HandArranger.CardCounter = 0;
         HandArranger.CardCounter2 = 0;
+        IsLastCard = true;
         // PlayingAgainstAI = false;
         PassedCounter = 0;
         RoundCounter = 0;
@@ -584,19 +607,6 @@ public class GameLogic : MonoBehaviour
         }
         Setup();
         yield break;
-        // player1Hand.transform.DetachChildren();
-        // player2Hand.transform.DetachChildren();
-        // DrawButton.SetActive(true);
-        // PassButton.SetActive(true);
-
-        // int[] ints = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-        // // // player1Turn = true;
-        // ShuffleArray(ints);
-        // // // Player1Passed = false;
-        // // // Player2Passed = false;
-        // AvaibleCards = new Stack(ints);
-        // NewGame = true;
-        // Start();
     }
 
     public void Player1Winner ()
@@ -605,8 +615,8 @@ public class GameLogic : MonoBehaviour
         PlayerList.GetPlayers()[0].PlayerWins++;
         this.StopAllCoroutines();
         winnerText.text = PlayerList.GetPlayers()[0].PlayerName + " is the winner!";
-        
         StartCoroutine(ResetGame());
+        AddLastCard();
         return;
     }
 
@@ -617,6 +627,7 @@ public class GameLogic : MonoBehaviour
         this.StopAllCoroutines();
         winnerText.text = PlayerList.GetPlayers()[1].PlayerName + " is the winner!";
         StartCoroutine(ResetGame());
+        AddLastCard();
         return;
     }
 
@@ -625,6 +636,21 @@ public class GameLogic : MonoBehaviour
         winnerText.text = "It's a draw!";
         this.StopAllCoroutines();
         StartCoroutine(ResetGame());
+        AddLastCard();
         return;
     }
+
+    public void AddLastCard()
+    {
+        if (IsLastCard)
+        {
+        GameObject obj = Instantiate(Resources.Load<GameObject>("1"));
+        obj.transform.GetComponentInChildren<TMP_Text>().SetText(CurrentPlayer.DrawnCards[CurrentPlayer.DrawnCards.Count - 1].ToString());
+        endPos = new Vector3(HandArranger.GetX(CurrentPlayer.PlayerIndex)-HandArranger.gridLayoutGroup.cellSize.x, HandArranger.GetY(CurrentPlayer.PlayerIndex), 0.0f);
+        obj.transform.position = endPos;
+        obj.transform.SetParent(CurrentPlayer.PlayerHand.transform.GetComponentInParent<Canvas>().transform);
+        IsLastCard = false;
+        }
+    }
+
 }

@@ -2173,6 +2173,7 @@ MonoBehaviour:
   RoundScoreText: {fileID: 1948679570}
   player2Score: {fileID: 1005498380}
   winnerText: {fileID: 74281778}
+  StartPos: {fileID: 1194056302}
 --- !u!4 &1219425936
 Transform:
   m_ObjectHideFlags: 0
