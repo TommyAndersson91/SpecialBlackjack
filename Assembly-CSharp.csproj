@@ -2,8 +2,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <CscToolPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Tools/RoslynScripts</CscToolPath>
-    <CscToolExe>unity_csc.sh</CscToolExe>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -47,31 +45,18 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="UnityEngine">
-      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-     <Compile Include="Assets\Scripts\AI_logic.cs" />
-     <Compile Include="Assets\Scripts\AddCard.cs" />
-     <Compile Include="Assets\Scripts\CardFlyIn.cs" />
-     <Compile Include="Assets\Scripts\CardHover.cs" />
-     <Compile Include="Assets\Scripts\Cards.cs" />
-     <Compile Include="Assets\Scripts\DrawCard.cs" />
+     <Compile Include="Assets\Scripts\AI\AI_logic.cs" />
+     <Compile Include="Assets\Scripts\Controllers\CardController.cs" />
+     <Compile Include="Assets\Scripts\Controllers\PlayerList.cs" />
      <Compile Include="Assets\Scripts\GameLogic.cs" />
-     <Compile Include="Assets\Scripts\HandArranger.cs" />
-     <Compile Include="Assets\Scripts\Player.cs" />
-     <Compile Include="Assets\Scripts\PlayerList.cs" />
+     <Compile Include="Assets\Scripts\Models\Cards.cs" />
+     <Compile Include="Assets\Scripts\Models\Player.cs" />
      <Compile Include="Assets\Scripts\Plugins\MoveObject.cs" />
-     <Compile Include="Assets\Scripts\Rules.cs" />
+     <Compile Include="Assets\Scripts\UI\CardHover.cs" />
+     <Compile Include="Assets\Scripts\UI\HandArranger.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap.shader" />
-     <None Include="Assets\Playing Cards\Readme_Eng.txt" />
-     <None Include="Assets\Playing Cards\Readme_Jpn.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
@@ -82,7 +67,6 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Surface.cginc" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
-     <None Include="Assets\Playing Cards\Image Effects\Shaders\Reversibl_Draw.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
@@ -120,6 +104,9 @@
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEngine">
+ <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -297,6 +284,9 @@
  </Reference>
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor">
+ <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -645,7 +635,7 @@
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

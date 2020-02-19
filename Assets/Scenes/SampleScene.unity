@@ -2228,7 +2228,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1219425934}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e26668f973ea42a291db5ef080d61d9, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c1b5601d5ec74c77afaae253fae1557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   vector: {x: 0, y: 0}
@@ -3397,7 +3397,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -348, y: -216.68}
-  m_SizeDelta: {x: 168.64, y: 143.35}
+  m_SizeDelta: {x: 228.2, y: 143.4}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1991074048
 MonoBehaviour:
@@ -3419,7 +3419,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 70}
+  m_CellSize: {x: 67.5, y: 94.5}
   m_Spacing: {x: 1, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -3665,7 +3665,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 120, y: -216.68}
-  m_SizeDelta: {x: 168.64, y: 143.35}
+  m_SizeDelta: {x: 295.8, y: 143.4}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2138995996
 MonoBehaviour:
@@ -3687,7 +3687,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 70}
+  m_CellSize: {x: 67.5, y: 94.5}
   m_Spacing: {x: 1, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
