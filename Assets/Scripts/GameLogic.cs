@@ -235,7 +235,7 @@ public class GameLogic : MonoBehaviour
             trumpCard.transform.SetParent(Player1TrumpCards.transform);
             trumpCard.gameObject.tag = "trumpcard";
         }
-        else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins && PlayerList.GetPlayers()[1].TrumpCards < 3)
+        else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2 && PlayerList.GetPlayers()[1].TrumpCards < 3)
         {
             PlayerList.GetPlayers()[1].TrumpCards++;
             trumpCard.transform.SetParent(Player2TrumpCards.transform);
