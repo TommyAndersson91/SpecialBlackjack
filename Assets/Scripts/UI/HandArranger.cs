@@ -13,10 +13,10 @@ public static float Y {get; set;}
 public static float X {get; set;}
 public static float Y2 { get; set; }
 public static float X2 { get; set; }
-public static int CardCounter = 0;
-public static int CardCounter2 = 0;
-public static int YCounter = 0;
-public static int YCounter2 = 0;
+public static int CardCounter {get; set;}
+public static int CardCounter2 {get; set;}
+public static int YCounter { get; set; }
+public static int YCounter2 { get; set; }
 
 public static float GetXForLast(int playerIndex)
 {
@@ -115,10 +115,13 @@ public static float GetY(int playerIndex)
 
 private void Awake() {
 
-        // Arrange();
-        gridLayoutGroup = GameObject.Find("CardsInHandPanel").GetComponentInChildren<GridLayoutGroup>();
-        gridLayoutGroup2 = GameObject.Find("CardsInHandPanel2").GetComponentInChildren<GridLayoutGroup>();
-
+    // Arrange();
+    gridLayoutGroup = GameObject.Find("CardsInHandPanel").GetComponentInChildren<GridLayoutGroup>();
+    gridLayoutGroup2 = GameObject.Find("CardsInHandPanel2").GetComponentInChildren<GridLayoutGroup>();
+    CardCounter = 0;
+    CardCounter2 = 0;
+    YCounter = 0;
+    YCounter2 = 0;
 }
 
 // private void Update() {
