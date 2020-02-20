@@ -9,29 +9,45 @@ public static GridLayoutGroup gridLayoutGroup;
 public static GridLayoutGroup gridLayoutGroup2;
 public Vector2 vector;
 public float zValue = 1f;
-public static Vector3 NewPos;
-public static float y {get; set;}
-public static float x {get; set;}
-public static float y2 { get; set; }
-public static float x2 { get; set; }
+public static float Y {get; set;}
+public static float X {get; set;}
+public static float Y2 { get; set; }
+public static float X2 { get; set; }
 public static int CardCounter = 0;
 public static int CardCounter2 = 0;
 public static int YCounter = 0;
 public static int YCounter2 = 0;
 
+public static float GetXForLast(int playerIndex)
+{
+    if (playerIndex == 0)
+    {
+        if (PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
+        {
 
-// public static Vector3 GetPos(int playerIndex)
-// {
-//     // gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount-1).Rotate(360f, 0f, 0f);   
-//     if (playerIndex == 0)
-//     {   
-//         return NewPos = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount-1).position;
-//     }
-//     else
-//     {
-//         return NewPos = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position;
-//     }
-// }
+            X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + gridLayoutGroup.cellSize.x * CardCounter;
+            return X;
+        }
+        else
+        {
+            X = gridLayoutGroup.transform.GetChild(YCounter).position.x;
+            return X;
+        }
+    }
+    else
+    {
+        if (PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
+        {
+            X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + gridLayoutGroup2.cellSize.x * CardCounter2;
+            return X2;
+        }
+        else
+        {
+            X2 = gridLayoutGroup2.transform.GetChild(YCounter2).position.x;
+            return X2;
+        }
+    }
+}
 
 public static float GetX(int playerIndex)
 {
@@ -43,13 +59,13 @@ public static float GetX(int playerIndex)
         if (PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
         {
            
-            return x = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x+gridLayoutGroup.cellSize.x*CardCounter;
+            return X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x+gridLayoutGroup.cellSize.x*CardCounter;
         }
         else
         {
-            x = gridLayoutGroup.transform.GetChild(YCounter).position.x;
+            X = gridLayoutGroup.transform.GetChild(YCounter).position.x;
             YCounter++;
-            return x;
+            return X;
         }
     }
     else
@@ -57,45 +73,47 @@ public static float GetX(int playerIndex)
         CardCounter2++;
         if (PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
         {
-            return x2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x+gridLayoutGroup2.cellSize.x*CardCounter2;
+            return X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x+gridLayoutGroup2.cellSize.x*CardCounter2;
         }
         else
         {
-            x2 = gridLayoutGroup2.transform.GetChild(YCounter2).position.x;
+            X2 = gridLayoutGroup2.transform.GetChild(YCounter2).position.x;
             YCounter2++;
-            return x2;
+            return X2;
         }
     }
 }
 
 public static float GetY(int playerIndex)
 {
-        if (playerIndex == 0)
+    gridLayoutGroup.enabled = false;
+    gridLayoutGroup2.enabled = false;
+    if (playerIndex == 0)
+    {
+        if (PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
         {
-            if (PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
-            {
-                return y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y;
-            }
-            else
-            {
-                return y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y-gridLayoutGroup.cellSize.y;
-            }
+            return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y;
         }
         else
         {
-            if (PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
-            {
-                return y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y;
-            }
-            else
-            {
-                return y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y-gridLayoutGroup2.cellSize.y;
-            }
-
+            return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y-gridLayoutGroup.cellSize.y;
         }
+    }
+    else
+    {
+        if (PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
+        {
+            return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y;
+        }
+        else
+        {
+            return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y-gridLayoutGroup2.cellSize.y;
+        }
+
+    }
 }
 
-private void Start() {
+private void Awake() {
 
         // Arrange();
         gridLayoutGroup = GameObject.Find("CardsInHandPanel").GetComponentInChildren<GridLayoutGroup>();
@@ -113,7 +131,7 @@ private void Start() {
 //         zValue = 1f;
 //         for (int i = 0; i < transform.childCount; i++)
 //         {
-//             transform.GetChild(i).position = new Vector3(transform.GetChild(i).position.x, transform.GetChild(i).position.y, zValue);
+//             transform.GetChild(i).position = new Vector3(transform.GetChild(i).position.X, transform.GetChild(i).position.Y, zValue);
 //             zValue++;
 //         }
 //         //SetSpacing(go.transform);
