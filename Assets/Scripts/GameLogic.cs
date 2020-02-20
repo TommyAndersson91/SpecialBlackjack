@@ -94,9 +94,15 @@ public class GameLogic : MonoBehaviour
         {
             TrumpCardButton.gameObject.SetActive(false);
         }
-        else
+        else if (CurrentPlayer.PlayerIndex == 0)
         {
             TrumpCardButton.gameObject.SetActive(true);
+        }
+        if (CurrentPlayer.PlayerIndex == 1 && PlayingAgainstAI)
+        {
+            PassButton.gameObject.SetActive(false);
+            DrawButton.gameObject.SetActive(false);
+            PlayAIButton.gameObject.SetActive(false);
         }
         RoundScoreText.text = "Wins \n" + PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].PlayerWins +
         "\n" + PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].PlayerWins;  
@@ -229,7 +235,7 @@ public class GameLogic : MonoBehaviour
             trumpCard.transform.SetParent(Player1TrumpCards.transform);
             trumpCard.gameObject.tag = "trumpcard";
         }
-        else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2 && PlayerList.GetPlayers()[1].TrumpCards < 3)
+        else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins && PlayerList.GetPlayers()[1].TrumpCards < 3)
         {
             PlayerList.GetPlayers()[1].TrumpCards++;
             trumpCard.transform.SetParent(Player2TrumpCards.transform);
@@ -585,23 +591,23 @@ public class GameLogic : MonoBehaviour
     
     IEnumerator EnableOrDisableButtons()
     {
+        yield return new WaitForSeconds(0.5f);
         PassButton.gameObject.SetActive(false);
         DrawButton.gameObject.SetActive(false);
         PlayAIButton.gameObject.SetActive(false);
-        if (PlayingAgainstAI && PlayerList.GetPlayers()[1].IsPlayersTurn && PlayerList.GetPlayers()[1].TrumpCards > 0)
-        {
-        TrumpCardButton.gameObject.SetActive(false);
-        }
-        yield return new WaitForSeconds(0.5f);
+        // if (PlayingAgainstAI && PlayerList.GetPlayers()[1].IsPlayersTurn)
+        // {
+        // TrumpCardButton.gameObject.SetActive(false);
+        // }
         yield return new WaitUntil(() => CurrentPlayer.PlayerIndex == 0);
         PassButton.gameObject.SetActive(true);
         DrawButton.gameObject.SetActive(true);
         PlayAIButton.gameObject.SetActive(true);
-        if (PlayerList.GetPlayers()[0].TrumpCards > 0)
-        {
-            TrumpCardButton.gameObject.SetActive(true);
+    //     if (PlayerList.GetPlayers()[0].TrumpCards > 0)
+    //     {
+    //         TrumpCardButton.gameObject.SetActive(true);
         
-    }
+    // }
     yield break;
     }
 }
