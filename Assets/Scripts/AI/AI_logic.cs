@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class AI_logic : MonoBehaviour
 {
 
-public static Boolean UseTrumpCard(Player AI, Player player)
+public Boolean UseTrumpCard(Player AI, Player player)
 {
     int playerHand = 0;
 
@@ -22,7 +23,7 @@ public static Boolean UseTrumpCard(Player AI, Player player)
         return false;
 }
 
-public static Boolean CalculateMove(Player AI, Player player)
+public Boolean CalculateMove(Player AI, Player player)
 {
         if (player.IsPassed && AI.HandValue < 21 && AI.HandValue < player.HandValue && player.HandValue <= 21)
         {
@@ -96,13 +97,13 @@ public static Boolean CalculateMove(Player AI, Player player)
         }
 } 
 
-public static Boolean IsContainNumber(Int32[] numbers)
+public Boolean IsContainNumber(Int32[] numbers)
 {
     int counter = 0;
 
     foreach (var number in numbers)
     {
-        if (Array.Exists(GameLogic.AvaibleCards.ToArray(), element => int.Parse(element.ToString()) == number))
+        if (Array.Exists(gameObject.GetComponent<CardController>().GetStack().ToArray(), element => int.Parse(element.ToString()) == number))
         {
           counter++;         
         }

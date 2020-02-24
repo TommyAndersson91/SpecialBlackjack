@@ -1,14 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
 public class GameLogic : MonoBehaviour
 {
-    public static Stack AvaibleCards;
     public static PlayerList PlayerList = new PlayerList();
-    private int[] ints = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
     public static bool PlayingAgainstAI { get; set;}
     [SerializeField]
     private GameObject player1Hand;
@@ -51,10 +48,11 @@ public class GameLogic : MonoBehaviour
         gameObject.AddComponent<AIController>();
         gameObject.AddComponent<CardController>();
         gameObject.AddComponent<AI_logic>();
+        gameObject.AddComponent<Cards>();
         endPos = new Vector3();
         animator = gameObject.GetComponent<Animator>();
         animator.runtimeAnimatorController = Resources.Load("anim") as RuntimeAnimatorController;
-        Cards.InitCards();
+        gameObject.GetComponent<Cards>().InitCards();
         random = new System.Random();
         PlayerList.AddPlayer("Player 1", GameObject.Find("CardsInHandPanel"));
         PlayerList.AddPlayer("Player 2", GameObject.Find("CardsInHandPanel2"));
@@ -114,10 +112,8 @@ public class GameLogic : MonoBehaviour
 
     public IEnumerator PlayAITUrn()
     {
-        if (PlayerList.GetPlayers()[1].IsPlayersTurn == true)
-        {
         yield return new WaitForSeconds(2);
-        if (AI_logic.UseTrumpCard(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]) && PlayerList.GetPlayers()[1].TrumpCards > 0 && gameObject.GetComponent<AIController>().FiftyPercent(random))
+        if (gameObject.GetComponent<AI_logic>().UseTrumpCard(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]) && PlayerList.GetPlayers()[1].TrumpCards > 0 && gameObject.GetComponent<AIController>().FiftyPercent(random))
         {
             if (PlayerList.GetPlayers()[0].HandValue < 22)
             {
@@ -130,7 +126,7 @@ public class GameLogic : MonoBehaviour
             }
             yield break;
         }
-        if (AI_logic.CalculateMove(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]))
+        if (gameObject.GetComponent<AI_logic>().CalculateMove(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]))
         {
             DrawCards();
             if (PlayerList.GetPlayers()[0].IsPassed && !RoundOver)
@@ -143,7 +139,6 @@ public class GameLogic : MonoBehaviour
         {
             Pass();
             yield break; 
-        }
         }
     }
 
@@ -163,7 +158,6 @@ public class GameLogic : MonoBehaviour
 
     public void Setup()
     {   
-        // StopAllCoroutines();
         GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
         if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 2 && PlayerList.GetPlayers()[0].TrumpCards < 3)
         {
@@ -183,8 +177,8 @@ public class GameLogic : MonoBehaviour
         trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
         CurrentPlayer = new Player();
         RoundOver = false;
-        ShuffleArray(ints);
-        AvaibleCards = new Stack(ints);
+        gameObject.GetComponent<CardController>().ShuffleArray(gameObject.GetComponent<CardController>().getInts());
+        gameObject.GetComponent<Cards>().AvaibleCards = new Stack(gameObject.GetComponent<CardController>().getInts());
         CurrentPlayer = PlayerList.GetPlayers()[0];
         for (int i = 0; i < 4; i++)
         {
@@ -293,32 +287,14 @@ public class GameLogic : MonoBehaviour
 
     public void DrawCards()
     {
-        Debug.Log("Draw Card Called with CurrentPlayer: " + CurrentPlayer.PlayerName);
         DrawButton.gameObject.SetActive(false);
         RoundCounter++;
         if (!CurrentPlayer.IsPassed && !RoundOver)
         {
-            gameObject.GetComponent<CardController>().DrawCard(RoundCounter, AvaibleCards, StartPos, endPos);
-            AvaibleCards.Pop();
+            gameObject.GetComponent<CardController>().DrawCard(RoundCounter, StartPos, endPos);
             CheckFinished();
             return; 
         }
-    }
-
-    public void ShuffleArray(int[] a)
-    {
-        int length = a.Length;
-        for (int i = 0; i < length; i++)
-        {
-            Swap(a, i, i + random.Next(length - i));
-        }
-    }
-
-    public static void Swap(int[] arr, int a, int b)
-    {
-        int temp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = temp;
     }
 
     public void RoundFinished()
@@ -419,7 +395,7 @@ public class GameLogic : MonoBehaviour
         HandArranger.YCounter2 = 0;
         HandArranger.CardCounter = 0;
         HandArranger.CardCounter2 = 0;
-        Cards.DrawnCards.Clear();
+        gameObject.GetComponent<CardController>().GetDrawnCards().Clear();
         GameObject[] cards;
         cards = GameObject.FindGameObjectsWithTag("card");
         foreach (GameObject card in cards)
@@ -641,4 +617,20 @@ public class GameLogic : MonoBehaviour
 //     DrawButton.gameObject.SetActive(true);
 //     PlayAIButton.gameObject.SetActive(true);
 //     yield break;
+// }
+
+// public void ShuffleArray(int[] a)
+// {
+//     int length = a.Length;
+//     for (int i = 0; i < length; i++)
+//     {
+//         Swap(a, i, i + random.Next(length - i));
+//     }
+// }
+
+// public static void Swap(int[] arr, int a, int b)
+// {
+//     int temp = arr[a];
+//     arr[a] = arr[b];
+//     arr[b] = temp;
 // }

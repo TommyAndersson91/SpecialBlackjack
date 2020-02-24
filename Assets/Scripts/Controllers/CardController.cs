@@ -2,6 +2,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
+using System.Collections.Generic;
 public class CardController : MonoBehaviour
 {
     public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
@@ -19,7 +21,22 @@ public class CardController : MonoBehaviour
         yield break;
     }
 
-    public void DrawCard(int RoundCounter, Stack AvaibleCards, Text StartPos, Vector3 endPos)
+    public Stack GetStack()
+    {
+        return gameObject.GetComponent<Cards>().AvaibleCards;
+    }
+
+    public int[] getInts()
+    {
+        return gameObject.GetComponent<Cards>().ints;
+    }
+
+    public List<int> GetDrawnCards()
+    {
+        return gameObject.GetComponent<Cards>().DrawnCards;
+    }
+
+    public void DrawCard(int RoundCounter, Text StartPos, Vector3 endPos)
     {
         if (GameLogic.PlayingAgainstAI && !PlayerList.GetPlayers()[0].IsPassed)
         {
@@ -34,16 +51,17 @@ public class CardController : MonoBehaviour
         }
         else
         {
-            card.transform.GetComponentInChildren<TMP_Text>().SetText(AvaibleCards.Peek().ToString());
+            card.transform.GetComponentInChildren<TMP_Text>().SetText(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
             if (RoundCounter < 5)
             {
                 card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
             }
             AnimateCardFly(card, gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
         }
-        gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue += int.Parse(AvaibleCards.Peek().ToString());
-        gameObject.GetComponent<GameLogic>().CurrentPlayer.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
-        Cards.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
+        gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue += int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
+        gameObject.GetComponent<GameLogic>().CurrentPlayer.DrawnCards.Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
+        GetDrawnCards().Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
+        gameObject.GetComponent<CardController>().GetStack().Pop();
     }
 
     public void AnimateCardFly(GameObject card, int currentPlayerIndex, int RoundCounter, Text StartPos, Vector3 endPos)
@@ -107,6 +125,8 @@ public class CardController : MonoBehaviour
             if (!PlayerList.GetPlayers()[1].IsPassed)
             {
                 gameObject.GetComponent<GameLogic>().CurrentPlayer = PlayerList.GetPlayers()[1];
+                PlayerList.GetPlayers()[1].IsPlayersTurn = true;
+                gameObject.GetComponent<AIController>().CheckAITurn(gameObject.GetComponent<GameLogic>().RoundCounter); 
             }
             else
             {
@@ -114,5 +134,21 @@ public class CardController : MonoBehaviour
             }
             yield break;
         }
+    }
+
+    public void ShuffleArray(int[] a)
+    {
+        int length = a.Length;
+        for (int i = 0; i < length; i++)
+        {
+            Swap(a, i, i + gameObject.GetComponent<GameLogic>().random.Next(length - i));
+        }
+    }
+
+    public void Swap(int[] arr, int a, int b)
+    {
+        int temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
     }    
 }
