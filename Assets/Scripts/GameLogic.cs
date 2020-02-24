@@ -288,7 +288,7 @@ public class GameLogic : MonoBehaviour
     {
         DrawButton.gameObject.SetActive(false);
         RoundCounter++;
-        if (PlayingAgainstAI && !PlayerList.GetPlayers()[0].IsPassed)
+        if (PlayingAgainstAI && !PlayerList.GetPlayers()[0].IsPassed && CurrentPlayer.PlayerIndex == 1)
         {
             PlayerList.GetPlayers()[1].IsPlayersTurn = !PlayerList.GetPlayers()[1].IsPlayersTurn;
         }
