@@ -84,8 +84,6 @@ public class HandArranger : MonoBehaviour
 
     public static float GetY(int playerIndex)
     {
-        gridLayoutGroup.enabled = false;
-        gridLayoutGroup2.enabled = false;
         if (playerIndex == 0)
         {
             if (PlayerList.GetPlayers()[0].DrawnCards.Count < 4)

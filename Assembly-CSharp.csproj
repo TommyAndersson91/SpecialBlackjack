@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Controllers\CardController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayerList.cs" />
      <Compile Include="Assets\Scripts\Controllers\ScoreController.cs" />
+     <Compile Include="Assets\Scripts\Controllers\UIController.cs" />
      <Compile Include="Assets\Scripts\GameLogic.cs" />
      <Compile Include="Assets\Scripts\Models\Cards.cs" />
      <Compile Include="Assets\Scripts\Models\Player.cs" />

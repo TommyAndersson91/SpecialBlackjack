@@ -16,6 +16,7 @@ public class AIController : MonoBehaviour
         {
             PlayerList.GetPlayers()[1].PlayerName = "Player 2";
         }
+        gameObject.GetComponent<GameLogic>().UpdateUI();
     }
 
     public void CheckAITurn(int roundCounter)

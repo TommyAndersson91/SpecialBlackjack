@@ -28,7 +28,7 @@ public class GameLogic : MonoBehaviour
     public System.Random random;
     public Player CurrentPlayer {get; set;}
     public int RoundCounter = 0;
-    private int HiddenValue;
+    private int HiddenValue {get; set;}
     private Boolean RoundOver = false;
     public GameObject HiddenCard {get; set;}
     [SerializeField]
@@ -44,7 +44,6 @@ public class GameLogic : MonoBehaviour
         Player2TrumpCards = GameObject.Find("TrumpCardsPanel2");
         winnerText = GameObject.Find("WinnerText").GetComponentInChildren<TextMeshProUGUI>();
         PlayingAgainstAI = false;
-        
         gameObject.AddComponent<AIController>();
         gameObject.AddComponent<CardController>();
         gameObject.AddComponent<AI_logic>();
@@ -68,11 +67,19 @@ public class GameLogic : MonoBehaviour
         PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
         TrumpCardButton.onClick.AddListener(UseTrumpCard);
         Setup();
-        index = 0;
+        index = 0;   
     }
 
     private void Update() {
+
+    }
+
+    public void UpdateUI()
+    {
+        if (RoundCounter >= 4)
+        {
         HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
+        }
         player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         if (!RoundOver && RoundCounter >= 4)
         {
@@ -82,7 +89,10 @@ public class GameLogic : MonoBehaviour
         else
         {
             player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].HandValue + " / 21";
+            if (RoundCounter >= 4)
+            {
             HiddenCard.transform.GetComponentInChildren<TMP_Text>().SetText(PlayerList.GetPlayers()[1].DrawnCards[0].ToString());
+            }
         }
 
         if (CurrentPlayer.TrumpCards == 0)
@@ -106,8 +116,6 @@ public class GameLogic : MonoBehaviour
             DrawButton.gameObject.SetActive(false);
             PlayAIButton.gameObject.SetActive(false);
         }
-        RoundScoreText.text = "Wins \n" + PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].PlayerWins +
-        "\n" + PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].PlayerWins;  
     }
 
     public IEnumerator PlayAITUrn()
@@ -154,10 +162,13 @@ public class GameLogic : MonoBehaviour
             PlayerList.GetPlayers()[1].IsPlayersTurn = true;
             gameObject.GetComponent<AIController>().CheckAITurn(RoundCounter);
         }
+        UpdateUI();
     }
 
     public void Setup()
-    {   
+    {
+        RoundScoreText.text = "Wins \n" + PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].PlayerWins +
+        "\n" + PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].PlayerWins;
         GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
         if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 2 && PlayerList.GetPlayers()[0].TrumpCards < 3)
         {
@@ -186,6 +197,7 @@ public class GameLogic : MonoBehaviour
         }
         CurrentPlayer = PlayerList.GetPlayers()[0];
         PlayerList.GetPlayers()[1].IsPlayersTurn = false;
+        UpdateUI(); 
     }
 
     public void Pass()
@@ -209,7 +221,7 @@ public class GameLogic : MonoBehaviour
             PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
             CurrentPlayer = PlayerList.GetPlayers()[1];
         }
-
+        UpdateUI();
         if (PlayerList.GetPlayers()[0].IsPassed)
         {
             PlayerList.GetPlayers()[1].IsPlayersTurn = true;
@@ -252,6 +264,7 @@ public class GameLogic : MonoBehaviour
                 RoundFinished();
                 return;
             }
+        UpdateUI();
         if (!CurrentPlayer.IsPassed)
         {
             if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count - 1 && !PlayerList.GetPlayers()[0].IsPassed)
@@ -293,14 +306,14 @@ public class GameLogic : MonoBehaviour
         {
             gameObject.GetComponent<CardController>().DrawCard(RoundCounter, StartPos, endPos);
             CheckFinished();
-            return; 
         }
+        UpdateUI();
     }
 
     public void RoundFinished()
     {
-        if (!RoundOver)
-        {
+        RoundOver = true;
+        UpdateUI();
         if (PlayerList.GetPlayers()[0].HandValue < 22 && PlayerList.GetPlayers()[1].HandValue > 21)
         {
             Player1Winner();
@@ -367,14 +380,13 @@ public class GameLogic : MonoBehaviour
                 return; 
             }           
         }
-        }
         return;
-    }
+        }
 
     IEnumerator ResetGame()
     {
         RoundCounter = 0;
-        RoundOver = true;
+        // RoundOver = true;
         yield return new WaitForSeconds(3);
         foreach (var player in PlayerList.GetPlayers())
         {
