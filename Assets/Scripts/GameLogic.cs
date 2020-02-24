@@ -70,10 +70,6 @@ public class GameLogic : MonoBehaviour
         index = 0;   
     }
 
-    private void Update() {
-
-    }
-
     public void UpdateUI()
     {
         if (RoundCounter >= 4)
@@ -94,7 +90,6 @@ public class GameLogic : MonoBehaviour
             HiddenCard.transform.GetComponentInChildren<TMP_Text>().SetText(PlayerList.GetPlayers()[1].DrawnCards[0].ToString());
             }
         }
-
         if (CurrentPlayer.TrumpCards == 0)
         {
             TrumpCardButton.gameObject.SetActive(false);
@@ -126,7 +121,7 @@ public class GameLogic : MonoBehaviour
             if (PlayerList.GetPlayers()[0].HandValue < 22)
             {
             UseTrumpCard();
-            if (PlayerList.GetPlayers()[0].HandValue > 21)
+            if (PlayerList.GetPlayers()[0].HandValue > 21 && !RoundOver)
             {
             RoundFinished();
             yield break;
@@ -221,22 +216,26 @@ public class GameLogic : MonoBehaviour
             PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
             CurrentPlayer = PlayerList.GetPlayers()[1];
         }
-        UpdateUI();
         if (PlayerList.GetPlayers()[0].IsPassed)
         {
             PlayerList.GetPlayers()[1].IsPlayersTurn = true;
             gameObject.GetComponent<AIController>().CheckAITurn(RoundCounter);
-            if (PlayerList.GetPlayers()[1].IsPassed)
-            {
-                CheckFinished();
-                return;
-            }
-            else 
-            {
-                return;
-            }
+            // if (PlayerList.GetPlayers()[1].IsPassed)
+            // {
+            //     CheckFinished();
+            //     UpdateUI();
+            //     return;
+            // }
+            // else 
+            // {
+            //     return;
+            // }
         }
-        CheckFinished();     
+        // if (!PlayerList.GetPlayers()[1].IsPassed)
+        // {
+        CheckFinished();
+        UpdateUI();   
+        // }
     }
 
     public void CheckFinished()
@@ -386,7 +385,7 @@ public class GameLogic : MonoBehaviour
     IEnumerator ResetGame()
     {
         RoundCounter = 0;
-        // RoundOver = true;
+        UpdateUI();
         yield return new WaitForSeconds(3);
         foreach (var player in PlayerList.GetPlayers())
         {
@@ -419,23 +418,21 @@ public class GameLogic : MonoBehaviour
     }
 
     public void Player1Winner ()
-    {
-        PlayerList.GetPlayers()[0].IsWinner = true;;
+    {  
         PlayerList.GetPlayers()[0].PlayerWins++;
+        PlayerList.GetPlayers()[0].IsWinner = true;
         StopAllCoroutines();
         winnerText.SetText(PlayerList.GetPlayers()[0].PlayerName + " is the winner!");
         StartCoroutine(ResetGame());
-        return;
     }
 
     public void Player2Winner()
     {
-        PlayerList.GetPlayers()[1].IsWinner = true;
         PlayerList.GetPlayers()[1].PlayerWins++;
+        PlayerList.GetPlayers()[1].IsWinner = true;
         StopAllCoroutines();
         winnerText.SetText(PlayerList.GetPlayers()[1].PlayerName + " is the winner!");
         StartCoroutine(ResetGame());
-        return;
     }
 
     public void Draw()
@@ -443,7 +440,6 @@ public class GameLogic : MonoBehaviour
         StopAllCoroutines();
         winnerText.SetText("It's a draw!");
         StartCoroutine(ResetGame());
-        return;
     }
 }
 

@@ -584,9 +584,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -348, y: -127.37002}
+  m_AnchoredPosition: {x: -238.79999, y: -20.360016}
   m_SizeDelta: {x: 218.40002, y: 214.02}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &401683426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1812,10 +1812,10 @@ RectTransform:
   m_Father: {fileID: 1419215933}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -29, y: 320}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -39.100006, y: 340}
+  m_SizeDelta: {x: -164.12, y: -253.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1194056302
 MonoBehaviour:
@@ -1892,8 +1892,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1Hand: {fileID: 401683424}
-  Player1TrumpCards: {fileID: 1991074046}
-  Player2TrumpCards: {fileID: 2138995994}
+  player2Hand: {fileID: 0}
   PassButton: {fileID: 1020015943}
   DrawButton: {fileID: 778321265}
   PlayAIButton: {fileID: 48305167}
@@ -1901,8 +1900,10 @@ MonoBehaviour:
   player1Score: {fileID: 1550337408}
   RoundScoreText: {fileID: 1948679570}
   player2Score: {fileID: 1005498380}
-  winnerText: {fileID: 74281778}
+  RoundCounter: 0
+  animator: {fileID: 0}
   StartPos: {fileID: 1194056302}
+  endPos: {x: 0, y: 0, z: 0}
 --- !u!4 &1219425936
 Transform:
   m_ObjectHideFlags: 0
@@ -1960,8 +1961,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1b5601d5ec74c77afaae253fae1557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vector: {x: 0, y: 0}
-  zValue: 1
 --- !u!114 &1219425940
 MonoBehaviour:
   m_ObjectHideFlags: 0

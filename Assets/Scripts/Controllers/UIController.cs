@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
+//   TODO: Use this class as a controller to modify the UI
 //     public void UpdateUI()
 //     {
 //         HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
