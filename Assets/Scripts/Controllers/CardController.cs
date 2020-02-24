@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine.UI;
 public class CardController : MonoBehaviour
 {
-    public IEnumerator CardAdded2(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
+    public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
     {
         card.transform.position = StartPos.transform.position;
         float elapsedTime = 0;
@@ -19,7 +19,7 @@ public class CardController : MonoBehaviour
         yield break;
     }
 
-    public void DrawCard(Player CurrentPlayer, int RoundCounter, Stack AvaibleCards, Text StartPos, Vector3 endPos)
+    public void DrawCard(int RoundCounter, Stack AvaibleCards, Text StartPos, Vector3 endPos)
     {
         if (GameLogic.PlayingAgainstAI && !PlayerList.GetPlayers()[0].IsPassed)
         {
@@ -28,7 +28,7 @@ public class CardController : MonoBehaviour
             GameObject card = Instantiate(Resources.Load<GameObject>("1"));
         if (RoundCounter == 2)
         {
-            card.transform.SetParent(CurrentPlayer.PlayerHand.transform);
+            card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
             card.transform.GetComponentInChildren<TMP_Text>().SetText("?");
             gameObject.GetComponent<GameLogic>().HiddenCard = card; 
         }
@@ -37,12 +37,12 @@ public class CardController : MonoBehaviour
             card.transform.GetComponentInChildren<TMP_Text>().SetText(AvaibleCards.Peek().ToString());
             if (RoundCounter < 5)
             {
-                card.transform.SetParent(CurrentPlayer.PlayerHand.transform);
+                card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
             }
-            AnimateCardFly(card, CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
+            AnimateCardFly(card, gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
         }
-        CurrentPlayer.HandValue += int.Parse(AvaibleCards.Peek().ToString());
-        CurrentPlayer.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
+        gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue += int.Parse(AvaibleCards.Peek().ToString());
+        gameObject.GetComponent<GameLogic>().CurrentPlayer.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
         Cards.DrawnCards.Add(int.Parse(AvaibleCards.Peek().ToString()));
     }
 
@@ -51,7 +51,7 @@ public class CardController : MonoBehaviour
         if (RoundCounter > 4)
         {
             card.transform.SetParent(PlayerList.GetPlayers()[currentPlayerIndex].PlayerHand.transform.GetComponentInParent<Canvas>().transform);
-            StartCoroutine(CardAdded2(card, currentPlayerIndex, StartPos, endPos));
+            StartCoroutine(CardAdded(card, currentPlayerIndex, StartPos, endPos));
         }
     }
 

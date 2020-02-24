@@ -9,7 +9,7 @@ public class GameLogic : MonoBehaviour
     public static Stack AvaibleCards;
     public static PlayerList PlayerList = new PlayerList();
     private int[] ints = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-    public static bool PlayingAgainstAI { get; set; }
+    public static bool PlayingAgainstAI { get; set;}
     [SerializeField]
     private GameObject player1Hand;
     [SerializeField]
@@ -74,8 +74,7 @@ public class GameLogic : MonoBehaviour
     }
 
     private void Update() {
-         HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
-
+        HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
         player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         if (!RoundOver && RoundCounter >= 4)
         {
@@ -115,6 +114,8 @@ public class GameLogic : MonoBehaviour
 
     public IEnumerator PlayAITUrn()
     {
+        if (PlayerList.GetPlayers()[1].IsPlayersTurn == true)
+        {
         yield return new WaitForSeconds(2);
         if (AI_logic.UseTrumpCard(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]) && PlayerList.GetPlayers()[1].TrumpCards > 0 && gameObject.GetComponent<AIController>().FiftyPercent(random))
         {
@@ -142,6 +143,7 @@ public class GameLogic : MonoBehaviour
         {
             Pass();
             yield break; 
+        }
         }
     }
 
@@ -186,8 +188,10 @@ public class GameLogic : MonoBehaviour
         CurrentPlayer = PlayerList.GetPlayers()[0];
         for (int i = 0; i < 4; i++)
         {
-            DrawCards();
+        DrawCards();
         }
+        CurrentPlayer = PlayerList.GetPlayers()[0];
+        PlayerList.GetPlayers()[1].IsPlayersTurn = false;
     }
 
     public void Pass()
@@ -276,7 +280,10 @@ public class GameLogic : MonoBehaviour
                 }
                 PlayerList.GetPlayers()[1].IsPlayersTurn = true;
                 CurrentPlayer = PlayerList.GetPlayers()[1];
+                if (RoundCounter > 4)
+                {
                 gameObject.GetComponent<AIController>().CheckAITurn(RoundCounter);
+                }
                 return;
             } 
             return;  
@@ -286,17 +293,15 @@ public class GameLogic : MonoBehaviour
 
     public void DrawCards()
     {
+        Debug.Log("Draw Card Called with CurrentPlayer: " + CurrentPlayer.PlayerName);
         DrawButton.gameObject.SetActive(false);
         RoundCounter++;
-        if (PlayingAgainstAI && !PlayerList.GetPlayers()[0].IsPassed && CurrentPlayer.PlayerIndex == 1)
-        {
-            PlayerList.GetPlayers()[1].IsPlayersTurn = !PlayerList.GetPlayers()[1].IsPlayersTurn;
-        }
         if (!CurrentPlayer.IsPassed && !RoundOver)
         {
-            gameObject.GetComponent<CardController>().DrawCard(CurrentPlayer, RoundCounter, AvaibleCards, StartPos, endPos);
+            gameObject.GetComponent<CardController>().DrawCard(RoundCounter, AvaibleCards, StartPos, endPos);
             AvaibleCards.Pop();
             CheckFinished();
+            return; 
         }
     }
 
@@ -392,6 +397,7 @@ public class GameLogic : MonoBehaviour
 
     IEnumerator ResetGame()
     {
+        RoundCounter = 0;
         RoundOver = true;
         yield return new WaitForSeconds(3);
         foreach (var player in PlayerList.GetPlayers())
@@ -413,7 +419,6 @@ public class GameLogic : MonoBehaviour
         HandArranger.YCounter2 = 0;
         HandArranger.CardCounter = 0;
         HandArranger.CardCounter2 = 0;
-        RoundCounter = 0;
         Cards.DrawnCards.Clear();
         GameObject[] cards;
         cards = GameObject.FindGameObjectsWithTag("card");
