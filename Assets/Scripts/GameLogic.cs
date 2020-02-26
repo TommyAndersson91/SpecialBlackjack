@@ -5,7 +5,7 @@ using System;
 using TMPro;
 public class GameLogic : MonoBehaviour
 {
-    public static PlayerList PlayerList = new PlayerList();
+    public PlayerList PlayerList;
     public static bool PlayingAgainstAI { get; set;}
     [SerializeField]
     private GameObject player1Hand;
@@ -21,15 +21,19 @@ public class GameLogic : MonoBehaviour
     private Button PlayAIButton;
     [SerializeField]
     private Button TrumpCardButton;
+    [SerializeField]
+    private PlayerPanel playerPanel_1;
+    [SerializeField]
+    private PlayerPanel playerPanel_2;
     public TextMeshProUGUI player1Score;
     public TextMeshProUGUI RoundScoreText;
     public TextMeshProUGUI player2Score;
     public TextMeshProUGUI winnerText {get; set;}
     public System.Random random;
-    public Player CurrentPlayer {get; set;}
+    public static Player CurrentPlayer {get; set;}
     public int RoundCounter = 0;
-    private int HiddenValue {get; set;}
-    private Boolean RoundOver = false;
+    public int HiddenValue {get; set;}
+    public Boolean RoundOver = false;
     public GameObject HiddenCard {get; set;}
     [SerializeField]
     private Animator animator;
@@ -37,8 +41,14 @@ public class GameLogic : MonoBehaviour
     private Text StartPos;
     public Vector3 endPos;
 
+    private Player player_1;
+    private Player player_2;
+
     void Start()
     {
+        player_1 = new Player("Player 1") ;
+        player_2 = new Player("Player 2") ;
+        //playerPanel_1.SetupPanel(player_1);
         int index = 0;
         Player1TrumpCards = GameObject.Find("TrumpCardsPanel");
         Player2TrumpCards = GameObject.Find("TrumpCardsPanel2");
@@ -48,6 +58,10 @@ public class GameLogic : MonoBehaviour
         gameObject.AddComponent<CardController>();
         gameObject.AddComponent<AI_logic>();
         gameObject.AddComponent<Cards>();
+        gameObject.AddComponent<UIController>();
+        gameObject.AddComponent<PlayerList>();
+        var playerComponent = gameObject.AddComponent<Player>();
+        // gameObject.AddComponent<GameLogic>();
         endPos = new Vector3();
         animator = gameObject.GetComponent<Animator>();
         animator.runtimeAnimatorController = Resources.Load("anim") as RuntimeAnimatorController;
@@ -55,6 +69,8 @@ public class GameLogic : MonoBehaviour
         random = new System.Random();
         PlayerList.AddPlayer("Player 1", GameObject.Find("CardsInHandPanel"));
         PlayerList.AddPlayer("Player 2", GameObject.Find("CardsInHandPanel2"));
+        playerPanel_1.SetupPanel(PlayerList.GetPlayers()[0]);
+        playerPanel_2.SetupPanel(PlayerList.GetPlayers()[1]);
         foreach (var player in PlayerList.GetPlayers())
         {
             player.PlayerIndex = index;
@@ -67,24 +83,32 @@ public class GameLogic : MonoBehaviour
         PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
         TrumpCardButton.onClick.AddListener(UseTrumpCard);
         Setup();
-        index = 0;   
+        index = 0;
+    }
+    public int GetHiddenValue()
+    {
+        HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
+        return HiddenValue;
     }
 
     public void UpdateUI()
     {
+        if (RoundOver)
+        {
+            playerPanel_2.SetPlayer2ScoreText(PlayerList.GetPlayers()[1].PlayerName, PlayerList.GetPlayers()[1].HandValue);
+        }
         if (RoundCounter >= 4)
         {
-        HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
         }
-        player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
+     //   player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         if (!RoundOver && RoundCounter >= 4)
         {
             winnerText.SetText(CurrentPlayer.PlayerName + "'s turn");
-            player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": ? + " + HiddenValue + " / 21";
+         //   player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": ? + " + HiddenValue + " / 21";
         }
         else
         {
-            player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].HandValue + " / 21";
+         //   player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].HandValue + " / 21";
             if (RoundCounter >= 4)
             {
             HiddenCard.transform.GetComponentInChildren<TMP_Text>().SetText(PlayerList.GetPlayers()[1].DrawnCards[0].ToString());
@@ -192,6 +216,7 @@ public class GameLogic : MonoBehaviour
         }
         CurrentPlayer = PlayerList.GetPlayers()[0];
         PlayerList.GetPlayers()[1].IsPlayersTurn = false;
+        HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
         UpdateUI(); 
     }
 
@@ -299,7 +324,7 @@ public class GameLogic : MonoBehaviour
 
     public void DrawCards()
     {
-        DrawButton.gameObject.SetActive(false);
+        // DrawButton.gameObject.SetActive(false);
         RoundCounter++;
         if (!CurrentPlayer.IsPassed && !RoundOver)
         {
@@ -384,8 +409,9 @@ public class GameLogic : MonoBehaviour
 
     IEnumerator ResetGame()
     {
+        HiddenValue = 0;
         RoundCounter = 0;
-        UpdateUI();
+        // UpdateUI();
         yield return new WaitForSeconds(3);
         foreach (var player in PlayerList.GetPlayers())
         {

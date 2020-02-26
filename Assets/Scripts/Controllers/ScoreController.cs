@@ -5,4 +5,9 @@ using UnityEngine;
 public class ScoreController : MonoBehaviour
 {
 //WORK IN PROGRESS
+
+public void ScoreChanged()
+{
+    
+}
 }

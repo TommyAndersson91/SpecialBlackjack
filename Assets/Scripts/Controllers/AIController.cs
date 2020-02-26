@@ -7,21 +7,21 @@ public class AIController : MonoBehaviour
 
     public void PlayAI()
     {
-        PlayerList.GetPlayers()[0].PlayerWins = 0;
-        PlayerList.GetPlayers()[1].PlayerWins = 0;
+        gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins = 0;
+        gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins = 0;
 
-        PlayerList.GetPlayers()[1].PlayerName = "MasterBot";
+        gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName = "MasterBot";
         GameLogic.PlayingAgainstAI = !GameLogic.PlayingAgainstAI;
         if (!GameLogic.PlayingAgainstAI)
         {
-            PlayerList.GetPlayers()[1].PlayerName = "Player 2";
+            gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName = "Player 2";
         }
         gameObject.GetComponent<GameLogic>().UpdateUI();
     }
 
     public void CheckAITurn(int roundCounter)
     {
-        if (PlayerList.GetPlayers()[1].IsPlayersTurn && roundCounter >= 4 && GameLogic.PlayingAgainstAI)
+        if (gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn && roundCounter >= 4 && GameLogic.PlayingAgainstAI)
         {
             StartCoroutine(gameObject.GetComponent<GameLogic>().PlayAITUrn());
             return;
