@@ -6,13 +6,12 @@ using TMPro;
 public class GameLogic : MonoBehaviour
 {
     public PlayerList PlayerList;
+    public PlayerPanel playerPanel;
     public static bool PlayingAgainstAI { get; set;}
     [SerializeField]
     private GameObject player1Hand;
     [SerializeField]
     private GameObject player2Hand;
-    public GameObject Player1TrumpCards {get; set;}
-    public GameObject Player2TrumpCards {get; set;}
     [SerializeField]
     private Button PassButton;
     [SerializeField]
@@ -41,6 +40,7 @@ public class GameLogic : MonoBehaviour
     private Text StartPos;
     public Vector3 endPos;
 
+
     private Player player_1;
     private Player player_2;
 
@@ -50,8 +50,8 @@ public class GameLogic : MonoBehaviour
         player_2 = new Player("Player 2") ;
         //playerPanel_1.SetupPanel(player_1);
         int index = 0;
-        Player1TrumpCards = GameObject.Find("TrumpCardsPanel");
-        Player2TrumpCards = GameObject.Find("TrumpCardsPanel2");
+        // Player1TrumpCards = GameObject.Find("TrumpCardsPanel");
+        // Player2TrumpCards = GameObject.Find("TrumpCardsPanel2");
         winnerText = GameObject.Find("WinnerText").GetComponentInChildren<TextMeshProUGUI>();
         PlayingAgainstAI = false;
         gameObject.AddComponent<AIController>();
@@ -60,8 +60,8 @@ public class GameLogic : MonoBehaviour
         gameObject.AddComponent<Cards>();
         gameObject.AddComponent<UIController>();
         gameObject.AddComponent<PlayerList>();
-        var playerComponent = gameObject.AddComponent<Player>();
-        // gameObject.AddComponent<GameLogic>();
+        gameObject.AddComponent<Player>();
+        gameObject.AddComponent<PlayerPanel>();
         endPos = new Vector3();
         animator = gameObject.GetComponent<Animator>();
         animator.runtimeAnimatorController = Resources.Load("anim") as RuntimeAnimatorController;
@@ -96,9 +96,6 @@ public class GameLogic : MonoBehaviour
         if (RoundOver)
         {
             playerPanel_2.SetPlayer2ScoreText(PlayerList.GetPlayers()[1].PlayerName, PlayerList.GetPlayers()[1].HandValue);
-        }
-        if (RoundCounter >= 4)
-        {
         }
      //   player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         if (!RoundOver && RoundCounter >= 4)
@@ -174,7 +171,7 @@ public class GameLogic : MonoBehaviour
         TrumpCardButton.gameObject.SetActive(false);
         if (CurrentPlayer.TrumpCards > 0)
         {
-        GetComponent<CardController>().UseTrumpCard(CurrentPlayer, Player1TrumpCards, Player2TrumpCards);
+        GetComponent<CardController>().UseTrumpCard(CurrentPlayer, playerPanel.GetTrumpCardPanel(0), playerPanel.GetTrumpCardPanel(1));
         }
         if (PlayingAgainstAI && !RoundOver && PlayerList.GetPlayers()[0].IsPassed)
         {
@@ -186,19 +183,17 @@ public class GameLogic : MonoBehaviour
 
     public void Setup()
     {
-        RoundScoreText.text = "Wins \n" + PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].PlayerWins +
-        "\n" + PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].PlayerWins;
         GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
         if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 2 && PlayerList.GetPlayers()[0].TrumpCards < 3)
         {
             PlayerList.GetPlayers()[0].TrumpCards++;
-            trumpCard.transform.SetParent(Player1TrumpCards.transform);
+            trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(0).transform);
             trumpCard.gameObject.tag = "trumpcard";
         }
         else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2 && PlayerList.GetPlayers()[1].TrumpCards < 3)
         {
             PlayerList.GetPlayers()[1].TrumpCards++;
-            trumpCard.transform.SetParent(Player2TrumpCards.transform);
+            trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(1).transform);
             trumpCard.gameObject.tag = "trumpcard";
         }
         trumpCard.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
@@ -422,8 +417,8 @@ public class GameLogic : MonoBehaviour
             player.IsPlayersTurn = false;
             player.IsWinner = false;
         }
-        Player2TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = true;
-        Player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = true;
+        // playerPanel.GetTrumpCardPanel(0).GetComponentInChildren<GridLayoutGroup>().enabled = true;
+        // playerPanel.GetTrumpCardPanel(1).GetComponentInChildren<GridLayoutGroup>().enabled = true;
         HandArranger.gridLayoutGroup.enabled = true;
         HandArranger.gridLayoutGroup2.enabled = true;
         HandArranger.X = 0;

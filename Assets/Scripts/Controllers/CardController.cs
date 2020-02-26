@@ -106,8 +106,9 @@ public class CardController : MonoBehaviour
         yield return new WaitForSeconds(1);
         if (playerIndex == gameObject.GetComponent<PlayerList>().GetPlayers().Count - 1)
         {
-            int numChildren = gameObject.GetComponent<GameLogic>().Player2TrumpCards.transform.childCount;
-            Destroy(gameObject.GetComponent<GameLogic>().Player2TrumpCards.transform.GetChild(numChildren - 1).gameObject);
+            int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.childCount;
+       
+            Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(numChildren - 1).gameObject);
             if (!gameObject.GetComponent<PlayerList>().GetPlayers()[0].IsPassed)
             {
                 GameLogic.CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[0];
@@ -120,8 +121,8 @@ public class CardController : MonoBehaviour
         }
         else
         {
-            int numChildren = gameObject.GetComponent<GameLogic>().Player1TrumpCards.transform.childCount;
-            Destroy(gameObject.GetComponent<GameLogic>().Player1TrumpCards.transform.GetChild(numChildren - 1).gameObject);
+            int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.childCount; ;
+            Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.GetChild(numChildren - 1).gameObject);
             if (!gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPassed)
             {
                 GameLogic.CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[1];

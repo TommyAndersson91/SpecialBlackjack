@@ -9,9 +9,11 @@ using System;
 public class Player : MonoBehaviour
 {
   public delegate void Add(int handValue, int playerIndex, string playerName);
+  public delegate void CountWins();
+  public CountWins onWin;
   public Add onAdd;
   private int _handValue;
-  public string PlayerName {get; set;}
+  private int _playerWins;
   public int HandValue
   {
     get
@@ -24,17 +26,29 @@ public class Player : MonoBehaviour
       onAdd?.Invoke(_handValue, PlayerIndex, PlayerName);
     }
   }
+  public int PlayerWins
+  {
+    get
+    {
+        return _playerWins;
+    }
+    set
+    {
+      _playerWins = value;
+      onWin?.Invoke();
 
+    }
+  }
+  public string PlayerName { get; set; }
   public List<Int32> DrawnCards { get; set; }
   public bool IsPassed { get; set; }
   public bool IsPlayersTurn { get; set;}
   public bool IsWinner {get; set;}
   public GameObject PlayerHand {get; set;}
   public int PlayerIndex {get; set;}
-  public int PlayerWins {get; set;}
   public int TrumpCards {get; set;}
-  public TextMeshProUGUI player1score {get; set;}
-  public int currentPlayer {get; set;}
+  // public TextMeshProUGUI player1score {get; set;}
+  // public int currentPlayer {get; set;}
 
   public event System.EventHandler HandValueChanged;
   public void SubscribeToHandValue(Add s)

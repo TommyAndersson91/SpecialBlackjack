@@ -355,18 +355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1913524370 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2604281003458206325, guid: 3cc96e6510833421499d351b2a267f8f,
-    type: 3}
-  m_PrefabInstance: {fileID: 1224630554539053650}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce4d6becb6ba346c58e8b26875dda51d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1224630554539053650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -379,11 +367,6 @@ PrefabInstance:
       propertyPath: player1Score
       value: 
       objectReference: {fileID: 1550337408}
-    - target: {fileID: 1224630553606431965, guid: 3cc96e6510833421499d351b2a267f8f,
-        type: 3}
-      propertyPath: PlayerList
-      value: 
-      objectReference: {fileID: 1913524370}
     - target: {fileID: 1224630553810327058, guid: 3cc96e6510833421499d351b2a267f8f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
