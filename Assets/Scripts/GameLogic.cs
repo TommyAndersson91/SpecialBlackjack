@@ -9,10 +9,6 @@ public class GameLogic : MonoBehaviour
     public PlayerPanel playerPanel;
     public static bool PlayingAgainstAI { get; set;}
     [SerializeField]
-    private GameObject player1Hand;
-    [SerializeField]
-    private GameObject player2Hand;
-    [SerializeField]
     private Button PassButton;
     [SerializeField]
     private Button DrawButton;
@@ -40,18 +36,9 @@ public class GameLogic : MonoBehaviour
     private Text StartPos;
     public Vector3 endPos;
 
-
-    private Player player_1;
-    private Player player_2;
-
     void Start()
     {
-        player_1 = new Player("Player 1") ;
-        player_2 = new Player("Player 2") ;
-        //playerPanel_1.SetupPanel(player_1);
         int index = 0;
-        // Player1TrumpCards = GameObject.Find("TrumpCardsPanel");
-        // Player2TrumpCards = GameObject.Find("TrumpCardsPanel2");
         winnerText = GameObject.Find("WinnerText").GetComponentInChildren<TextMeshProUGUI>();
         PlayingAgainstAI = false;
         gameObject.AddComponent<AIController>();
@@ -76,8 +63,6 @@ public class GameLogic : MonoBehaviour
             player.PlayerIndex = index;
             index++;
         }
-        player1Hand = PlayerList.GetPlayers()[0].PlayerHand;
-        player2Hand = PlayerList.GetPlayers()[1].PlayerHand;  
         PassButton.onClick.AddListener(Pass);
         DrawButton.onClick.AddListener(DrawCards);
         PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
@@ -85,6 +70,7 @@ public class GameLogic : MonoBehaviour
         Setup();
         index = 0;
     }
+
     public int GetHiddenValue()
     {
         HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
@@ -97,15 +83,12 @@ public class GameLogic : MonoBehaviour
         {
             playerPanel_2.SetPlayer2ScoreText(PlayerList.GetPlayers()[1].PlayerName, PlayerList.GetPlayers()[1].HandValue);
         }
-     //   player1Score.text = PlayerList.GetPlayers()[0].PlayerName + ": " + PlayerList.GetPlayers()[0].HandValue + " / 21";
         if (!RoundOver && RoundCounter >= 4)
         {
             winnerText.SetText(CurrentPlayer.PlayerName + "'s turn");
-         //   player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": ? + " + HiddenValue + " / 21";
         }
         else
         {
-         //   player2Score.text = PlayerList.GetPlayers()[1].PlayerName + ": " + PlayerList.GetPlayers()[1].HandValue + " / 21";
             if (RoundCounter >= 4)
             {
             HiddenCard.transform.GetComponentInChildren<TMP_Text>().SetText(PlayerList.GetPlayers()[1].DrawnCards[0].ToString());
@@ -225,7 +208,7 @@ public class GameLogic : MonoBehaviour
             }
         }
         PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
-
+        
         if (CurrentPlayer.PlayerIndex == PlayerList.GetPlayers().Count-1)
         {
             PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
@@ -240,22 +223,12 @@ public class GameLogic : MonoBehaviour
         {
             PlayerList.GetPlayers()[1].IsPlayersTurn = true;
             gameObject.GetComponent<AIController>().CheckAITurn(RoundCounter);
-            // if (PlayerList.GetPlayers()[1].IsPassed)
-            // {
-            //     CheckFinished();
-            //     UpdateUI();
-            //     return;
-            // }
-            // else 
-            // {
-            //     return;
-            // }
         }
-        // if (!PlayerList.GetPlayers()[1].IsPassed)
-        // {
+        if (!RoundOver)
+        {
         CheckFinished();
+        }
         UpdateUI();   
-        // }
     }
 
     public void CheckFinished()

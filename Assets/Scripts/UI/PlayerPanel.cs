@@ -14,11 +14,25 @@ public class PlayerPanel : MonoBehaviour
     [SerializeField]
     private GameObject Player2TrumpCards = default;
 
+    private GameObject player1Hand;
+    private GameObject player2Hand;
+
     public void SetupPanel(Player player)
     {
         ScoreChanged(player.HandValue, player.PlayerIndex, player.PlayerName);
         player.onAdd += ScoreChanged;
         player.onWin += WinsChanged;
+        if (player.PlayerIndex == 0)
+        {
+            player1Hand = player.PlayerHand;
+        }
+        else
+        {
+            player2Hand = player.PlayerHand;
+        }
+
+        
+        
     }
     public GameObject GetTrumpCardPanel(int playerIndex)
     {
