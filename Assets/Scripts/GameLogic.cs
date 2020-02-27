@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class GameLogic : MonoBehaviour
 {
     public PlayerList PlayerList;
@@ -14,6 +15,10 @@ public class GameLogic : MonoBehaviour
     private Button DrawButton;
     [SerializeField]
     private Button PlayAIButton;
+    [SerializeField]
+    private Button NewGameButton;
+    [SerializeField]
+    private Button LoadSceneButton;
     [SerializeField]
     private Button TrumpCardButton;
     [SerializeField]
@@ -35,8 +40,38 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     private Text StartPos;
     public Vector3 endPos;
+    static bool scene = false;
+    static bool sceneLoaded = false;
 
-    void Start()
+    public void LoadScene()
+    {
+        // SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
+        // if (SceneManager.sceneCount < 2 && sceneLoaded == false)
+        // {
+        // SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        // sceneLoaded = true;
+        // }
+        if (scene == false)
+        {
+            scene = true;
+            DontDestroyOnLoad(this.gameObject);
+            SceneManager.LoadScene("GameScene");
+            // SceneManager.LoadScene(1, LoadSceneMode.Single);
+            // SceneManager.SetActiveScene(SceneManager.GetSceneAt(1));
+        }
+        else if (scene == true)
+        {
+            scene = false;
+            // SceneManager.LoadScene(1, LoadSceneMode.Single);
+            // SceneManager.LoadScene(0, LoadSceneMode.Single);
+            DontDestroyOnLoad(this.gameObject);
+            SceneManager.LoadScene("GameScene2");
+            // SceneManager.SetActiveScene(SceneManager.GetSceneAt(1));
+
+        }
+    }
+
+    public void NewGame()
     {
         int index = 0;
         winnerText = GameObject.Find("WinnerText").GetComponentInChildren<TextMeshProUGUI>();
@@ -67,8 +102,14 @@ public class GameLogic : MonoBehaviour
         DrawButton.onClick.AddListener(DrawCards);
         PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
         TrumpCardButton.onClick.AddListener(UseTrumpCard);
+        LoadSceneButton.onClick.AddListener(LoadScene);
         Setup();
         index = 0;
+    }
+
+    void Start()
+    {
+      NewGameButton.onClick.AddListener(NewGame);
     }
 
     public int GetHiddenValue()
