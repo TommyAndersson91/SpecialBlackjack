@@ -453,7 +453,7 @@ public class GameLogic : MonoBehaviour
         // OLD WORKING CODE
         // GameObject[] cards;
         // cards =  GameObject.FindGameObjectsWithTag("card");
-        
+
         // foreach (GameObject card in cards)
         // {
         //     Destroy(card);
@@ -465,23 +465,26 @@ public class GameLogic : MonoBehaviour
         //     Destroy(child);
         // foreach (Transform child in playerPanel.GetPlayerHand(1).transform)
         //     Destroy(child);
-        GameObject[] cards;
-        cards =  GameObject.FindGameObjectsWithTag("card");
+        // GameObject[] cards;
+        // cards =  GameObject.FindGameObjectsWithTag("card");
 
-        foreach (GameObject card in cards)
-        {
-            Destroy(card);
-        }
-        // var cards = gameObject.GetComponent<GameLogic>().transform;
-        // foreach (GameObject child in cards)
+        // foreach (GameObject card in cards)
+        // {
+        //     Destroy(card);
+        // }
+        // Transform[] cards = gameObject.GetComponent<GameLogic>().winnerText.transform;
+        // foreach (Transform child in cards)
         // {
         //     if (child.name == "1(Clone)")
         //     {
         //         Destroy(child);
         //     }
         // }
-        // // Destroy(playerPanel.GetPlayerHand(0).transform);
-        // Destroy(playerPanel.GetPlayerHand(1).transform);
+
+        for (int i = 0; i < winnerText.transform.childCount; i++)
+        {   
+            Destroy(winnerText.gameObject.transform.GetChild(i).gameObject); 
+        }
 
         Setup();
         yield break;
