@@ -70,7 +70,7 @@ public class CardController : MonoBehaviour
     {
         if (RoundCounter > 4)
         {
-            card.transform.SetParent(gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayerIndex].PlayerHand.transform.GetComponentInParent<Canvas>().transform);
+            card.transform.SetParent(gameObject.GetComponent<GameLogic>().transform);
             StartCoroutine(CardAdded(card, currentPlayerIndex, StartPos, endPos));
         }
     }

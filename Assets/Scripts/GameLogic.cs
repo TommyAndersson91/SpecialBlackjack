@@ -450,21 +450,39 @@ public class GameLogic : MonoBehaviour
         gameObject.GetComponent<HandArranger>().CardCounter = 0;
         gameObject.GetComponent<HandArranger>().CardCounter2 = 0;
         gameObject.GetComponent<CardController>().GetDrawnCards().Clear();
+        // OLD WORKING CODE
         // GameObject[] cards;
-        // cards = GameObject.FindGameObjectsWithTag("card");
-        //
+        // cards =  GameObject.FindGameObjectsWithTag("card");
+        
         // foreach (GameObject card in cards)
         // {
         //     Destroy(card);
         // }
-        foreach (Transform child in playerPanel.GetPlayerHand(0).transform)
-            Destroy(child);
-        foreach (Transform child in playerPanel.GetPlayerHand(1).transform)
-            Destroy(child);
-        // Destroy(playerPanel.GetPlayerHand(0).transform);
-        // Destroy(playerPanel.GetPlayerHand(1).transform);
+
         // playerPanel.GetPlayerHand(0).transform.DetachChildren();
         // playerPanel.GetPlayerHand(1).transform.DetachChildren();
+        // foreach (Transform child in playerPanel.GetPlayerHand(0).transform)
+        //     Destroy(child);
+        // foreach (Transform child in playerPanel.GetPlayerHand(1).transform)
+        //     Destroy(child);
+        GameObject[] cards;
+        cards =  GameObject.FindGameObjectsWithTag("card");
+
+        foreach (GameObject card in cards)
+        {
+            Destroy(card);
+        }
+        // var cards = gameObject.GetComponent<GameLogic>().transform;
+        // foreach (GameObject child in cards)
+        // {
+        //     if (child.name == "1(Clone)")
+        //     {
+        //         Destroy(child);
+        //     }
+        // }
+        // // Destroy(playerPanel.GetPlayerHand(0).transform);
+        // Destroy(playerPanel.GetPlayerHand(1).transform);
+
         Setup();
         yield break;
     }
