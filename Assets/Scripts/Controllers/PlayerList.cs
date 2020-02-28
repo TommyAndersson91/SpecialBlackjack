@@ -16,6 +16,11 @@ public class PlayerList : MonoBehaviour
         Players.Add(new Player (name, playerHand));
        
     }
+    public void AddPlayer(string name)
+    {
+        Players.Add(new Player(name));
+
+    }
     public List<Player> GetPlayers()
     {
         return Players;

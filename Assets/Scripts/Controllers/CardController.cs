@@ -11,7 +11,7 @@ public class CardController : MonoBehaviour
         card.transform.position = StartPos.transform.position;
         float elapsedTime = 0;
         float waitTime = 2f;
-        endPos.Set(HandArranger.GetX(currentPlayerIndex), HandArranger.GetY(currentPlayerIndex), 0.0f);
+        endPos.Set(gameObject.GetComponent<HandArranger>().GetX(currentPlayerIndex), gameObject.GetComponent<HandArranger>().GetY(currentPlayerIndex), 0.0f);
         while (elapsedTime < waitTime)
         {
             card.transform.position = Vector3.Lerp(card.transform.position, endPos, elapsedTime / waitTime);
@@ -38,14 +38,15 @@ public class CardController : MonoBehaviour
 
     public void DrawCard(int RoundCounter, Text StartPos, Vector3 endPos)
     {
-        if (GameLogic.PlayingAgainstAI && !gameObject.GetComponent<PlayerList>().GetPlayers()[0].IsPassed)
+        if (gameObject.GetComponent<GameLogic>().PlayingAgainstAI && !gameObject.GetComponent<PlayerList>().GetPlayers()[0].IsPassed)
         {
             gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPlayersTurn = !gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPlayersTurn;
         }
             GameObject card = Instantiate(Resources.Load<GameObject>("1"));
         if (RoundCounter == 2)
         {
-            card.transform.SetParent(GameLogic.CurrentPlayer.PlayerHand.transform);
+            // gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerHand;
+            card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
             card.transform.GetComponentInChildren<TMP_Text>().SetText("?");
             gameObject.GetComponent<GameLogic>().HiddenCard = card; 
         }
@@ -54,12 +55,13 @@ public class CardController : MonoBehaviour
             card.transform.GetComponentInChildren<TMP_Text>().SetText(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
             if (RoundCounter < 5)
             {
-                card.transform.SetParent(GameLogic.CurrentPlayer.PlayerHand.transform);
+                // gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand = GameObject.Find("CardsInHandPanel");
+                card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
             }
-            AnimateCardFly(card, GameLogic.CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
+            AnimateCardFly(card, gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
         }
-        GameLogic.CurrentPlayer.HandValue += int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
-        GameLogic.CurrentPlayer.DrawnCards.Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
+        gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue += int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
+        gameObject.GetComponent<GameLogic>().CurrentPlayer.DrawnCards.Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         GetDrawnCards().Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         gameObject.GetComponent<CardController>().GetStack().Pop();
         }
@@ -68,7 +70,7 @@ public class CardController : MonoBehaviour
     {
         if (RoundCounter > 4)
         {
-            card.transform.SetParent(gameObject.GetComponent<PlayerList>().GetPlayers()[currentPlayerIndex].PlayerHand.transform.GetComponentInParent<Canvas>().transform);
+            card.transform.SetParent(gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayerIndex].PlayerHand.transform.GetComponentInParent<Canvas>().transform);
             StartCoroutine(CardAdded(card, currentPlayerIndex, StartPos, endPos));
         }
     }
@@ -111,11 +113,11 @@ public class CardController : MonoBehaviour
             Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(numChildren - 1).gameObject);
             if (!gameObject.GetComponent<PlayerList>().GetPlayers()[0].IsPassed)
             {
-                GameLogic.CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[0];
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[0];
             }
             else
             {
-                GameLogic.CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[1];
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[1];
             }
             yield break;
         }
@@ -125,13 +127,13 @@ public class CardController : MonoBehaviour
             Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.GetChild(numChildren - 1).gameObject);
             if (!gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPassed)
             {
-                GameLogic.CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[1];
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[1];
                 gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPlayersTurn = true;
                 gameObject.GetComponent<AIController>().CheckAITurn(gameObject.GetComponent<GameLogic>().RoundCounter); 
             }
             else
             {
-                GameLogic.CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[0];
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[0];
             }
             yield break;
         }

@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\AI\AI_logic.cs" />
+     <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\Controllers\AIController.cs" />
      <Compile Include="Assets\Scripts\Controllers\CardController.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayerList.cs" />

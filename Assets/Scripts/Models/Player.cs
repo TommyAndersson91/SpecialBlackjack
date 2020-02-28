@@ -59,6 +59,7 @@ public class Player : MonoBehaviour
         // UIController.OnScoreChange += ScoreChanged;
     }
     private void Awake() {
+
     }
 
   public Player(string playerName, GameObject playerHand)

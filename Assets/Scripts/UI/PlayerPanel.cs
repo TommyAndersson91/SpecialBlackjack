@@ -13,9 +13,10 @@ public class PlayerPanel : MonoBehaviour
     private GameObject Player1TrumpCards = default;
     [SerializeField]
     private GameObject Player2TrumpCards = default;
-
-    private GameObject player1Hand;
-    private GameObject player2Hand;
+    [SerializeField]
+    private GameObject player1Hand = default;
+    [SerializeField]
+    private GameObject player2Hand = default;
 
     public void SetupPanel(Player player)
     {
@@ -24,11 +25,12 @@ public class PlayerPanel : MonoBehaviour
         player.onWin += WinsChanged;
         if (player.PlayerIndex == 0)
         {
-            player1Hand = player.PlayerHand;
+            player.PlayerHand = player1Hand;
         }
         else
         {
-            player2Hand = player.PlayerHand;
+            player.PlayerHand = player2Hand;
+            // gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerHand = player2Hand;
         }
 
         
@@ -46,10 +48,29 @@ public class PlayerPanel : MonoBehaviour
         }
     }
 
+    public GameObject GetPlayerHand(int playerIndex)
+    {
+        if (playerIndex == 0)
+        {
+            return player1Hand;
+        }
+        else
+        {
+            return player2Hand;
+        }
+    }
+
     private void WinsChanged()
     {
-        GameObject.Find("GameLogic").GetComponent<GameLogic>().RoundScoreText.text = "Wins \n" + GameObject.Find("GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + GameObject.Find("GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
-        "\n" + GameObject.Find("GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + GameObject.Find("GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins;
+       
+        //TODO FIX: NOT WORKING ATM 
+        Debug.Log("WinsChanged Called");
+        // gameObject.GetComponent<GameLogic>().SetWinnerText();
+        // Debug.Log(Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().RoundScoreText.text);
+        //  gameObject.GetComponent<GameLogic>().winnerText.text = "Test";
+        // Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().RoundScoreText.text =
+        //   =  "Wins \n" + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
+        //  "\n" + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins;
     }
 
     private void ScoreChanged(int handValue, int playerIndex, string playerName)
@@ -58,17 +79,17 @@ public class PlayerPanel : MonoBehaviour
         {
             scoreText.text = playerName + ": " + handValue.ToString() + " /21"; 
         }
-        else
-        {
-            if (GameObject.Find("GameLogic").GetComponent<GameLogic>().HiddenValue != 0)
-            {
-                scoreText2.text = playerName + ": ? + " + GameObject.Find("GameLogic").GetComponent<GameLogic>().GetHiddenValue() + " /21";
-            }
-            else
-            {
+        // else
+        // {
+        //     if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().HiddenValue != 0)
+        //     {
+        //         scoreText2.text = playerName + ": ? + " + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().GetHiddenValue() + " /21";
+        //     }
+        //     else
+        //     {
                 scoreText2.text = playerName + ": ? /21";
-            }
-        }
+        //     }
+        // }
     }
     public void SetPlayer2ScoreText(string playerName, int handValue)
     {
