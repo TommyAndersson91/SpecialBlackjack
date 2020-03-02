@@ -30,12 +30,9 @@ public class PlayerPanel : MonoBehaviour
         else
         {
             player.PlayerHand = player2Hand;
-            // gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerHand = player2Hand;
         }
-
-        
-        
     }
+
     public GameObject GetTrumpCardPanel(int playerIndex)
     {
         if (playerIndex == 0)
@@ -84,7 +81,7 @@ public class PlayerPanel : MonoBehaviour
             }
         }
     }
-    
+
     public void SetPlayer2ScoreText(string playerName, int handValue)
     {
         scoreText2.text = playerName + ": " + handValue.ToString() + " /21";

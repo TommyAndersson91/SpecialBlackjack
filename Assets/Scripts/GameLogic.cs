@@ -42,7 +42,6 @@ public class GameLogic : MonoBehaviour
     {
         CurrentPlayer = new Player();
         int index = 0;
-        // winnerText = GameObject.Find("WinnerText").GetComponentInChildren<TextMeshProUGUI>();
         PlayingAgainstAI = false;
         gameObject.AddComponent<AIController>();
         gameObject.AddComponent<CardController>();
@@ -79,23 +78,29 @@ public class GameLogic : MonoBehaviour
 
     public void Setup()
     {
-        GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
+       Debug.Log("SETUP CALLED");
         if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 2 && PlayerList.GetPlayers()[0].TrumpCards < 3)
         {
+            GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
             PlayerList.GetPlayers()[0].TrumpCards++;
             trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(0).transform);
             trumpCard.gameObject.tag = "trumpcard";
+            trumpCard.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
+            trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 10;
+            trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
+            trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
         }
         else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2 && PlayerList.GetPlayers()[1].TrumpCards < 3)
         {
+            GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
             PlayerList.GetPlayers()[1].TrumpCards++;
             trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(1).transform);
             trumpCard.gameObject.tag = "trumpcard";
+            trumpCard.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
+            trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 10;
+            trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
+            trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
         }
-        trumpCard.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
-        trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 10;
-        trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
-        trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
         RoundOver = false;
         gameObject.GetComponent<CardController>().ShuffleArray(gameObject.GetComponent<CardController>().getInts());
         gameObject.GetComponent<Cards>().AvaibleCards = new Stack(gameObject.GetComponent<CardController>().getInts());
@@ -393,7 +398,10 @@ public class GameLogic : MonoBehaviour
         {
             player.IsPassed = false;
             player.HandValue = 0;
-            player.PlayerHand.transform.DetachChildren();
+            foreach (Transform child in player.PlayerHand.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
             player.DrawnCards.Clear();
             player.IsPlayersTurn = false;
             player.IsWinner = false;
@@ -408,8 +416,9 @@ public class GameLogic : MonoBehaviour
         gameObject.GetComponent<HandArranger>().CardCounter2 = 0;
         gameObject.GetComponent<CardController>().GetDrawnCards().Clear();
         for (int i = 0; i < winnerText.transform.childCount; i++)
-        {   
-            Destroy(winnerText.gameObject.transform.GetChild(i).gameObject); 
+        {
+            Debug.Log("Card destroyed");
+            Destroy(winnerText.gameObject.transform.GetChild(i).gameObject);
         }
         Setup();
         yield break;
