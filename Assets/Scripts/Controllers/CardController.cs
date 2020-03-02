@@ -45,7 +45,6 @@ public class CardController : MonoBehaviour
             GameObject card = Instantiate(Resources.Load<GameObject>("1"));
         if (RoundCounter == 2)
         {
-            // gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerHand;
             card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
             card.transform.GetComponentInChildren<TMP_Text>().SetText("?");
             gameObject.GetComponent<GameLogic>().HiddenCard = card; 
@@ -55,7 +54,6 @@ public class CardController : MonoBehaviour
             card.transform.GetComponentInChildren<TMP_Text>().SetText(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
             if (RoundCounter < 5)
             {
-                // gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand = GameObject.Find("CardsInHandPanel");
                 card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
             }
             AnimateCardFly(card, gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
@@ -97,8 +95,7 @@ public class CardController : MonoBehaviour
                 int numChildren = player1TrumpCards.transform.childCount;
                 player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
                 player1TrumpCards.transform.GetChild(numChildren - 1).GetComponent<Animation>().Play("animshrink");
-                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex));
-                
+                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex));  
             }
         }
     }

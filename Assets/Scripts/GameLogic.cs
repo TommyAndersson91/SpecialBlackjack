@@ -37,36 +37,6 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     private Text StartPos;
     public Vector3 endPos;
-    // static bool scene = false;
-    // static bool sceneLoaded = false;
-
-    // public void LoadScene()
-    // {
-    //     // SceneManager.LoadScene("SampleScene", LoadSceneMode.Additive);
-    //     // if (SceneManager.sceneCount < 2 && sceneLoaded == false)
-    //     // {
-    //     // SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
-    //     // sceneLoaded = true;
-    //     // }
-    //     if (scene == false)
-    //     {
-    //         scene = true;
-    //         DontDestroyOnLoad(this.gameObject);
-    //         SceneManager.LoadScene("GameScene");
-    //         // SceneManager.LoadScene(1, LoadSceneMode.Single);
-    //         // SceneManager.SetActiveScene(SceneManager.GetSceneAt(1));
-    //     }
-    //     else if (scene == true)
-    //     {
-    //         scene = false;
-    //         // SceneManager.LoadScene(1, LoadSceneMode.Single);
-    //         // SceneManager.LoadScene(0, LoadSceneMode.Single);
-    //         DontDestroyOnLoad(this.gameObject);
-    //         SceneManager.LoadScene("GameScene2");
-    //         // SceneManager.SetActiveScene(SceneManager.GetSceneAt(1));
-
-    //     }
-    // }
 
     public void NewGame()
     {
@@ -97,13 +67,10 @@ public class GameLogic : MonoBehaviour
         }
         playerPanel_1.SetupPanel(PlayerList.GetPlayers()[0]);
         playerPanel_2.SetupPanel(PlayerList.GetPlayers()[1]);
-        Debug.Log(PlayerList.GetPlayers()[0].PlayerHand);
-        Debug.Log(PlayerList.GetPlayers()[1].PlayerHand);
         PassButton.onClick.AddListener(Pass);
         DrawButton.onClick.AddListener(DrawCards);
         PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
         TrumpCardButton.onClick.AddListener(UseTrumpCard);
-        // LoadSceneButton.onClick.AddListener(LoadScene);
         Setup();
         index = 0;
         // gameObject.GetComponent<HandArranger>().gridLayoutGroup = Constants.FindObjectInChilds(transform.gameObject.GetComponent<PlayerPanel>().gameObject, "CardsInHandPanel").GetComponentInChildren<GridLayoutGroup>();
@@ -335,7 +302,6 @@ public class GameLogic : MonoBehaviour
 
     public void DrawCards()
     {
-        // DrawButton.gameObject.SetActive(false);
         RoundCounter++;
         if (!CurrentPlayer.IsPassed && !RoundOver)
         {
@@ -422,7 +388,6 @@ public class GameLogic : MonoBehaviour
     {
         HiddenValue = 0;
         RoundCounter = 0;
-        // UpdateUI();
         yield return new WaitForSeconds(3);
         foreach (var player in PlayerList.GetPlayers())
         {
@@ -433,8 +398,6 @@ public class GameLogic : MonoBehaviour
             player.IsPlayersTurn = false;
             player.IsWinner = false;
         }
-        // playerPanel.GetTrumpCardPanel(0).GetComponentInChildren<GridLayoutGroup>().enabled = true;
-        // playerPanel.GetTrumpCardPanel(1).GetComponentInChildren<GridLayoutGroup>().enabled = true;
         gameObject.GetComponent<HandArranger>().gridLayoutGroup.enabled = true;
         gameObject.GetComponent<HandArranger>().gridLayoutGroup2.enabled = true;
         gameObject.GetComponent<HandArranger>().X = 0;
@@ -444,42 +407,10 @@ public class GameLogic : MonoBehaviour
         gameObject.GetComponent<HandArranger>().CardCounter = 0;
         gameObject.GetComponent<HandArranger>().CardCounter2 = 0;
         gameObject.GetComponent<CardController>().GetDrawnCards().Clear();
-        // OLD WORKING CODE
-        // GameObject[] cards;
-        // cards =  GameObject.FindGameObjectsWithTag("card");
-
-        // foreach (GameObject card in cards)
-        // {
-        //     Destroy(card);
-        // }
-
-        // playerPanel.GetPlayerHand(0).transform.DetachChildren();
-        // playerPanel.GetPlayerHand(1).transform.DetachChildren();
-        // foreach (Transform child in playerPanel.GetPlayerHand(0).transform)
-        //     Destroy(child);
-        // foreach (Transform child in playerPanel.GetPlayerHand(1).transform)
-        //     Destroy(child);
-        // GameObject[] cards;
-        // cards =  GameObject.FindGameObjectsWithTag("card");
-
-        // foreach (GameObject card in cards)
-        // {
-        //     Destroy(card);
-        // }
-        // Transform[] cards = gameObject.GetComponent<GameLogic>().winnerText.transform;
-        // foreach (Transform child in cards)
-        // {
-        //     if (child.name == "1(Clone)")
-        //     {
-        //         Destroy(child);
-        //     }
-        // }
-
         for (int i = 0; i < winnerText.transform.childCount; i++)
         {   
             Destroy(winnerText.gameObject.transform.GetChild(i).gameObject); 
         }
-
         Setup();
         yield break;
     }

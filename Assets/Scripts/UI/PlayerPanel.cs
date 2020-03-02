@@ -62,7 +62,6 @@ public class PlayerPanel : MonoBehaviour
 
     private void WinsChanged()
     {
-        Debug.Log(transform.parent.gameObject.transform.GetChild(7).gameObject.name);
        transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().RoundScoreText.SetText("Wins \n" + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
          "\n" + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins);
     }
@@ -85,6 +84,7 @@ public class PlayerPanel : MonoBehaviour
             }
         }
     }
+    
     public void SetPlayer2ScoreText(string playerName, int handValue)
     {
         scoreText2.text = playerName + ": " + handValue.ToString() + " /21";

@@ -36,7 +36,6 @@ public class Player : MonoBehaviour
     {
       _playerWins = value;
       onWin?.Invoke();
-
     }
   }
   public string PlayerName { get; set; }
@@ -47,20 +46,7 @@ public class Player : MonoBehaviour
   public GameObject PlayerHand {get; set;}
   public int PlayerIndex {get; set;}
   public int TrumpCards {get; set;}
-  // public TextMeshProUGUI player1score {get; set;}
-  // public int currentPlayer {get; set;}
-
   public event System.EventHandler HandValueChanged;
-  public void SubscribeToHandValue(Add s)
-  {
-    
-  }
-  private void Start() {
-        // UIController.OnScoreChange += ScoreChanged;
-    }
-    private void Awake() {
-
-    }
 
   public Player(string playerName, GameObject playerHand)
   {
@@ -74,6 +60,7 @@ public class Player : MonoBehaviour
     TrumpCards = 0;
     IsWinner = false;
   }
+  
   public Player(string playerName)
   {
     this.PlayerName = playerName;
@@ -81,15 +68,14 @@ public class Player : MonoBehaviour
     IsPassed = false;
     IsPlayersTurn = false;
     DrawnCards = new List<Int32>();
-    // PlayerWins = 0;
   }
+
   public Player()
   {
       HandValue = 0;
       IsPassed = false;
       IsPlayersTurn = false;
       DrawnCards = new List<Int32>();
-      // PlayerWins = 0;
   }
 }
 
