@@ -23,6 +23,7 @@ public class PlayerPanel : MonoBehaviour
         ScoreChanged(player.HandValue, player.PlayerIndex, player.PlayerName);
         player.onAdd += ScoreChanged;
         player.onWin += WinsChanged;
+        player.onNameChanged += NameChanged;
         if (player.PlayerIndex == 0)
         {
             player.PlayerHand = player1Hand;
@@ -80,6 +81,11 @@ public class PlayerPanel : MonoBehaviour
                 scoreText2.text = playerName + ": ? /21";
             }
         }
+    }
+    
+    private void NameChanged()
+    {
+      WinsChanged();
     }
 
     public void SetPlayer2ScoreText(string playerName, int handValue)

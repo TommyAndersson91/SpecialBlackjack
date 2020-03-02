@@ -1,19 +1,18 @@
-﻿using System.Security;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using System.Linq;
 using System;
 
 public class Player : MonoBehaviour
 {
   public delegate void Add(int handValue, int playerIndex, string playerName);
   public delegate void CountWins();
+  public delegate void ChangeName();
+  public ChangeName onNameChanged;
   public CountWins onWin;
   public Add onAdd;
   private int _handValue;
   private int _playerWins;
+  private string _playerName;
   public int HandValue
   {
     get
@@ -38,7 +37,18 @@ public class Player : MonoBehaviour
       onWin?.Invoke();
     }
   }
-  public string PlayerName { get; set; }
+  public string PlayerName
+  {
+      get { return _playerName; }
+      set 
+      { 
+        _playerName = value;
+        onNameChanged?.Invoke();
+      }
+  }
+  
+
+  // public string PlayerName { get; set; }
   public List<Int32> DrawnCards { get; set; }
   public bool IsPassed { get; set; }
   public bool IsPlayersTurn { get; set;}
@@ -60,7 +70,7 @@ public class Player : MonoBehaviour
     TrumpCards = 0;
     IsWinner = false;
   }
-  
+
   public Player(string playerName)
   {
     this.PlayerName = playerName;
