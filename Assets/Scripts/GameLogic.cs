@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
-using UnityEngine.SceneManagement;
 public class GameLogic : MonoBehaviour
 {
     public PlayerList PlayerList;
@@ -142,11 +141,6 @@ public class GameLogic : MonoBehaviour
         PlayerList.GetPlayers()[1].IsPlayersTurn = false;
         HiddenValue = PlayerList.GetPlayers()[1].HandValue - PlayerList.GetPlayers()[1].DrawnCards[0];
         UpdateUI();
-    }
-
-    public void SetWinnerText()
-    {
-        // winnerText.SetText("WinnerText changed from PlayerPanel");
     }
 
     void Start()
@@ -496,7 +490,6 @@ public class GameLogic : MonoBehaviour
         PlayerList.GetPlayers()[0].IsWinner = true;
         StopAllCoroutines();
         winnerText.SetText(PlayerList.GetPlayers()[0].PlayerName + " is the winner!");
-        RoundScoreText.text = "The Round is over";
         StartCoroutine(ResetGame());
     }
 
@@ -506,7 +499,6 @@ public class GameLogic : MonoBehaviour
         PlayerList.GetPlayers()[1].IsWinner = true;
         StopAllCoroutines();
         winnerText.SetText(PlayerList.GetPlayers()[1].PlayerName + " is the winner!");
-        RoundScoreText.text = "The Round is over";
         StartCoroutine(ResetGame());
     }
 
@@ -514,7 +506,6 @@ public class GameLogic : MonoBehaviour
     {
         StopAllCoroutines();
         winnerText.SetText("It's a draw!");
-        RoundScoreText.text = "The Round is over";
         StartCoroutine(ResetGame());
     }
 }

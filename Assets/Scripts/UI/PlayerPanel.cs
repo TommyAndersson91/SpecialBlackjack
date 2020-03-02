@@ -62,15 +62,9 @@ public class PlayerPanel : MonoBehaviour
 
     private void WinsChanged()
     {
-       
-        //TODO FIX: NOT WORKING ATM 
-        Debug.Log("WinsChanged Called");
-        // gameObject.GetComponent<GameLogic>().SetWinnerText();
-        // Debug.Log(Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().RoundScoreText.text);
-        //  gameObject.GetComponent<GameLogic>().winnerText.text = "Test";
-        // Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().RoundScoreText.text =
-        //   =  "Wins \n" + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
-        //  "\n" + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins;
+        Debug.Log(transform.parent.gameObject.transform.GetChild(7).gameObject.name);
+       transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().RoundScoreText.SetText("Wins \n" + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
+         "\n" + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins);
     }
 
     private void ScoreChanged(int handValue, int playerIndex, string playerName)
@@ -79,17 +73,17 @@ public class PlayerPanel : MonoBehaviour
         {
             scoreText.text = playerName + ": " + handValue.ToString() + " /21"; 
         }
-        // else
-        // {
-        //     if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().HiddenValue != 0)
-        //     {
-        //         scoreText2.text = playerName + ": ? + " + Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().GetHiddenValue() + " /21";
-        //     }
-        //     else
-        //     {
+        else
+        {
+            if (transform.parent.gameObject.transform.GetChild(7).GetComponent<GameLogic>().HiddenValue != 0)
+            {
+                scoreText2.text = playerName + ": ? + " + transform.parent.gameObject.transform.GetChild(7).GetComponent<GameLogic>().HiddenValue + " /21";
+            }
+            else
+            {
                 scoreText2.text = playerName + ": ? /21";
-        //     }
-        // }
+            }
+        }
     }
     public void SetPlayer2ScoreText(string playerName, int handValue)
     {

@@ -38,9 +38,9 @@ public class CardController : MonoBehaviour
 
     public void DrawCard(int RoundCounter, Text StartPos, Vector3 endPos)
     {
-        if (gameObject.GetComponent<GameLogic>().PlayingAgainstAI && !gameObject.GetComponent<PlayerList>().GetPlayers()[0].IsPassed)
+        if (gameObject.GetComponent<GameLogic>().PlayingAgainstAI && !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].IsPassed)
         {
-            gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPlayersTurn = !gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPlayersTurn;
+            gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn = !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn;
         }
             GameObject card = Instantiate(Resources.Load<GameObject>("1"));
         if (RoundCounter == 2)
