@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -17,6 +18,7 @@ public class PlayerPanel : MonoBehaviour
     private GameObject player1Hand = default;
     [SerializeField]
     private GameObject player2Hand = default;
+    private string player2Score;
 
     public void SetupPanel(Player player)
     {
@@ -74,11 +76,13 @@ public class PlayerPanel : MonoBehaviour
         {
             if (transform.parent.gameObject.transform.GetChild(7).GetComponent<GameLogic>().HiddenValue != 0)
             {
-                scoreText2.text = playerName + ": ? + " + transform.parent.gameObject.transform.GetChild(7).GetComponent<GameLogic>().HiddenValue + " /21";
+                player2Score = playerName + ": ? + " + transform.parent.gameObject.transform.GetChild(7).GetComponent<GameLogic>().HiddenValue + " /21";
+                scoreText2.text = player2Score;
             }
             else
             {
-                scoreText2.text = playerName + ": ? /21";
+                player2Score = playerName + ": ? /21";
+                scoreText2.text = player2Score;
             }
         }
     }
@@ -86,6 +90,19 @@ public class PlayerPanel : MonoBehaviour
     private void NameChanged()
     {
       WinsChanged();
+    // var newText = scoreText2.text.ToCharArray();
+    // newText[0] = 'M';
+    // newText[1] = 'a';
+    // newText[2] = 's';
+    // newText[3] = 't';
+    // newText[4] = 'e';
+    // newText[5] = 'r';
+    // newText[6] = 'B';
+    // newText[7] = 'o';
+    // newText[8] = 't';
+    // scoreText2.text = newText.ToString();
+    // Debug.Log(newText);
+
     }
 
     public void SetPlayer2ScoreText(string playerName, int handValue)

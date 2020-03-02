@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System.Threading;
+using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using UnityEngine.AddressableAssets;
 public class CardController : MonoBehaviour
 {
+    GameObject card;
     public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
     {
         card.transform.position = StartPos.transform.position;
@@ -36,13 +39,23 @@ public class CardController : MonoBehaviour
         return gameObject.GetComponent<Cards>().DrawnCards;
     }
 
+    public void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
+    {
+        // In a production environment, you should add exception handling to catch scenarios such as a null result.
+        card = obj.Result;
+    }
+
     public void DrawCard(int RoundCounter, Text StartPos, Vector3 endPos)
     {
+        GameObject card = Addressables.InstantiateAsync("blankcard").Result;
+        // Addressables.LoadAssetAsync<GameObject>("blankcard").Completed += OnLoadDone;
         if (gameObject.GetComponent<GameLogic>().PlayingAgainstAI && !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].IsPassed)
         {
             gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn = !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn;
         }
-            GameObject card = Instantiate(Resources.Load<GameObject>("1"));
+            // GameObject card = Instantiate(Resources.Load<GameObject>("1"));
+            //  Debug.Log(card.name);
+            
         if (RoundCounter == 2)
         {
             card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
@@ -62,6 +75,7 @@ public class CardController : MonoBehaviour
         gameObject.GetComponent<GameLogic>().CurrentPlayer.DrawnCards.Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         GetDrawnCards().Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         gameObject.GetComponent<CardController>().GetStack().Pop();
+        gameObject.GetComponent<GameLogic>().CheckFinished();
         }
 
     public void AnimateCardFly(GameObject card, int currentPlayerIndex, int RoundCounter, Text StartPos, Vector3 endPos)
@@ -77,11 +91,11 @@ public class CardController : MonoBehaviour
     {
         if (currentPlayer.TrumpCards > 0)
         {
-            if (currentPlayer.PlayerIndex == gameObject.GetComponent<PlayerList>().GetPlayers().Count - 1)
+            if (currentPlayer.PlayerIndex == gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers().Count - 1)
             {
-                gameObject.GetComponent<PlayerList>().GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
-                gameObject.GetComponent<PlayerList>().GetPlayers()[0].HandValue = gameObject.GetComponent<PlayerList>().GetPlayers()[0].HandValue + 3;
-                gameObject.GetComponent<PlayerList>().GetPlayers()[1].TrumpCards -= 1;
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue + 3;
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].TrumpCards -= 1;
                 int numChildren = player2TrumpCards.transform.childCount;
                 player2TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
                 player2TrumpCards.transform.GetChild(numChildren - 1).gameObject.GetComponent<Animation>().Play("animshrink");
@@ -89,9 +103,9 @@ public class CardController : MonoBehaviour
             }
             else
             {
-                gameObject.GetComponent<PlayerList>().GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
-                gameObject.GetComponent<PlayerList>().GetPlayers()[1].HandValue = gameObject.GetComponent<PlayerList>().GetPlayers()[1].HandValue + 3;
-                gameObject.GetComponent<PlayerList>().GetPlayers()[0].TrumpCards -= 1;
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue + 3;
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].TrumpCards -= 1;
                 int numChildren = player1TrumpCards.transform.childCount;
                 player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
                 player1TrumpCards.transform.GetChild(numChildren - 1).GetComponent<Animation>().Play("animshrink");
@@ -103,18 +117,18 @@ public class CardController : MonoBehaviour
     IEnumerator ShrinkTrumpCard(int playerIndex)
     {
         yield return new WaitForSeconds(1);
-        if (playerIndex == gameObject.GetComponent<PlayerList>().GetPlayers().Count - 1)
+        if (playerIndex == gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers().Count - 1)
         {
             int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.childCount;
        
             Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(numChildren - 1).gameObject);
-            if (!gameObject.GetComponent<PlayerList>().GetPlayers()[0].IsPassed)
+            if (!gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].IsPassed)
             {
-                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[0];
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0];
             }
             else
             {
-                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[1];
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1];
             }
             yield break;
         }
@@ -122,15 +136,15 @@ public class CardController : MonoBehaviour
         {
             int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.childCount; ;
             Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.GetChild(numChildren - 1).gameObject);
-            if (!gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPassed)
+            if (!gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPassed)
             {
-                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[1];
-                gameObject.GetComponent<PlayerList>().GetPlayers()[1].IsPlayersTurn = true;
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1];
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn = true;
                 gameObject.GetComponent<AIController>().CheckAITurn(gameObject.GetComponent<GameLogic>().RoundCounter); 
             }
             else
             {
-                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<PlayerList>().GetPlayers()[0];
+                gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0];
             }
             yield break;
         }

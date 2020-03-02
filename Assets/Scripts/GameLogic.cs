@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System.Reflection;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 public class GameLogic : MonoBehaviour
 {
     public PlayerList PlayerList;
@@ -37,6 +40,7 @@ public class GameLogic : MonoBehaviour
     [SerializeField]
     private Text StartPos;
     public Vector3 endPos;
+    public bool IsDrawingCard = false;
 
     public void NewGame()
     {
@@ -54,7 +58,8 @@ public class GameLogic : MonoBehaviour
         gameObject.AddComponent<PlayerPanel>();
         endPos = new Vector3();
         animator = gameObject.GetComponent<Animator>();
-        animator.runtimeAnimatorController = Resources.Load("anim") as RuntimeAnimatorController;
+        // animator.runtimeAnimatorController = Addressables.LoadAsset("anim") as RuntimeAnimatorController;
+        // animator.runtimeAnimatorController = Resources.Load("anim") as RuntimeAnimatorController;
         gameObject.GetComponent<Cards>().InitCards();
         random = new System.Random();
         PlayerList.AddPlayer("Player 1");
@@ -78,8 +83,7 @@ public class GameLogic : MonoBehaviour
 
     public void Setup()
     {
-       Debug.Log("SETUP CALLED");
-        if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 2 && PlayerList.GetPlayers()[0].TrumpCards < 3)
+        if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 1 && PlayerList.GetPlayers()[0].TrumpCards < 3)
         {
             GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
             PlayerList.GetPlayers()[0].TrumpCards++;
@@ -90,7 +94,7 @@ public class GameLogic : MonoBehaviour
             trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
             trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
         }
-        else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 2 && PlayerList.GetPlayers()[1].TrumpCards < 3)
+        else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 1 && PlayerList.GetPlayers()[1].TrumpCards < 3)
         {
             GameObject trumpCard = Instantiate(Resources.Load<GameObject>("1"));
             PlayerList.GetPlayers()[1].TrumpCards++;
@@ -310,11 +314,26 @@ public class GameLogic : MonoBehaviour
         RoundCounter++;
         if (!CurrentPlayer.IsPassed && !RoundOver)
         {
+            // if (gameObject.GetComponent<CardController>().card == null)
+            // {
+            //    gameObject.GetComponent<CardController>().card = Addressables.InstantiateAsync("blankcard").Result;
+            // //   Addressables.InstantiateAsync("blankcard").Completed += gameObject.GetComponent<CardController>().OnLoadDone;
+            // }
             gameObject.GetComponent<CardController>().DrawCard(RoundCounter, StartPos, endPos);
-            CheckFinished();
         }
+            // CheckFinished();
         UpdateUI();
     }
+
+    // public IEnumerator IsLoaded()
+    // {
+    //     IsDrawingCard = true;
+    //     yield return new WaitUntil(() => Addressables.InstantiateAsync("blankcard").IsDone == true);
+    //     gameObject.GetComponent<CardController>().DrawCard(RoundCounter, StartPos, endPos);
+    //     IsDrawingCard = false; 
+    //     yield return null;
+
+    // }
 
     public void RoundFinished()
     {
@@ -417,7 +436,6 @@ public class GameLogic : MonoBehaviour
         gameObject.GetComponent<CardController>().GetDrawnCards().Clear();
         for (int i = 0; i < winnerText.transform.childCount; i++)
         {
-            Debug.Log("Card destroyed");
             Destroy(winnerText.gameObject.transform.GetChild(i).gameObject);
         }
         Setup();

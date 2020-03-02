@@ -120,6 +120,24 @@
  <Reference Include="UnityEditor.UI">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEditor.CacheServer">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.ScriptableBuildPipeline.Editor">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.ResourceManager">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ResourceManager.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Addressables.Editor">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Addressables">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.ScriptableBuildPipeline">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
  </Reference>
