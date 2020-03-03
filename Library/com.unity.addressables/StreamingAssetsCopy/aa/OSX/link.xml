@@ -43,7 +43,6 @@
     <type fullname="PlayerPanel" preserve="all" />
     <type fullname="PlayerList" preserve="all" />
     <type fullname="Player" preserve="all" />
-    <type fullname="AssetRefObjData" preserve="all" />
   </assembly>
   <assembly fullname="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
     <type fullname="TMPro.TMP_FontAsset" preserve="all" />

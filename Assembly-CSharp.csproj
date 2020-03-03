@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\Models\Cards.cs" />
      <Compile Include="Assets\Scripts\Models\Player.cs" />
      <Compile Include="Assets\Scripts\Plugins\MoveObject.cs" />
+     <Compile Include="Assets\Scripts\PreLoader.cs" />
      <Compile Include="Assets\Scripts\UI\CardHover.cs" />
      <Compile Include="Assets\Scripts\UI\HandArranger.cs" />
      <Compile Include="Assets\Scripts\UI\PlayerPanel.cs" />

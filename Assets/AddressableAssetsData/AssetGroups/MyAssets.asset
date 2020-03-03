@@ -30,7 +30,8 @@ MonoBehaviour:
   - m_GUID: 6784f36e2d7684fcfb242cc7f029f5be
     m_Address: gamescene
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
   - m_GUID: a4f971d5f378c48b4847f8c0723fa8d8
     m_Address: playerpanel
     m_ReadOnly: 0
@@ -50,7 +51,7 @@ MonoBehaviour:
     m_Address: anim
     m_ReadOnly: 0
     m_SerializedLabels:
-    - labeltest
+    - default
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b66e3ef9953164b0bab78d08186bfc04, type: 2}
   m_SchemaSet:
