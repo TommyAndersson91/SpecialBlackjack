@@ -32,6 +32,10 @@ public class AssetRefLoader : MonoBehaviour
 
    private void Update() {
         gameObject.GetComponent<AssetRefObjData>().loadingProgress.text = string.Format("Loading: {0}%", (int)(player.PercentComplete * 100));
+        if (player.PercentComplete == 1)
+        {
+            gameObject.GetComponent<AssetRefObjData>().loadingProgress.gameObject.SetActive(false);
+        }
    }
 
    private void Start() {
