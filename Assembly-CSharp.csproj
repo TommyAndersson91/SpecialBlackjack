@@ -2,8 +2,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-    <CscToolPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Tools/RoslynScripts</CscToolPath>
-    <CscToolExe>unity_csc.sh</CscToolExe>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -47,15 +45,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="UnityEngine">
-      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
      <Compile Include="Assets\Scripts\AI\AI_logic.cs" />
+     <Compile Include="Assets\Scripts\AssetRefLoader.cs" />
+     <Compile Include="Assets\Scripts\AssetRefObjData.cs" />
      <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\Controllers\AIController.cs" />
      <Compile Include="Assets\Scripts\Controllers\CardController.cs" />
@@ -90,17 +82,29 @@
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="UnityEditor.CacheServer">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.ScriptableBuildPipeline.Editor">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.VSCode.Editor">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.ResourceManager">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ResourceManager.dll</HintPath>
+ </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Timeline">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.Addressables.Editor">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
@@ -114,29 +118,20 @@
  <Reference Include="Unity.2D.Tilemap.Editor">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
  </Reference>
+ <Reference Include="Unity.Addressables">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
+ </Reference>
+ <Reference Include="Unity.ScriptableBuildPipeline">
+ <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
+ </Reference>
  <Reference Include="Unity.TextMeshPro">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
- <Reference Include="UnityEditor.CacheServer">
- <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.CacheServer.dll</HintPath>
- </Reference>
- <Reference Include="Unity.ScriptableBuildPipeline.Editor">
- <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.ResourceManager">
- <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ResourceManager.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Addressables.Editor">
- <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Addressables.Editor.dll</HintPath>
- </Reference>
- <Reference Include="Unity.Addressables">
- <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.Addressables.dll</HintPath>
- </Reference>
- <Reference Include="Unity.ScriptableBuildPipeline">
- <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/Unity.ScriptableBuildPipeline.dll</HintPath>
+ <Reference Include="UnityEngine">
+ <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -314,6 +309,9 @@
  </Reference>
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityEditor">
+ <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
  </Reference>
  <Reference Include="netstandard">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -662,7 +660,7 @@
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

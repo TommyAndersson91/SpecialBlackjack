@@ -17,10 +17,40 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: be5a016fcb21e44ecbdcb6eabd63828c
   m_SerializeEntries:
-  - m_GUID: b0f4a4d91cfbe4678bcd8efa5d077f65
-    m_Address: Assets/Individualpngs_100px_x70px/back.png
+  - m_GUID: 2cda990e2423bbf4892e6590ba056729
+    m_Address: gamescene2
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - labeltest
+  - m_GUID: 3cc96e6510833421499d351b2a267f8f
+    m_Address: blackjackboard
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - labeltest
+  - m_GUID: 6784f36e2d7684fcfb242cc7f029f5be
+    m_Address: gamescene
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: a4f971d5f378c48b4847f8c0723fa8d8
+    m_Address: playerpanel
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - labeltest
+  - m_GUID: e44d557f750ee4b3ba9c292645a54f33
+    m_Address: trump
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - labeltest
+  - m_GUID: ef64d90eec2ea4aaba1bae0bed1e5048
+    m_Address: blankcard
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - labeltest
+  - m_GUID: f6c831f176454414fb7fd095785497e0
+    m_Address: anim
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - labeltest
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b66e3ef9953164b0bab78d08186bfc04, type: 2}
   m_SchemaSet:
