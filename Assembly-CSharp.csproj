@@ -51,12 +51,14 @@
      <Compile Include="Assets\Scripts\Constants.cs" />
      <Compile Include="Assets\Scripts\Controllers\AIController.cs" />
      <Compile Include="Assets\Scripts\Controllers\CardController.cs" />
+     <Compile Include="Assets\Scripts\Controllers\OpenUIPanel.cs" />
      <Compile Include="Assets\Scripts\Controllers\PlayerList.cs" />
      <Compile Include="Assets\Scripts\Controllers\ScoreController.cs" />
      <Compile Include="Assets\Scripts\Controllers\UIController.cs" />
      <Compile Include="Assets\Scripts\GameLogic.cs" />
      <Compile Include="Assets\Scripts\Models\Cards.cs" />
      <Compile Include="Assets\Scripts\Models\Player.cs" />
+     <Compile Include="Assets\Scripts\Models\UIPanel.cs" />
      <Compile Include="Assets\Scripts\Plugins\MoveObject.cs" />
      <Compile Include="Assets\Scripts\PreLoader.cs" />
      <Compile Include="Assets\Scripts\UI\CardHover.cs" />

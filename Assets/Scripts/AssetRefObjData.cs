@@ -10,10 +10,12 @@ public class AssetRefObjData : MonoBehaviour
     [SerializeField] private AssetReference _sqrARef; 
     [SerializeField] private List<AssetReference> _references = new List<AssetReference>();
     [SerializeField] private List<GameObject> _completedObj = new List<GameObject>();
-    public TextMeshProUGUI loadingProgress;
+    // Utkommenterat under tiden jag jobbar med UI paneler 
+    //   public TextMeshProUGUI loadingProgress;
     private void Start() {
         // _references.Add(_sqrARef);
-        StartCoroutine(LoadAndWaitUntilComplete());
+        // Utkommenterat under tiden jag jobbar med UI paneler 
+        // StartCoroutine(LoadAndWaitUntilComplete());
         Debug.Log("Running Start in AssetRefObjData");
     }
 
