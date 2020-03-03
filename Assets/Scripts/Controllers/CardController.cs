@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 public class CardController : MonoBehaviour
 {
-    GameObject card;
+    public GameObject card;
     public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
     {
         card.transform.position = StartPos.transform.position;
@@ -47,14 +47,11 @@ public class CardController : MonoBehaviour
 
     public void DrawCard(int RoundCounter, Text StartPos, Vector3 endPos)
     {
-        GameObject card = Addressables.InstantiateAsync("blankcard").Result;
-        // Addressables.LoadAssetAsync<GameObject>("blankcard").Completed += OnLoadDone;
+       
         if (gameObject.GetComponent<GameLogic>().PlayingAgainstAI && !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].IsPassed)
         {
             gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn = !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn;
         }
-            // GameObject card = Instantiate(Resources.Load<GameObject>("1"));
-            //  Debug.Log(card.name);
             
         if (RoundCounter == 2)
         {
