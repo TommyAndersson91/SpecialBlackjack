@@ -51,7 +51,6 @@ public class GameLogic : MonoBehaviour
         gameObject.AddComponent<CardController>();
         gameObject.AddComponent<AI_logic>();
         gameObject.AddComponent<Cards>();
-        gameObject.AddComponent<UIController>();
         PlayerList = gameObject.AddComponent<PlayerList>();
         gameObject.AddComponent<HandArranger>();
         gameObject.AddComponent<Player>();

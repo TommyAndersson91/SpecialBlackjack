@@ -25,6 +25,13 @@ public class UIPanel : MonoBehaviour
        get { return _trinket; }
        set { _trinket = value; }
    }
+
+   public UIPanel(string playerName, int frame, int trinket)
+   {
+       PlayerName = "Test";
+       Frame = frame;
+       Trinket = trinket;
+   }
    
    
    

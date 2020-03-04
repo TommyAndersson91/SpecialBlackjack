@@ -15,7 +15,6 @@ public static class Constants
                 return item.gameObject;
             }
         }
-
         return null;
     }
 }
