@@ -7,6 +7,26 @@ public class ListController : MonoBehaviour
 {
     public GameObject ContentPanel;
     public GameObject ListItemPrefab;
+    [SerializeField] public TMP_InputField NameInputField;
+    [SerializeField] public TMP_InputField AvatarInputField;
+    [SerializeField] public TMP_InputField TrinketInputField;
+
+
+    public void OnSubmit()
+    {
+        
+        UIPanel.PlayerNameEntered = NameInputField.text;
+        UIPanel.PlayerAvatarEntered = AvatarInputField.text;
+        UIPanel.PlayerTrinketEntered = TrinketInputField.text;
+        ListItemController.PlayerNameString = UIPanel.PlayerNameEntered;
+
+        // for (int i = 0; i < gameObject.GetComponent<ListController>().ContentPanel.transform.childCount; i++)
+        // {
+        // gameObject.GetComponent<ListController>().ContentPanel.transform.GetChild(i).GetComponentInChildren<ListItemController>().PlayerName.text = NameInputField.text;
+        // gameObject.GetComponent<ListController>().ContentPanel.transform.GetChild(i).GetComponentInChildren<ListItemController>().PlayerAvatar.color = gameObject.GetComponent<ListController>().CalcColorAvatar(PlayerAvatarEntered);
+        // gameObject.GetComponent<ListController>().ContentPanel.transform.GetChild(i).GetComponentInChildren<ListItemController>().PlayerTrinket.color = gameObject.GetComponent<ListController>().CalcColorTrinket(PlayerTrinketEntered);
+        // }
+    }
 
     public Color CalcColorAvatar(string color)
     {

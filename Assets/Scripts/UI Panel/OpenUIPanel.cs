@@ -11,7 +11,7 @@ public class OpenUIPanel : MonoBehaviour
     private void Start() {
         Addressables.LoadAssetAsync<GameObject>("uipanel");
         OpenUIPanelButton.onClick.AddListener(OpenUI);
-        SubmitButton.onClick.AddListener(gameObject.GetComponent<ListItemController>().OnSubmit);
+        SubmitButton.onClick.AddListener(gameObject.GetComponent<ListController>().OnSubmit);
     }
 
     private void OpenUI()
@@ -23,8 +23,8 @@ public class OpenUIPanel : MonoBehaviour
     {
         obj.Result.transform.parent = gameObject.GetComponent<ListController>().ContentPanel.transform;
         obj.Result.transform.localScale = Vector3.one;
-        obj.Result.GetComponentInChildren<ListItemController>().PlayerName.text = gameObject.GetComponent<ListItemController>().PlayerNameEntered;
-        obj.Result.GetComponentInChildren<ListItemController>().PlayerAvatar.color = gameObject.GetComponent<ListController>().CalcColorAvatar(gameObject.GetComponent<ListItemController>().PlayerAvatarEntered);
-        obj.Result.GetComponentInChildren<ListItemController>().PlayerTrinket.color = gameObject.GetComponent<ListController>().CalcColorTrinket(gameObject.GetComponent<ListItemController>().PlayerTrinketEntered);
+        obj.Result.GetComponentInChildren<ListItemController>().PlayerName.text = UIPanel.PlayerNameEntered;
+        obj.Result.GetComponentInChildren<ListItemController>().PlayerAvatar.color = gameObject.GetComponent<ListController>().CalcColorAvatar(UIPanel.PlayerAvatarEntered);
+        obj.Result.GetComponentInChildren<ListItemController>().PlayerTrinket.color = gameObject.GetComponent<ListController>().CalcColorTrinket(UIPanel.PlayerTrinketEntered);
     }
 }

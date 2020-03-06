@@ -1,38 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class UIPanel : MonoBehaviour
+public static class UIPanel
 {
-   private string _playerName;
-   private int _frame;
-   private int _trinket;
-
-    public string PlayerName
-   {
-       get { return _playerName; }
-       set { _playerName = value; }
-   }
-   
-   public int Frame
-   {
-       get { return _frame; }
-       set { _frame = value; }
-   }
-   
-   public int Trinket
-   {
-       get { return _trinket; }
-       set { _trinket = value; }
-   }
-
-   public UIPanel(string playerName, int frame, int trinket)
-   {
-       PlayerName = "Test";
-       Frame = frame;
-       Trinket = trinket;
-   }
-   
-   
-   
+    public static string PlayerNameEntered;
+    public static string PlayerAvatarEntered;
+    public static string PlayerTrinketEntered;
 }

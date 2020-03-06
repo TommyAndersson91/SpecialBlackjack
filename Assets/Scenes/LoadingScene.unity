@@ -552,6 +552,9 @@ MonoBehaviour:
   ContentPanel: {fileID: 1649973275}
   ListItemPrefab: {fileID: 3167971086847387261, guid: 8987e3f22af504b82bb194a98116f839,
     type: 3}
+  NameInputField: {fileID: 0}
+  AvatarInputField: {fileID: 0}
+  TrinketInputField: {fileID: 0}
 --- !u!1 &481457528
 GameObject:
   m_ObjectHideFlags: 0
@@ -3255,7 +3258,6 @@ GameObject:
   - component: {fileID: 2006899481}
   - component: {fileID: 2006899480}
   - component: {fileID: 2006899482}
-  - component: {fileID: 2006899483}
   m_Layer: 0
   m_Name: UILogic
   m_TagString: Untagged
@@ -3322,28 +3324,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ContentPanel: {fileID: 1649973275}
   ListItemPrefab: {fileID: 0}
---- !u!114 &2006899483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006899478}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3b9d9b935c464613ba99fad2a309d7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   NameInputField: {fileID: 2052465400}
   AvatarInputField: {fileID: 260681153}
   TrinketInputField: {fileID: 481457530}
-  DeleteButton: {fileID: 0}
-  PlayerNameEntered: 
-  PlayerAvatarEntered: 
-  PlayerTrinketEntered: 
-  PlayerAvatar: {fileID: 0}
-  PlayerTrinket: {fileID: 0}
-  PlayerName: {fileID: 0}
 --- !u!1 &2037829124
 GameObject:
   m_ObjectHideFlags: 0
