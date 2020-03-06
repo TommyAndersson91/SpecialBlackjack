@@ -57,9 +57,9 @@
      <Compile Include="Assets\Scripts\Models\Player.cs" />
      <Compile Include="Assets\Scripts\Plugins\MoveObject.cs" />
      <Compile Include="Assets\Scripts\UI Panel\ListController.cs" />
-     <Compile Include="Assets\Scripts\UI Panel\ListItemController.cs" />
-     <Compile Include="Assets\Scripts\UI Panel\OpenUIPanel.cs" />
-     <Compile Include="Assets\Scripts\UI Panel\UIPanel.cs" />
+     <Compile Include="Assets\Scripts\UI Panel\OpenNewUIPanelObj.cs" />
+     <Compile Include="Assets\Scripts\UI Panel\UIPanelData.cs" />
+     <Compile Include="Assets\Scripts\UI Panel\UIPanelObj.cs" />
      <Compile Include="Assets\Scripts\UI\CardHover.cs" />
      <Compile Include="Assets\Scripts\UI\HandArranger.cs" />
      <Compile Include="Assets\Scripts\UI\PlayerPanel.cs" />

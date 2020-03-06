@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 3167971086847387248}
   - component: {fileID: 3167971086847387251}
   - component: {fileID: 145120456720502583}
-  - component: {fileID: 3213909501863874477}
+  - component: {fileID: 4675471883508903748}
   m_Layer: 5
   m_Name: UI Panel
   m_TagString: Untagged
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &3213909501863874477
+--- !u!114 &4675471883508903748
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,16 +226,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3167971086847387261}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3b9d9b935c464613ba99fad2a309d7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 658c76e04274e45988620528ae7eb6f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NameInputField: {fileID: 0}
-  AvatarInputField: {fileID: 0}
-  TrinketInputField: {fileID: 0}
   DeleteButton: {fileID: 5375245367339187870}
-  PlayerNameEntered: 
-  PlayerAvatarEntered: 
-  PlayerTrinketEntered: 
   PlayerAvatar: {fileID: 3167971087498459689}
   PlayerTrinket: {fileID: 677575560284070066}
   PlayerName: {fileID: 3167971087261055171}
