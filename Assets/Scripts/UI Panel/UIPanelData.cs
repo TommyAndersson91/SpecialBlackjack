@@ -13,28 +13,32 @@
     public static string PlayerNameEntered
     {
         get { return playerNameEntered; }
-        set {
+        set 
+        {
              onNameChanged?.Invoke(value);
-             playerNameEntered = value; }
+             playerNameEntered = value; 
+        }
     }
-    
+
     private static string playerAvatarEntered;
     public static string PlayerAvatarEntered
     {
         get { return playerAvatarEntered; }
-        set {
+        set 
+        {
             onAvatarChanged?.Invoke(value); 
-            playerAvatarEntered = value; }
+            playerAvatarEntered = value; 
+        }
     }
-    
-    
+
     private static string playerTrinketEntered;
     public static string PlayerTrinketEntered
     {
         get { return playerTrinketEntered; }
-        set {
+        set 
+        {
             onTrinketChanged?.Invoke(value);
-            playerTrinketEntered = value; }
+            playerTrinketEntered = value; 
+        }
     }
-    
 }

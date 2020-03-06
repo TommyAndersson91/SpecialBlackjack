@@ -550,12 +550,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ContentPanel: {fileID: 1649973275}
-  ListItemPrefab: {fileID: 3167971086847387261, guid: 8987e3f22af504b82bb194a98116f839,
-    type: 3}
   NameInputField: {fileID: 2052465400}
   AvatarInputField: {fileID: 260681153}
   TrinketInputField: {fileID: 481457530}
   SubmitButton: {fileID: 624783884}
+  OpenUIPanelButton: {fileID: 0}
 --- !u!1 &481457528
 GameObject:
   m_ObjectHideFlags: 0
@@ -3256,7 +3255,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2006899479}
-  - component: {fileID: 2006899482}
   - component: {fileID: 2006899480}
   m_Layer: 0
   m_Name: UILogic
@@ -3293,28 +3291,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2006899478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b02cfc59becbc470eb1caef7f4f0480a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OpenUIPanelButton: {fileID: 794829382}
---- !u!114 &2006899482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006899478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 682389f9ec21e464bb9f4c4b4e332110, type: 3}
+  m_Script: {fileID: 11500000, guid: b56b9f6b96d494a8f8cf0aa45bdf745f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ContentPanel: {fileID: 1649973275}
-  ListItemPrefab: {fileID: 0}
   NameInputField: {fileID: 2052465400}
   AvatarInputField: {fileID: 260681153}
   TrinketInputField: {fileID: 481457530}
   SubmitButton: {fileID: 624783884}
+  OpenUIPanelButton: {fileID: 794829382}
 --- !u!1 &2037829124
 GameObject:
   m_ObjectHideFlags: 0
