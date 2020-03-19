@@ -23,20 +23,20 @@ public class HandArranger : MonoBehaviour
         if (playerIndex == 0)
         {
             CardCounter++;
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 3)
             {
-                X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x * CardCounter + gridLayoutGroup.spacing.x;
-                // X -= 10f;
-                // if (CardCounter > 1)
-                // {
-                //     X -= 10F;
-                // }
+                X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + gridLayoutGroup.cellSize.x * CardCounter;
+                X -= 35f;
+                if (CardCounter > 1)
+                {
+                    X -= 35F;
+                }
                 return X;
             }
             else
             {
                 X = gridLayoutGroup.transform.GetChild(YCounter).position.x;
-                X -= 10f;
+                // X -= 10f;
                 YCounter++;
                 return X;
             }
@@ -44,20 +44,20 @@ public class HandArranger : MonoBehaviour
         else
         {
             CardCounter2++;
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 3)
             {
                 X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + gridLayoutGroup.cellSize.x * CardCounter2;
-                // X2 -= 10f;
-                // if (CardCounter2 > 1)
-                // {
-                //     X2 -= 10f;
-                // }
+                X2 -= 35f;
+                if (CardCounter2 > 1)
+                {
+                    X2 -= 35f;
+                }
                 return X2;
             }
             else
             {
                 X2 = gridLayoutGroup2.transform.GetChild(YCounter2).position.x;
-                X2 -= 10f;
+                // X2 -= 10f;
                 YCounter2++;
                 return X2;
             }
@@ -68,31 +68,28 @@ public class HandArranger : MonoBehaviour
     {
         if (playerIndex == 0)
         {
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 3)
             {
                 return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y;
             }
             else
             {
-                return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y-gridLayoutGroup.cellSize.y;
+                return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y - gridLayoutGroup.cellSize.y/2;
             }
         }
         else
         {
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 3)
             {
                 return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y;
             }
             else
             {
-                return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y-gridLayoutGroup2.cellSize.y;
+                return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y - gridLayoutGroup2.cellSize.y/2;
             }
 
         }
     }
-
-    // private void Start() {
-    // }
 
     private void Awake() 
     {

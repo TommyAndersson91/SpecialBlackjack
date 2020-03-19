@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 
-public class Player : MonoBehaviour
+public class Player: MonoBehaviour
 {
   public delegate void Add(int handValue, int playerIndex, string playerName);
   public delegate void CountWins();

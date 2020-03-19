@@ -47,14 +47,6 @@ public class GameLogic : MonoBehaviour
         CurrentPlayer = new Player();
         int index = 0;
         PlayingAgainstAI = false;
-        gameObject.AddComponent<AIController>();
-        gameObject.AddComponent<CardController>();
-        gameObject.AddComponent<AI_logic>();
-        gameObject.AddComponent<Cards>();
-        PlayerList = gameObject.AddComponent<PlayerList>();
-        gameObject.AddComponent<HandArranger>();
-        gameObject.AddComponent<Player>();
-        gameObject.AddComponent<PlayerPanel>();
         endPos = new Vector3();
         animator = gameObject.GetComponent<Animator>();
         // animator.runtimeAnimatorController = Addressables.LoadAsset("anim") as RuntimeAnimatorController;
@@ -69,10 +61,6 @@ public class GameLogic : MonoBehaviour
         }
         playerPanel_1.SetupPanel(PlayerList.GetPlayers()[0]);
         playerPanel_2.SetupPanel(PlayerList.GetPlayers()[1]);
-        PassButton.onClick.AddListener(Pass);
-        DrawButton.onClick.AddListener(DrawCards);
-        PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
-        TrumpCardButton.onClick.AddListener(UseTrumpCard);
         Setup();
         index = 0;
         // gameObject.GetComponent<HandArranger>().gridLayoutGroup = Constants.FindObjectInChilds(transform.gameObject.GetComponent<PlayerPanel>().gameObject, "CardsInHandPanel").GetComponentInChildren<GridLayoutGroup>();
@@ -119,7 +107,19 @@ public class GameLogic : MonoBehaviour
 
     void Start()
     {
-      NewGameButton.onClick.AddListener(NewGame);
+        gameObject.AddComponent<HandArranger>();
+        gameObject.AddComponent<TrumpCards>();
+        PlayerList = gameObject.AddComponent<PlayerList>();
+        gameObject.AddComponent<PlayerPanel>();
+        gameObject.AddComponent<AIController>();
+        gameObject.AddComponent<CardController>();
+        gameObject.AddComponent<AI_logic>();
+        gameObject.AddComponent<Cards>();
+        NewGameButton.onClick.AddListener(NewGame);
+        PassButton.onClick.AddListener(Pass);
+        DrawButton.onClick.AddListener(DrawCards);
+        PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
+        TrumpCardButton.onClick.AddListener(UseTrumpCard);
     }
 
     public int GetHiddenValue()
@@ -313,6 +313,7 @@ public class GameLogic : MonoBehaviour
 
     public void DrawCards()
     {
+        Debug.Log("Draw Card Pressed");
         if (!CurrentPlayer.IsPassed && !RoundOver)
         {
             Addressables.InstantiateAsync("blankcard").Completed += OnLoadDone;
@@ -321,6 +322,7 @@ public class GameLogic : MonoBehaviour
 
     public void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
     {
+        Debug.Log("New card instantiated");
         RoundCounter++;
         gameObject.GetComponent<CardController>().DrawCard(obj.Result ,RoundCounter, StartPos, endPos);
         UpdateUI();

@@ -62,8 +62,8 @@ public class PlayerPanel : MonoBehaviour
 
     private void WinsChanged()
     {
-       transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().RoundScoreText.SetText("Wins \n" + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
-         "\n" + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(7).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins);
+       transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().RoundScoreText.SetText("Wins \n" + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
+         "\n" + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins);
     }
 
     private void ScoreChanged(int handValue, int playerIndex, string playerName)
@@ -74,9 +74,9 @@ public class PlayerPanel : MonoBehaviour
         }
         else
         {
-            if (transform.parent.gameObject.transform.GetChild(7).GetComponent<GameLogic>().HiddenValue != 0)
+            if (transform.parent.gameObject.transform.GetChild(6).GetComponent<GameLogic>().HiddenValue != 0)
             {
-                player2Score = playerName + ": ? + " + transform.parent.gameObject.transform.GetChild(7).GetComponent<GameLogic>().HiddenValue + " /21";
+                player2Score = playerName + ": ? + " + transform.parent.gameObject.transform.GetChild(6).GetComponent<GameLogic>().HiddenValue + " /21";
                 scoreText2.text = player2Score;
             }
             else
