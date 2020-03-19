@@ -207,9 +207,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1401214185373125144}
-  PlayerTrumpCards: {fileID: 5331651070045527218}
-  playerHand: {fileID: 5732714876291478737}
-  gridLayoutGroup: {fileID: 0}
+  scoreText2: {fileID: 0}
+  Player1TrumpCards: {fileID: 0}
+  Player2TrumpCards: {fileID: 0}
+  player1Hand: {fileID: 0}
+  player2Hand: {fileID: 0}
 --- !u!1 &5331651070045527218
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,6 +405,6 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 50, y: 70}
-  m_Spacing: {x: 0, y: 0}
+  m_Spacing: {x: 10, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2

@@ -213,6 +213,8 @@ MonoBehaviour:
   scoreText2: {fileID: 3531817512560922762}
   Player1TrumpCards: {fileID: 5331651070045527218}
   Player2TrumpCards: {fileID: 6888934582519892779}
+  player1Hand: {fileID: 5732714876291478737}
+  player2Hand: {fileID: 4906323974774196785}
 --- !u!1 &4417442940472152842
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,8 +464,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 70}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 75, y: 100}
+  m_Spacing: {x: 5, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &5331651070045527218
@@ -658,8 +660,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 50, y: 70}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 75, y: 100}
+  m_Spacing: {x: 5, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &6888934582519892779

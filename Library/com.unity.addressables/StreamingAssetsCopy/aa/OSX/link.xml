@@ -30,17 +30,18 @@
     <type fullname="UnityEngine.UI.Image" preserve="all" />
     <type fullname="UnityEngine.UI.GridLayoutGroup" preserve="all" />
     <type fullname="UnityEngine.UI.LayoutElement" preserve="all" />
+    <type fullname="UnityEngine.UI.Mask" preserve="all" />
     <type fullname="UnityEngine.UI.Button" preserve="all" />
     <type fullname="UnityEngine.UI.GraphicRaycaster" preserve="all" />
     <type fullname="UnityEngine.EventSystems.EventSystem" preserve="all" />
     <type fullname="UnityEngine.EventSystems.StandaloneInputModule" preserve="all" />
   </assembly>
   <assembly fullname="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <type fullname="UIPanelObj" preserve="all" />
     <type fullname="HandArranger" preserve="all" />
     <type fullname="CardController" preserve="all" />
     <type fullname="MoveObject" preserve="all" />
     <type fullname="AIController" preserve="all" />
-    <type fullname="ListItemController" preserve="all" />
     <type fullname="GameLogic" preserve="all" />
     <type fullname="PlayerPanel" preserve="all" />
     <type fullname="PlayerList" preserve="all" />

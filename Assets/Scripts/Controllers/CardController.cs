@@ -8,17 +8,19 @@ using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 public class CardController : MonoBehaviour
 {
-    public GameObject card;
+
     public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
     {
         card.transform.position = StartPos.transform.position;
         float elapsedTime = 0;
-        float waitTime = 2f;
-        endPos.Set(gameObject.GetComponent<HandArranger>().GetX(currentPlayerIndex), gameObject.GetComponent<HandArranger>().GetY(currentPlayerIndex), 0.0f);
+        float waitTime = 1.2f;
+        endPos.Set(gameObject.GetComponent<HandArranger>().GetX(currentPlayerIndex), gameObject.GetComponent<HandArranger>().GetY(currentPlayerIndex), 10f);
         while (elapsedTime < waitTime)
         {
-            card.transform.position = Vector3.Lerp(card.transform.position, endPos, elapsedTime / waitTime);
             elapsedTime += Time.deltaTime;
+            float fraction = TranslateHelper.GetFraction(elapsedTime, waitTime, "SquareIn");
+            // card.transform.position = Vector3.Lerp(card.transform.position, endPos, fraction);
+            card.transform.position = card.transform.position * (1 - fraction) + (endPos * fraction);
             yield return null;
         }
         yield break;
@@ -39,15 +41,8 @@ public class CardController : MonoBehaviour
         return gameObject.GetComponent<Cards>().DrawnCards;
     }
 
-    public void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
+    public void DrawCard(GameObject card, int RoundCounter, Text StartPos, Vector3 endPos)
     {
-        // In a production environment, you should add exception handling to catch scenarios such as a null result.
-        card = obj.Result;
-    }
-
-    public void DrawCard(int RoundCounter, Text StartPos, Vector3 endPos)
-    {
-       
         if (gameObject.GetComponent<GameLogic>().PlayingAgainstAI && !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].IsPassed)
         {
             gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn = !gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn;
@@ -55,7 +50,7 @@ public class CardController : MonoBehaviour
             
         if (RoundCounter == 2)
         {
-            card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
+            card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform, false);
             card.transform.GetComponentInChildren<TMP_Text>().SetText("?");
             gameObject.GetComponent<GameLogic>().HiddenCard = card; 
         }
@@ -64,25 +59,25 @@ public class CardController : MonoBehaviour
             card.transform.GetComponentInChildren<TMP_Text>().SetText(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
             if (RoundCounter < 5)
             {
-                card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform);
+                card.transform.SetParent(gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerHand.transform, false);
             }
-            AnimateCardFly(card, gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
+            else
+            {
+                AnimateCardFly(card, gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
+            }
         }
         gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue += int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString());
         gameObject.GetComponent<GameLogic>().CurrentPlayer.DrawnCards.Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         GetDrawnCards().Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         gameObject.GetComponent<CardController>().GetStack().Pop();
         gameObject.GetComponent<GameLogic>().CheckFinished();
-        }
+    }
 
     public void AnimateCardFly(GameObject card, int currentPlayerIndex, int RoundCounter, Text StartPos, Vector3 endPos)
     {
-        if (RoundCounter > 4)
-        {
-            card.transform.SetParent(gameObject.GetComponent<GameLogic>().winnerText.transform);
-            StartCoroutine(CardAdded(card, currentPlayerIndex, StartPos, endPos));
-        }
-    }
+        card.transform.SetParent(gameObject.GetComponent<GameLogic>().winnerText.transform, false);
+        StartCoroutine(CardAdded(card, currentPlayerIndex, StartPos, endPos));
+    }     
 
     public void UseTrumpCard(Player currentPlayer, GameObject player1TrumpCards, GameObject player2TrumpCards)
     {

@@ -16,37 +16,6 @@ public class HandArranger : MonoBehaviour
     public int YCounter { get; set; }
     public int YCounter2 { get; set; }
 
-    public float GetXForLast(int playerIndex)
-    {
-        if (playerIndex == 0)
-        {
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
-            {
-
-                X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + gridLayoutGroup.cellSize.x * CardCounter;
-                return X;
-            }
-            else
-            {
-                X = gridLayoutGroup.transform.GetChild(YCounter).position.x;
-                return X;
-            }
-        }
-        else
-        {
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
-            {
-                X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + gridLayoutGroup2.cellSize.x * CardCounter2;
-                return X2;
-            }
-            else
-            {
-                X2 = gridLayoutGroup2.transform.GetChild(YCounter2-1).position.x;
-                return X2;
-            }
-        }
-    }
-
     public float GetX(int playerIndex)
     {
         gridLayoutGroup.enabled = false;
@@ -56,12 +25,18 @@ public class HandArranger : MonoBehaviour
             CardCounter++;
             if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
             {
-            
-                return X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x+gridLayoutGroup.cellSize.x*CardCounter;
+                X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x * CardCounter + gridLayoutGroup.spacing.x;
+                // X -= 10f;
+                // if (CardCounter > 1)
+                // {
+                //     X -= 10F;
+                // }
+                return X;
             }
             else
             {
                 X = gridLayoutGroup.transform.GetChild(YCounter).position.x;
+                X -= 10f;
                 YCounter++;
                 return X;
             }
@@ -71,11 +46,18 @@ public class HandArranger : MonoBehaviour
             CardCounter2++;
             if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
             {
-                return X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x+gridLayoutGroup2.cellSize.x*CardCounter2;
+                X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + gridLayoutGroup.cellSize.x * CardCounter2;
+                // X2 -= 10f;
+                // if (CardCounter2 > 1)
+                // {
+                //     X2 -= 10f;
+                // }
+                return X2;
             }
             else
             {
                 X2 = gridLayoutGroup2.transform.GetChild(YCounter2).position.x;
+                X2 -= 10f;
                 YCounter2++;
                 return X2;
             }

@@ -84,10 +84,9 @@ public class GameLogic : MonoBehaviour
         GameObject trumpCard;
         trumpCard = obj.Result;
         PlayerList.GetPlayers()[index].TrumpCards++;
-        trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(index).transform);
+        trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(index).transform, false);
         trumpCard.gameObject.tag = "trumpcard";
-        trumpCard.transform.localScale = new Vector3(1.35f, 1.35f, 1f);
-        trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 10;
+        trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 14;
         trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
         trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
     }
@@ -97,12 +96,12 @@ public class GameLogic : MonoBehaviour
         if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 1 && PlayerList.GetPlayers()[0].TrumpCards < 3)
         {
             index = 0;
-            Addressables.InstantiateAsync("blankcard").Completed += TrumpCardLoaded;
+            Addressables.InstantiateAsync("trump").Completed += TrumpCardLoaded;
         }
         else if (PlayerList.GetPlayers()[0].PlayerWins >= PlayerList.GetPlayers()[1].PlayerWins + 1 && PlayerList.GetPlayers()[1].TrumpCards < 3)
         {
             index = 1;
-            Addressables.InstantiateAsync("blankcard").Completed += TrumpCardLoaded;
+            Addressables.InstantiateAsync("trump").Completed += TrumpCardLoaded;
         }
         
         RoundOver = false;
@@ -323,8 +322,7 @@ public class GameLogic : MonoBehaviour
     public void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
     {
         RoundCounter++;
-        gameObject.GetComponent<CardController>().card = obj.Result;
-        gameObject.GetComponent<CardController>().DrawCard(RoundCounter, StartPos, endPos);
+        gameObject.GetComponent<CardController>().DrawCard(obj.Result ,RoundCounter, StartPos, endPos);
         UpdateUI();
 
     }
