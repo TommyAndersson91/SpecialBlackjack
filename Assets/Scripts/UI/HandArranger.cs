@@ -23,14 +23,14 @@ public class HandArranger : MonoBehaviour
         if (playerIndex == 0)
         {
             CardCounter++;
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 3)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
             {
-                X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + gridLayoutGroup.cellSize.x * CardCounter;
-                X -= 35f;
-                if (CardCounter > 1)
-                {
-                    X -= 35F;
-                }
+                X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + (gridLayoutGroup.cellSize.x/2*1.22f) * CardCounter;
+                // X -= gridLayoutGroup.cellSize.x/20;
+                // if (CardCounter > 1)
+                // {
+                // X -= gridLayoutGroup.cellSize.x / 4;
+                // }
                 return X;
             }
             else
@@ -44,14 +44,14 @@ public class HandArranger : MonoBehaviour
         else
         {
             CardCounter2++;
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 3)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
             {
-                X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + gridLayoutGroup.cellSize.x * CardCounter2;
-                X2 -= 35f;
-                if (CardCounter2 > 1)
-                {
-                    X2 -= 35f;
-                }
+                X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + (gridLayoutGroup2.cellSize.x/2*1.22f) * CardCounter2;
+                // X2 -= gridLayoutGroup2.cellSize.x/20;
+                // if (CardCounter2 > 1)
+                // {
+                //     X -= gridLayoutGroup2.cellSize.x / 4;
+                // }
                 return X2;
             }
             else
@@ -68,7 +68,7 @@ public class HandArranger : MonoBehaviour
     {
         if (playerIndex == 0)
         {
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 3)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
             {
                 return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y;
             }
@@ -79,7 +79,7 @@ public class HandArranger : MonoBehaviour
         }
         else
         {
-            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 3)
+            if (Constants.FindObjectInChilds(transform.gameObject, "GameLogic").GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
             {
                 return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y;
             }

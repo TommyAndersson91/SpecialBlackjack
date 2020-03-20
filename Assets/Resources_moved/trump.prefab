@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1796947584785240002}
   - component: {fileID: 1796947584785240013}
   - component: {fileID: 1796947584785240012}
-  - component: {fileID: 1261290874973153227}
   - component: {fileID: -6898467801692060852}
   - component: {fileID: 911000304264816526}
+  - component: {fileID: 1730609310984907128}
   m_Layer: 0
   m_Name: trump
   m_TagString: trumpcard
@@ -77,22 +77,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!111 &1261290874973153227
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796947584785240015}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 2425b12dc5fc84bdf9973c817ddf8bc4, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 2425b12dc5fc84bdf9973c817ddf8bc4, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &-6898467801692060852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +102,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &1730609310984907128
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796947584785240015}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7badd5d5b9df14deaa3d1473db158e5f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7461620312502163661
 GameObject:
   m_ObjectHideFlags: 0

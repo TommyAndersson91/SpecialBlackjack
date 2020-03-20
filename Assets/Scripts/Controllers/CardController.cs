@@ -90,8 +90,8 @@ public class CardController : MonoBehaviour
                 gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].TrumpCards -= 1;
                 int numChildren = player2TrumpCards.transform.childCount;
                 player2TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
-                player2TrumpCards.transform.GetChild(numChildren - 1).gameObject.GetComponent<Animation>().Play("animshrink");
-                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex));
+                player2TrumpCards.transform.GetChild(numChildren - 1).gameObject.GetComponent<Animator>().Play("shrink");
+                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex, player1TrumpCards, player2TrumpCards));
             }
             else
             {
@@ -102,25 +102,27 @@ public class CardController : MonoBehaviour
                 gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].TrumpCards -= 1;
                 int numChildren = player1TrumpCards.transform.childCount;
                 player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
-                TrumpCards.ClickedCard.transform.GetComponent<Animation>().Play("animshrink");
+                // TrumpCards.ClickedCard.transform.GetChild(0).GetComponent<Animation>().Play("animshrink");
+                TrumpCards.ClickedCard.transform.GetComponent<Animator>().Play("shrink");
                 // player1TrumpCards.transform.GetChild(numChildren - 1).GetComponent<Animation>().Play("animshrink");
-                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex));  
+                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex, player1TrumpCards, player2TrumpCards));  
                 }
             }
         }
     }
 
-    IEnumerator ShrinkTrumpCard(int playerIndex)
+    IEnumerator ShrinkTrumpCard(int playerIndex, GameObject player1TrumpCards, GameObject player2TrumpCards)
     {
         yield return new WaitForSeconds(1);
         if (playerIndex == gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers().Count - 1)
         {
             int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.childCount;
-       
             Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(numChildren - 1).gameObject);
+            player2TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = true;
             if (!gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].IsPassed)
             {
                 gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0];
+                gameObject.GetComponent<GameLogic>().UpdateUI();
             }
             else
             {
@@ -131,11 +133,14 @@ public class CardController : MonoBehaviour
         else
         {
             int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.childCount; ;
-            // Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.GetChild(numChildren - 1).gameObject);
-            Destroy(TrumpCards.ClickedCard.gameObject);
+            Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.Find("CardClicked").gameObject);
+            TrumpCards.ClickedCard = null;
+            player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = true;
+
             if (!gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPassed)
             {
                 gameObject.GetComponent<GameLogic>().CurrentPlayer = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1];
+                gameObject.GetComponent<GameLogic>().UpdateUI();
                 gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPlayersTurn = true;
                 gameObject.GetComponent<AIController>().CheckAITurn(gameObject.GetComponent<GameLogic>().RoundCounter); 
             }

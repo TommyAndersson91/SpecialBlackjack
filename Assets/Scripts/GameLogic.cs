@@ -63,8 +63,6 @@ public class GameLogic : MonoBehaviour
         playerPanel_2.SetupPanel(PlayerList.GetPlayers()[1]);
         Setup();
         index = 0;
-        // gameObject.GetComponent<HandArranger>().gridLayoutGroup = Constants.FindObjectInChilds(transform.gameObject.GetComponent<PlayerPanel>().gameObject, "CardsInHandPanel").GetComponentInChildren<GridLayoutGroup>();
-        // gameObject.GetComponent<HandArranger>().gridLayoutGroup2 = Constants.FindObjectInChilds(transform.gameObject.GetComponent<PlayerPanel>().gameObject, "CardsInHandPanel2").GetComponentInChildren<GridLayoutGroup>();
     }
 
     public void TrumpCardLoaded(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
