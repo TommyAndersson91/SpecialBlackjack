@@ -76,7 +76,7 @@ public class PlayerPanel : MonoBehaviour
         {
             if (transform.parent.gameObject.transform.GetChild(6).GetComponent<GameLogic>().HiddenValue != 0)
             {
-                player2Score = playerName + ": ? + " + transform.parent.gameObject.transform.GetChild(6).GetComponent<GameLogic>().HiddenValue + " /21";
+                player2Score = playerName + ": ? + " + transform.parent.gameObject.transform.GetChild(6).GetComponent<GameLogic>().GetHiddenValue() + " /21";
                 scoreText2.text = player2Score;
             }
             else

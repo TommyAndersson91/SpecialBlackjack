@@ -19,6 +19,9 @@ public class CardController : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float fraction = TranslateHelper.GetFraction(elapsedTime, waitTime, "SquareIn");
+            // float temp = gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue * (1 - fraction) + ((gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue + int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString())) * fraction); 
+            // gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue = (int)temp;
+            // Debug.Log(temp);
             // card.transform.position = Vector3.Lerp(card.transform.position, endPos, fraction);
             card.transform.position = card.transform.position * (1 - fraction) + (endPos * fraction);
             yield return null;
@@ -71,6 +74,8 @@ public class CardController : MonoBehaviour
         GetDrawnCards().Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         gameObject.GetComponent<CardController>().GetStack().Pop();
         gameObject.GetComponent<GameLogic>().CheckFinished();
+
+
     }
 
     public void AnimateCardFly(GameObject card, int currentPlayerIndex, int RoundCounter, Text StartPos, Vector3 endPos)
@@ -98,7 +103,14 @@ public class CardController : MonoBehaviour
                 if (TrumpCards.ClickedCard != null)
                 {
                 gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
-                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue + 3;
+                if (TrumpCards.ClickedCard.tag == "hand_increase")
+                {
+                    gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue + 3;
+                }
+                if (TrumpCards.ClickedCard.tag == "add_last_card_value")
+                {
+                    gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue += gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards[gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count -1];
+                }
                 gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].TrumpCards -= 1;
                 int numChildren = player1TrumpCards.transform.childCount;
                 player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;

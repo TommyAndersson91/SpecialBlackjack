@@ -70,11 +70,11 @@ public class GameLogic : MonoBehaviour
         GameObject trumpCard;
         trumpCard = obj.Result;
         PlayerList.GetPlayers()[index].TrumpCards++;
+        gameObject.GetComponent<TrumpCards>().AddRandomTrumpCard(trumpCard);
         trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(index).transform, false);
-        trumpCard.gameObject.tag = "trumpcard";
-        trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 14;
-        trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
-        trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
+        // trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 14;
+        // trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
+        // trumpCard.transform.GetComponentInChildren<TMP_Text>().SetText("Increase your opponents hand value by 3");
     }
 
     public void Setup()
@@ -286,6 +286,7 @@ public class GameLogic : MonoBehaviour
                     RoundFinished();
                     return;
                 }
+                PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
                 CurrentPlayer = PlayerList.GetPlayers()[0];
             }
             else if (CurrentPlayer.PlayerIndex < PlayerList.GetPlayers().Count - 1 && !PlayerList.GetPlayers()[1].IsPassed)
@@ -297,6 +298,7 @@ public class GameLogic : MonoBehaviour
                     return;
                 }
                 PlayerList.GetPlayers()[1].IsPlayersTurn = true;
+                PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
                 CurrentPlayer = PlayerList.GetPlayers()[1];
                 if (RoundCounter > 4)
                 {

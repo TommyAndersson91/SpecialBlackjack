@@ -6,6 +6,9 @@ TagManager:
   tags:
   - card
   - trumpcard
+  - clickedcard
+  - hand_increase
+  - add_last_card_value
   layers:
   - Default
   - TransparentFX
