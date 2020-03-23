@@ -101,7 +101,6 @@ public class PlayerPanel : MonoBehaviour
     // newText[7] = 'o';
     // newText[8] = 't';
     // scoreText2.text = newText.ToString();
-    // Debug.Log(newText);
 
     }
 

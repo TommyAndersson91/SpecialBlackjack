@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1796947584785240002}
   - component: {fileID: 1796947584785240013}
   - component: {fileID: 1796947584785240012}
-  - component: {fileID: -6898467801692060852}
   - component: {fileID: 911000304264816526}
   - component: {fileID: 1730609310984907128}
+  - component: {fileID: 6802268748651440340}
   m_Layer: 0
   m_Name: trump
   m_TagString: trumpcard
@@ -77,18 +77,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-6898467801692060852
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796947584785240015}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd38c54e050744c5a89c48a629733224, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &911000304264816526
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -121,6 +109,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6802268748651440340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1796947584785240015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab27d1f6ccb94b4d91b8549a150f9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7461620312502163661
 GameObject:
   m_ObjectHideFlags: 0

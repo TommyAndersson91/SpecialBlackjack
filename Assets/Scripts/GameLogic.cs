@@ -69,8 +69,12 @@ public class GameLogic : MonoBehaviour
     {
         GameObject trumpCard;
         trumpCard = obj.Result;
+        if (index == 1)
+        {
+            CardController.AITrumpCards.Add(trumpCard);
+        }
         PlayerList.GetPlayers()[index].TrumpCards++;
-        gameObject.GetComponent<TrumpCards>().AddRandomTrumpCard(trumpCard);
+        gameObject.GetComponent<TrumpCard>().AddRandomTrumpCard(trumpCard);
         trumpCard.transform.SetParent(playerPanel.GetTrumpCardPanel(index).transform, false);
         // trumpCard.transform.GetComponentInChildren<TMP_Text>().fontSize = 14;
         // trumpCard.transform.GetComponentInChildren<TMP_Text>().fontStyle = FontStyles.Italic;
@@ -105,8 +109,8 @@ public class GameLogic : MonoBehaviour
 
     void Start()
     {
-        gameObject.AddComponent<HandArranger>();
-        gameObject.AddComponent<TrumpCards>();
+        // gameObject.AddComponent<HandArranger>();
+        gameObject.AddComponent<TrumpCard>();
         PlayerList = gameObject.AddComponent<PlayerList>();
         gameObject.AddComponent<PlayerPanel>();
         gameObject.AddComponent<AIController>();
@@ -128,6 +132,22 @@ public class GameLogic : MonoBehaviour
 
     public void UpdateUI()
     {
+        if (CardController.TrumpCards.Count > 0)
+        {
+            // TrumpCard.ClickedCard = null;
+        foreach (var card in CardController.TrumpCards)
+        {
+            if (card != null)
+            {
+                if (card.transform.localScale.x > 1 && card != TrumpCard.ClickedCard)
+                {
+                    card.GetComponent<Animator>().Play("normalstate");
+                }
+                card.GetComponent<TrumpCard>().gameObject.name = "Card";
+            }
+        }
+        }
+
         if (RoundOver)
         {
             playerPanel_2.SetPlayer2ScoreText(PlayerList.GetPlayers()[1].PlayerName, PlayerList.GetPlayers()[1].HandValue);
@@ -170,13 +190,45 @@ public class GameLogic : MonoBehaviour
         }
     }
 
+    public void CheckAITrumpCards()
+    {
+        int handIncreaseNumber = 0;
+        int addLastCardNumber = 0;
+
+        for (int i = 0; i < playerPanel.GetTrumpCardPanel(1).transform.childCount -1; i++)
+        {
+            if (playerPanel.GetTrumpCardPanel(1).transform.GetChild(i).gameObject.tag == "hand_increase")
+            {
+                handIncreaseNumber++;
+                gameObject.GetComponent<AIController>().HasHandIncrease = true;
+            }
+            if (playerPanel.GetTrumpCardPanel(1).transform.GetChild(i).gameObject.tag == "add_last_card_value")
+            {
+                addLastCardNumber++;
+                gameObject.GetComponent<AIController>().HasAddLastCard = true;
+            }
+        }
+        if (handIncreaseNumber == 0)
+        {
+            gameObject.GetComponent<AIController>().HasHandIncrease = false;
+        }
+        if (addLastCardNumber == 0)
+        {
+            gameObject.GetComponent<AIController>().HasAddLastCard = false;
+        }
+       
+        
+    }
+
     public IEnumerator PlayAITUrn()
     {
         yield return new WaitForSeconds(2);
-        if (gameObject.GetComponent<AI_logic>().UseTrumpCard(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]) && PlayerList.GetPlayers()[1].TrumpCards > 0 && gameObject.GetComponent<AIController>().FiftyPercent(random))
+        CheckAITrumpCards();
+        if (gameObject.GetComponent<AIController>().HasHandIncrease == true && gameObject.GetComponent<AIController>().FiftyPercent(random) && gameObject.GetComponent<AI_logic>().UseTrumpCard(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]) && !RoundOver)
         {
             if (PlayerList.GetPlayers()[0].HandValue < 22)
             {
+            gameObject.GetComponent<AIController>().IsUsingHandIncrease = true;
             UseTrumpCard();
             if (PlayerList.GetPlayers()[0].HandValue > 21 && !RoundOver)
             {
@@ -184,6 +236,12 @@ public class GameLogic : MonoBehaviour
             yield break;
             }
             }
+            yield break;
+        }
+        if (gameObject.GetComponent<AIController>().HasAddLastCard == true && gameObject.GetComponent<AI_logic>().UseAddLastCardTrump(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]) && !RoundOver && PlayerList.GetPlayers()[1].HandValue <= PlayerList.GetPlayers()[0].HandValue)
+        {
+            gameObject.GetComponent<AIController>().IsUsingAddLastCard = true;
+            UseTrumpCard();
             yield break;
         }
         if (gameObject.GetComponent<AI_logic>().CalculateMove(PlayerList.GetPlayers()[1], PlayerList.GetPlayers()[0]))
@@ -313,7 +371,6 @@ public class GameLogic : MonoBehaviour
 
     public void DrawCards()
     {
-        Debug.Log("Draw Card Pressed");
         if (!CurrentPlayer.IsPassed && !RoundOver)
         {
             Addressables.InstantiateAsync("blankcard").Completed += OnLoadDone;
@@ -322,7 +379,6 @@ public class GameLogic : MonoBehaviour
 
     public void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> obj)
     {
-        Debug.Log("New card instantiated");
         RoundCounter++;
         gameObject.GetComponent<CardController>().DrawCard(obj.Result ,RoundCounter, StartPos, endPos);
         UpdateUI();

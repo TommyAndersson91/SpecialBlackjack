@@ -2,6 +2,8 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <CscToolPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Tools/RoslynScripts</CscToolPath>
+    <CscToolExe>unity_csc.sh</CscToolExe>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -44,6 +46,14 @@
     <ImplicitlyExpandNETStandardFacades>false</ImplicitlyExpandNETStandardFacades>
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="UnityEngine">
+      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\ShoeBoxTools\Editor\SBT_Font.cs" />
      <Compile Include="Assets\ShoeBoxTools\Editor\SBT_SpriteSheet.cs" />
@@ -103,9 +113,6 @@
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine">
- <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -283,9 +290,6 @@
  </Reference>
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor">
- <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.VR">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/UnityExtensions/Unity/UnityVR/Editor/UnityEditor.VR.dll</HintPath>
@@ -659,12 +663,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{C57C9598-8458-1EAF-239C-9D1AFDF7D97F}</Project>
+      <Project>{E4F5B455-FFA8-0FB0-5930-07422D91A10B}</Project>
       <Name>Assembly-CSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

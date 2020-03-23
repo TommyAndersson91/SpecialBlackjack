@@ -26,7 +26,6 @@ public class AssetRefLoader : MonoBehaviour
     //     // completedObjs.Add(await reference.InstantiateAsync().Task as T);
         
     //     // gameObject.GetComponent<AssetRefObjData>().loadingProgress.text = string.Format("Loading: {0}%", (int)(reference.InstantiateAsync().PercentComplete * 100));
-    //     // Debug.Log(reference.InstantiateAsync().PercentComplete);
     //     }
    }
 

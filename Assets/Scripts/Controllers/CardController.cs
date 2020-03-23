@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using UnityEngine.AddressableAssets;
 public class CardController : MonoBehaviour
 {
+    public static List<GameObject> TrumpCards = new List<GameObject>();
+    public static List<GameObject> AITrumpCards = new List<GameObject>();
+
 
     public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
     {
@@ -21,7 +24,6 @@ public class CardController : MonoBehaviour
             float fraction = TranslateHelper.GetFraction(elapsedTime, waitTime, "SquareIn");
             // float temp = gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue * (1 - fraction) + ((gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue + int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString())) * fraction); 
             // gameObject.GetComponent<GameLogic>().CurrentPlayer.HandValue = (int)temp;
-            // Debug.Log(temp);
             // card.transform.position = Vector3.Lerp(card.transform.position, endPos, fraction);
             card.transform.position = card.transform.position * (1 - fraction) + (endPos * fraction);
             yield return null;
@@ -74,8 +76,6 @@ public class CardController : MonoBehaviour
         GetDrawnCards().Add(int.Parse(gameObject.GetComponent<CardController>().GetStack().Peek().ToString()));
         gameObject.GetComponent<CardController>().GetStack().Pop();
         gameObject.GetComponent<GameLogic>().CheckFinished();
-
-
     }
 
     public void AnimateCardFly(GameObject card, int currentPlayerIndex, int RoundCounter, Text StartPos, Vector3 endPos)
@@ -90,32 +90,60 @@ public class CardController : MonoBehaviour
         {
             if (currentPlayer.PlayerIndex == gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers().Count - 1)
             {
-                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
-                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue + 3;
-                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].TrumpCards -= 1;
                 int numChildren = player2TrumpCards.transform.childCount;
-                player2TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
-                player2TrumpCards.transform.GetChild(numChildren - 1).gameObject.GetComponent<Animator>().Play("shrink");
-                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex, player1TrumpCards, player2TrumpCards));
+                int childNumber = 0;
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
+                if (gameObject.GetComponent<AIController>().IsUsingHandIncrease)
+                {
+                    gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue + 3;
+                    for (int i = 0; i < numChildren -1; i++)
+                    {
+                        if (player2TrumpCards.transform.GetChild(i).gameObject.tag == "hand_increase" && gameObject.GetComponent<AIController>().IsUsingHandIncrease == true)
+                        {
+                            Debug.Log("AI used Hand Increase TrumpCard");
+                            player2TrumpCards.transform.GetChild(i).gameObject.GetComponent<Animator>().Play("shrink");
+                            childNumber = player2TrumpCards.transform.GetChild(i).GetSiblingIndex();
+                            gameObject.GetComponent<AIController>().IsUsingHandIncrease = false;
+                        }
+                    }
+                    
+                }
+                else if (gameObject.GetComponent<AIController>().IsUsingAddLastCard)
+                {
+                    gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue += gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards[gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count - 1];
+                    for (int i = 0; i < numChildren - 1; i++)
+                    {
+                        if (player2TrumpCards.transform.GetChild(i).gameObject.tag == "add_last_card_value" && gameObject.GetComponent<AIController>().IsUsingAddLastCard == true)
+                        {
+                            Debug.Log("AI used Add Last Card TrumpCard");
+                            player2TrumpCards.transform.GetChild(i).gameObject.GetComponent<Animator>().Play("shrink");
+                            childNumber = player2TrumpCards.transform.GetChild(i).GetSiblingIndex();
+                            gameObject.GetComponent<AIController>().IsUsingAddLastCard = false;
+                        }
+                    }
+                }
+                gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].TrumpCards -= 1;
+                // player2TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
+                StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex, player1TrumpCards, player2TrumpCards, childNumber));
             }
             else
             {
-                if (TrumpCards.ClickedCard != null)
+                if (TrumpCard.ClickedCard != null)
                 {
                 gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
-                if (TrumpCards.ClickedCard.tag == "hand_increase")
+                if (TrumpCard.ClickedCard.tag == "hand_increase")
                 {
                     gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue + 3;
                 }
-                if (TrumpCards.ClickedCard.tag == "add_last_card_value")
+                if (TrumpCard.ClickedCard.tag == "add_last_card_value")
                 {
                     gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue += gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards[gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count -1];
                 }
                 gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].TrumpCards -= 1;
-                int numChildren = player1TrumpCards.transform.childCount;
-                player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
+                // int numChildren = player1TrumpCards.transform.childCount;
+                // player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = false;
                 // TrumpCards.ClickedCard.transform.GetChild(0).GetComponent<Animation>().Play("animshrink");
-                TrumpCards.ClickedCard.transform.GetComponent<Animator>().Play("shrink");
+                TrumpCard.ClickedCard.transform.GetComponent<Animator>().Play("shrink");
                 // player1TrumpCards.transform.GetChild(numChildren - 1).GetComponent<Animation>().Play("animshrink");
                 StartCoroutine(ShrinkTrumpCard(currentPlayer.PlayerIndex, player1TrumpCards, player2TrumpCards));  
                 }
@@ -123,13 +151,15 @@ public class CardController : MonoBehaviour
         }
     }
 
-    IEnumerator ShrinkTrumpCard(int playerIndex, GameObject player1TrumpCards, GameObject player2TrumpCards)
+    IEnumerator ShrinkTrumpCard(int playerIndex, GameObject player1TrumpCards, GameObject player2TrumpCards, int childNumber = 0)
     {
         yield return new WaitForSeconds(1);
         if (playerIndex == gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers().Count - 1)
         {
             int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.childCount;
-            Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(numChildren - 1).gameObject);
+            TrumpCards.Remove(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(childNumber).gameObject);
+            Debug.Log("Destroying: " + gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(childNumber).gameObject.tag);
+            Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(1).transform.GetChild(childNumber).gameObject);
             player2TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = true;
             if (!gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].IsPassed)
             {
@@ -145,8 +175,9 @@ public class CardController : MonoBehaviour
         else
         {
             int numChildren = gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.childCount; ;
-            Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.Find("CardClicked").gameObject);
-            TrumpCards.ClickedCard = null;
+            // Destroy(gameObject.GetComponent<GameLogic>().playerPanel.GetTrumpCardPanel(0).transform.Find("CardClicked").gameObject);
+            Destroy(TrumpCard.ClickedCard);
+            TrumpCard.ClickedCard = null;
             player1TrumpCards.GetComponentInChildren<GridLayoutGroup>().enabled = true;
 
             if (!gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].IsPassed)

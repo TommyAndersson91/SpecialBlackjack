@@ -4,6 +4,11 @@ using UnityEngine;
 using System;
 public class AIController : MonoBehaviour
 {
+    public bool HasHandIncrease = false;
+    public bool HasAddLastCard = false;
+    public bool IsUsingHandIncrease = false;
+    public bool IsUsingAddLastCard = false;
+
 
     public void PlayAI()
     {

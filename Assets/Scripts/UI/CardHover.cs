@@ -40,7 +40,6 @@ public class CardHover : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log(name + " Game Object Clicked!");
         throw new System.NotImplementedException();
     }
 }

@@ -48,7 +48,7 @@
     <type fullname="GameLogic" preserve="all" />
     <type fullname="PlayerPanel" preserve="all" />
     <type fullname="PlayerList" preserve="all" />
-    <type fullname="TrumpCards" preserve="all" />
+    <type fullname="TrumpCard" preserve="all" />
     <type fullname="Player" preserve="all" />
     <type fullname="LoadBoard" preserve="all" />
   </assembly>

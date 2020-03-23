@@ -2,6 +2,8 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
+    <CscToolPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Tools/RoslynScripts</CscToolPath>
+    <CscToolExe>unity_csc.sh</CscToolExe>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -45,6 +47,14 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="UnityEngine">
+      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
      <Compile Include="Assets\Scripts\AI\AI_logic.cs" />
      <Compile Include="Assets\Scripts\AssetRefLoader.cs" />
      <Compile Include="Assets\Scripts\AssetRefObjData.cs" />
@@ -56,7 +66,7 @@
      <Compile Include="Assets\Scripts\LoadBoard.cs" />
      <Compile Include="Assets\Scripts\Models\Cards.cs" />
      <Compile Include="Assets\Scripts\Models\Player.cs" />
-     <Compile Include="Assets\Scripts\Models\TrumpCards.cs" />
+     <Compile Include="Assets\Scripts\Models\TrumpCard.cs" />
      <Compile Include="Assets\Scripts\Plugins\MoveObject.cs" />
      <Compile Include="Assets\Scripts\TranslateHelper.cs" />
      <Compile Include="Assets\Scripts\UI Panel\UIController.cs" />
@@ -133,9 +143,6 @@
  </Reference>
  <Reference Include="UnityEditor.UI">
  <HintPath>/Users/tommyandersson/Desktop/Debuz/UI_Builder/Card Game/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine">
- <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
@@ -313,9 +320,6 @@
  </Reference>
  <Reference Include="UnityEngine.XRModule">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
- </Reference>
- <Reference Include="UnityEditor">
- <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/Managed/UnityEditor.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>/Users/tommyandersson/Desktop/Unity Editor/2019.3.0f1/Unity.app/Contents/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>
@@ -673,7 +677,7 @@
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

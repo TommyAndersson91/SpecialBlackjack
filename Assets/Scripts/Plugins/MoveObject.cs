@@ -11,7 +11,6 @@ public class MoveObject : MonoBehaviour
     {
         if (use)
         {
-            Debug.LogWarning("Only one instance of the MoveObject script in a scene is allowed");
             return;
         }
         use = this;

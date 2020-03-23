@@ -16,7 +16,6 @@ public class AssetRefObjData : MonoBehaviour
         // _references.Add(_sqrARef);
         // Utkommenterat under tiden jag jobbar med UI paneler 
         // StartCoroutine(LoadAndWaitUntilComplete());
-        Debug.Log("Running Start in AssetRefObjData");
     }
 
     private void Awake() {
