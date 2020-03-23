@@ -145,6 +145,14 @@ MonoBehaviour:
   animator: {fileID: 0}
   StartPos: {fileID: 1224630553580931132}
   endPos: {x: 0, y: 0, z: 0}
+  draw1Sound: {fileID: 8300000, guid: 0a816f5b7afdf4c62a44683349b4b436, type: 3}
+  draw2Sound: {fileID: 8300000, guid: dbd5966a5798a4879bd22eca8bfc0b84, type: 3}
+  pass1Sound: {fileID: 8300000, guid: 634a8fe3c9422474287cffeba0f8526d, type: 3}
+  pass2Sound: {fileID: 8300000, guid: 44c48f06f68c44ec698332dd9ec5c4ca, type: 3}
+  trump1Sound: {fileID: 8300000, guid: 8537e19c282f745da84d6229209b4f26, type: 3}
+  trump2Sound: {fileID: 8300000, guid: 02d7fe2e7a0724e6fabc4585d3d7dcb3, type: 3}
+  roundOver1Sound: {fileID: 8300000, guid: b00e776fe814a476e813fbadc19a0e0d, type: 3}
+  roundOver2Sound: {fileID: 8300000, guid: 6e77090297a8242e7a8a51c70e87440e, type: 3}
 --- !u!114 &1224630553606431939
 MonoBehaviour:
   m_ObjectHideFlags: 0

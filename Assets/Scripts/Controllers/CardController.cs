@@ -68,6 +68,7 @@ public class CardController : MonoBehaviour
             }
             else
             {
+                SoundManager.instance.RandomizeSfx(gameObject.GetComponent<GameLogic>().draw1Sound, gameObject.GetComponent<GameLogic>().draw2Sound);
                 AnimateCardFly(card, gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex, RoundCounter, StartPos, endPos);
             }
         }

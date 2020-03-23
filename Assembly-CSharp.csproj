@@ -58,6 +58,7 @@
      <Compile Include="Assets\Scripts\Models\Player.cs" />
      <Compile Include="Assets\Scripts\Models\TrumpCard.cs" />
      <Compile Include="Assets\Scripts\Plugins\MoveObject.cs" />
+     <Compile Include="Assets\Scripts\SoundManager.cs" />
      <Compile Include="Assets\Scripts\TranslateHelper.cs" />
      <Compile Include="Assets\Scripts\UI Panel\UIController.cs" />
      <Compile Include="Assets\Scripts\UI Panel\UIPanelData.cs" />

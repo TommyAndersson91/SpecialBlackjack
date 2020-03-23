@@ -42,9 +42,22 @@ public class GameLogic : MonoBehaviour
     public Vector3 endPos;
     int index = 0;
 
+    public AudioClip draw1Sound;
+    public AudioClip draw2Sound;
+    public AudioClip pass1Sound;
+    public AudioClip pass2Sound;
+    public AudioClip trump1Sound;
+    public AudioClip trump2Sound;
+    public AudioClip roundOver1Sound;
+    public AudioClip roundOver2Sound;
+
+
+
+
     public void NewGame()
     {
-        CurrentPlayer = new Player();
+        // CurrentPlayer = new Player();
+        CurrentPlayer = gameObject.AddComponent<Player>();
         int index = 0;
         PlayingAgainstAI = false;
         endPos = new Vector3();
@@ -265,7 +278,8 @@ public class GameLogic : MonoBehaviour
         TrumpCardButton.gameObject.SetActive(false);
         if (CurrentPlayer.TrumpCards > 0)
         {
-        GetComponent<CardController>().UseTrumpCard(CurrentPlayer, playerPanel.GetTrumpCardPanel(0), playerPanel.GetTrumpCardPanel(1));
+            SoundManager.instance.RandomizeSfx(trump1Sound, trump2Sound);
+            GetComponent<CardController>().UseTrumpCard(CurrentPlayer, playerPanel.GetTrumpCardPanel(0), playerPanel.GetTrumpCardPanel(1));
         }
         if (PlayingAgainstAI && !RoundOver && PlayerList.GetPlayers()[0].IsPassed)
         {
@@ -277,6 +291,7 @@ public class GameLogic : MonoBehaviour
 
     public void Pass()
     {
+        SoundManager.instance.RandomizeSfx(pass1Sound, pass2Sound);
         foreach (var player in PlayerList.GetPlayers())
         {
             if (CurrentPlayer.PlayerName.Equals(player.PlayerName) && !player.IsPassed)
@@ -387,6 +402,7 @@ public class GameLogic : MonoBehaviour
 
     public void RoundFinished()
     {
+        SoundManager.instance.RandomizeSfx(roundOver1Sound, roundOver2Sound);
         RoundOver = true;
         UpdateUI();
         if (PlayerList.GetPlayers()[0].HandValue < 22 && PlayerList.GetPlayers()[1].HandValue > 21)
