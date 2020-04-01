@@ -47,8 +47,6 @@ public class Player: MonoBehaviour
       }
   }
   
-
-  // public string PlayerName { get; set; }
   public List<Int32> DrawnCards { get; set; }
   public bool IsPassed { get; set; }
   public bool IsPlayersTurn { get; set;}

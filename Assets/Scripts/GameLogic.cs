@@ -11,20 +11,40 @@ public class GameLogic : MonoBehaviour
     public PlayerList PlayerList;
     public PlayerPanel playerPanel;
     public bool PlayingAgainstAI { get; set;}
+
     [SerializeField]
     private Button PassButton;
+
     [SerializeField]
     private Button DrawButton;
+
     [SerializeField]
     private Button PlayAIButton;
+
     [SerializeField]
     private Button NewGameButton;
+
     [SerializeField]
     private Button TrumpCardButton;
+
     [SerializeField]
     private PlayerPanel playerPanel_1;
+
     [SerializeField]
     private PlayerPanel playerPanel_2;
+
+    [SerializeField]
+    private Slider MusicSlider;
+
+    [SerializeField]
+    private Slider EffectsSlider;
+
+    [SerializeField]
+    private TextMeshProUGUI MusicVolumeText;
+
+    [SerializeField]
+    private TextMeshProUGUI EffectsVolumeText;
+
     public TextMeshProUGUI player1Score;
     public TextMeshProUGUI RoundScoreText;
     public TextMeshProUGUI player2Score;
@@ -122,8 +142,13 @@ public class GameLogic : MonoBehaviour
 
     void Start()
     {
-        // gameObject.AddComponent<HandArranger>();
-        gameObject.AddComponent<TrumpCard>();
+      MusicSlider.onValueChanged.AddListener(ChangeMusicVolume);
+      EffectsSlider.onValueChanged.AddListener(ChangeEffectsVolume);
+      MusicVolumeText.text = "Music Volume: " + 100;
+      EffectsVolumeText.text = "Effects Volume: " + 100;  
+
+    // gameObject.AddComponent<HandArranger>();
+    gameObject.AddComponent<TrumpCard>();
         PlayerList = gameObject.AddComponent<PlayerList>();
         gameObject.AddComponent<PlayerPanel>();
         gameObject.AddComponent<AIController>();
@@ -136,6 +161,38 @@ public class GameLogic : MonoBehaviour
         PlayAIButton.onClick.AddListener(gameObject.GetComponent<AIController>().PlayAI);
         TrumpCardButton.onClick.AddListener(UseTrumpCard);
     }
+
+    void ChangeMusicVolume(float value)
+    {
+      float musicVolume = value * 100;
+      int musicInt = (int) musicVolume;
+      SoundManager.instance.musicSource.volume = value; 
+      MusicVolumeText.text = "Music Volume: " + musicInt;
+      if (SoundManager.instance.musicSource.volume == 0)
+      {
+        SoundManager.instance.musicSource.Stop();
+      }
+      else if (!SoundManager.instance.musicSource.isPlaying)
+      {
+      SoundManager.instance.musicSource.Play();
+      } 
+    }
+
+    void ChangeEffectsVolume(float value)
+    {
+      float effectsVolume = value * 100;
+      int effectsInt = (int)effectsVolume;
+      SoundManager.instance.efxSource.volume = value;
+      EffectsVolumeText.text = "Effects Volume: " + effectsInt;
+      if (SoundManager.instance.efxSource.volume == 0)
+      {
+        SoundManager.instance.efxSource.Stop();
+      }
+      else if (!SoundManager.instance.efxSource.isPlaying)
+      {
+        SoundManager.instance.efxSource.Play();
+      }
+  }
 
     public int GetHiddenValue()
     {
@@ -291,13 +348,25 @@ public class GameLogic : MonoBehaviour
 
     public void Pass()
     {
-        SoundManager.instance.RandomizeSfx(pass1Sound, pass2Sound);
+        int passedPlayers = 0;
+       
         foreach (var player in PlayerList.GetPlayers())
         {
             if (CurrentPlayer.PlayerName.Equals(player.PlayerName) && !player.IsPassed)
             {
                 PlayerList.GetPlayers()[player.PlayerIndex].IsPassed = true;
             }
+        }
+        foreach (var player in PlayerList.GetPlayers())
+        {
+          if (player.IsPassed == true)
+          {
+            passedPlayers++;
+          }
+        }
+        if (passedPlayers == 2)
+        {
+          SoundManager.instance.RandomizeSfx(pass1Sound, pass2Sound);
         }
         PlayerList.GetPlayers()[CurrentPlayer.PlayerIndex] = CurrentPlayer;
         
