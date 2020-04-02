@@ -1209,6 +1209,8 @@ MonoBehaviour:
   EffectsSlider: {fileID: 1770098319}
   MusicVolumeText: {fileID: 1947276652}
   EffectsVolumeText: {fileID: 824522269}
+  animator: {fileID: 0}
+  StartPos: {fileID: 1224630553580931132}
   player1Score: {fileID: 1224630553929291730}
   RoundScoreText: {fileID: 1224630554335752128}
   player2Score: {fileID: 3643225937595485504}
@@ -1216,8 +1218,6 @@ MonoBehaviour:
   CurrentPlayer: {fileID: 0}
   RoundCounter: 0
   RoundOver: 0
-  animator: {fileID: 0}
-  StartPos: {fileID: 1224630553580931132}
   endPos: {x: 0, y: 0, z: 0}
   draw1Sound: {fileID: 8300000, guid: 0a816f5b7afdf4c62a44683349b4b436, type: 3}
   draw2Sound: {fileID: 8300000, guid: dbd5966a5798a4879bd22eca8bfc0b84, type: 3}

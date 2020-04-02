@@ -24,7 +24,7 @@ public class TranslateHelper
         break;
       case "CubicOutBack":
         float s = 1.5f;
-        float v = Mathf.Pow((cur/time),2f) - 1f;
+        float v = Mathf.Pow((cur / time), 2f) - 1f;
         fraction = Mathf.Pow(v, 2) * (s + (s + 1) * v) + 1;
         break;
       case "Spring":

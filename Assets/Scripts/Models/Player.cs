@@ -2,7 +2,7 @@
 using UnityEngine;
 using System;
 
-public class Player: MonoBehaviour
+public class Player : MonoBehaviour
 {
   public delegate void Add(int handValue, int playerIndex, string playerName);
   public delegate void CountWins();
@@ -17,7 +17,7 @@ public class Player: MonoBehaviour
   {
     get
     {
-        return _handValue;
+      return _handValue;
     }
     set
     {
@@ -29,7 +29,7 @@ public class Player: MonoBehaviour
   {
     get
     {
-        return _playerWins;
+      return _playerWins;
     }
     set
     {
@@ -39,21 +39,21 @@ public class Player: MonoBehaviour
   }
   public string PlayerName
   {
-      get { return _playerName; }
-      set 
-      { 
-        _playerName = value;
-        onNameChanged?.Invoke();
-      }
+    get { return _playerName; }
+    set
+    {
+      _playerName = value;
+      onNameChanged?.Invoke();
+    }
   }
-  
+
   public List<Int32> DrawnCards { get; set; }
   public bool IsPassed { get; set; }
-  public bool IsPlayersTurn { get; set;}
-  public bool IsWinner {get; set;}
-  public GameObject PlayerHand {get; set;}
-  public int PlayerIndex {get; set;}
-  public int TrumpCards {get; set;}
+  public bool IsPlayersTurn { get; set; }
+  public bool IsWinner { get; set; }
+  public GameObject PlayerHand { get; set; }
+  public int PlayerIndex { get; set; }
+  public int TrumpCards { get; set; }
   public event System.EventHandler HandValueChanged;
 
   public Player(string playerName, GameObject playerHand)
@@ -80,10 +80,10 @@ public class Player: MonoBehaviour
 
   public Player()
   {
-      HandValue = 0;
-      IsPassed = false;
-      IsPlayersTurn = false;
-      DrawnCards = new List<Int32>();
+    HandValue = 0;
+    IsPassed = false;
+    IsPlayersTurn = false;
+    DrawnCards = new List<Int32>();
   }
 }
 
