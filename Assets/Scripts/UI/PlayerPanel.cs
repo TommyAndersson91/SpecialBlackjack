@@ -19,6 +19,11 @@ public class PlayerPanel : MonoBehaviour
   [SerializeField]
   private GameObject player2Hand = default;
   private string player2Score;
+  private GameLogic gameLogic; 
+
+  private void Awake() {
+    gameLogic = transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>();
+  }
 
   public void SetupPanel(Player player)
   {
@@ -62,8 +67,8 @@ public class PlayerPanel : MonoBehaviour
 
   private void WinsChanged()
   {
-    transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().RoundScoreText.SetText("Wins \n" + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].PlayerWins +
-      "\n" + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerName + ": " + transform.parent.gameObject.transform.GetChild(6).gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].PlayerWins);
+    gameLogic.RoundScoreText.SetText("Wins \n" + gameLogic.PlayerList.GetPlayers()[0].PlayerName + ": " + gameLogic.PlayerList.GetPlayers()[0].PlayerWins +
+      "\n" + gameLogic.PlayerList.GetPlayers()[1].PlayerName + ": " + gameLogic.PlayerList.GetPlayers()[1].PlayerWins);
   }
 
   private void ScoreChanged(int handValue, int playerIndex, string playerName)

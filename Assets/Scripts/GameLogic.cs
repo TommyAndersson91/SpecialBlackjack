@@ -241,7 +241,7 @@ public class GameLogic : MonoBehaviour
     {
       TrumpCardButton.gameObject.SetActive(false);
     }
-    else if (CurrentPlayer.PlayerIndex == 0 && PlayerList.GetPlayers()[0].TrumpCards > 0)
+    else if (CurrentPlayer.PlayerIndex == 0 && PlayerList.GetPlayers()[0].TrumpCards > 0 && TrumpCard.ClickedCard != null)
     {
       TrumpCardButton.gameObject.SetActive(true);
     }

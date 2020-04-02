@@ -15,6 +15,7 @@ public class TrumpCard : MonoBehaviour, IPointerClickHandler
 {
   bool IsCardClicked = false;
   public static GameObject ClickedCard;
+  private GameLogic gameLogic;
 
   private void Start()
   {
@@ -23,6 +24,7 @@ public class TrumpCard : MonoBehaviour, IPointerClickHandler
 
   public void OnPointerClick(PointerEventData eventData)
   {
+    gameLogic = transform.parent.transform.parent.transform.parent.transform.parent.GetChild(6).gameObject.GetComponent<GameLogic>();
     if (this.gameObject.transform.parent.name == "TrumpCardsPanel2" && transform.parent.transform.parent.transform.parent.gameObject.transform.transform.parent.GetChild(6).gameObject.GetComponent<GameLogic>().CurrentPlayer.PlayerIndex == 0)
     {
       return;
@@ -46,10 +48,11 @@ public class TrumpCard : MonoBehaviour, IPointerClickHandler
     }
     IsCardClicked = true;
     this.gameObject.name = "CardClicked";
-    ClickedCard = null;
     ClickedCard = this.gameObject;
     ClickedCard.GetComponent<Animator>().Play("enlarge");
     CardController.TrumpCards.Add(this.gameObject);
+    gameLogic.UpdateUI();
+
   }
 
   public GameObject AddRandomTrumpCard(GameObject trumpCard)

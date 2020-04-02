@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class HandArranger : MonoBehaviour
 {
   public GridLayoutGroup gridLayoutGroup;
@@ -22,10 +23,19 @@ public class HandArranger : MonoBehaviour
     gridLayoutGroup2.enabled = false;
     if (playerIndex == 0)
     {
-      CardCounter++;
       if (GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count < 4)
       {
-        X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + (gridLayoutGroup.cellSize.x / 2 * 1.22f) * CardCounter;
+        float dist = Vector2.Distance(gridLayoutGroup.transform.GetChild(0).position, gridLayoutGroup.transform.GetChild(1).position);
+        // X = dist * CardCounter;
+        if (CardCounter == 0)
+        {
+          X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + dist;
+          CardCounter++;
+        }
+        else
+        {
+          X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + (gridLayoutGroup.cellSize.x * CardCounter) + (gridLayoutGroup.spacing.x + gridLayoutGroup.cellSize.x);
+        }
         return X;
       }
       else
@@ -40,7 +50,7 @@ public class HandArranger : MonoBehaviour
       CardCounter2++;
       if (GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
       {
-        X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + (gridLayoutGroup2.cellSize.x / 2 * 1.22f) * CardCounter2;
+        X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + (gridLayoutGroup2.cellSize.x * .95f) * CardCounter2;
         return X2;
       }
       else
@@ -62,7 +72,7 @@ public class HandArranger : MonoBehaviour
       }
       else
       {
-        return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y - gridLayoutGroup.cellSize.y / 2;
+        return Y = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.y - gridLayoutGroup.cellSize.y;
       }
     }
     else
@@ -73,7 +83,7 @@ public class HandArranger : MonoBehaviour
       }
       else
       {
-        return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y - gridLayoutGroup2.cellSize.y / 2;
+        return Y2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.y - gridLayoutGroup2.cellSize.y;
       }
 
     }
