@@ -16,6 +16,9 @@ public class HandArranger : MonoBehaviour
   public int CardCounter2 { get; set; }
   public int YCounter { get; set; }
   public int YCounter2 { get; set; }
+  private List<float> Player1Positions = new List<float>();
+  private List<float> Player2Positions = new List<float>();
+
 
   public float GetX(int playerIndex)
   {
@@ -31,10 +34,13 @@ public class HandArranger : MonoBehaviour
         {
           X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + dist;
           CardCounter++;
+          Player1Positions.Add(X);
         }
         else
         {
-          X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + (gridLayoutGroup.cellSize.x * CardCounter) + (gridLayoutGroup.spacing.x + gridLayoutGroup.cellSize.x);
+          // X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + (gridLayoutGroup.cellSize.x * CardCounter) + dist;
+          X = Player1Positions[Player1Positions.Count - 1] + dist;
+          Player1Positions.Clear();
         }
         return X;
       }
@@ -47,10 +53,20 @@ public class HandArranger : MonoBehaviour
     }
     else
     {
-      CardCounter2++;
       if (GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count < 4)
       {
-        X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + (gridLayoutGroup2.cellSize.x * .95f) * CardCounter2;
+        float dist = Vector2.Distance(gridLayoutGroup2.transform.GetChild(0).position, gridLayoutGroup2.transform.GetChild(1).position);
+        if (CardCounter2 == 0)
+        {
+          X2 = gridLayoutGroup2.transform.GetChild(gridLayoutGroup2.transform.childCount - 1).position.x + dist;
+          CardCounter2++;
+          Player2Positions.Add(X2);
+        }
+        else
+        {
+          X2 = Player2Positions[Player2Positions.Count - 1] + dist;
+          Player2Positions.Clear();
+        }
         return X2;
       }
       else

@@ -110,6 +110,7 @@ public class GameLogic : MonoBehaviour
   {
     GameObject trumpCard;
     trumpCard = obj.Result;
+    CardController.TrumpCards.Add(trumpCard);
     if (index == 1)
     {
       CardController.AITrumpCards.Add(trumpCard);
@@ -121,6 +122,10 @@ public class GameLogic : MonoBehaviour
 
   public void Setup()
   {
+    if (CardController.TrumpCards.Count > 0)
+    {
+    gameObject.GetComponent<CardController>().RandomTrumpCardFX();
+    }
     if (PlayerList.GetPlayers()[1].PlayerWins >= PlayerList.GetPlayers()[0].PlayerWins + 1 && PlayerList.GetPlayers()[0].TrumpCards < 3)
     {
       index = 0;
@@ -141,6 +146,10 @@ public class GameLogic : MonoBehaviour
     }
     CurrentPlayer = PlayerList.GetPlayers()[0];
     PlayerList.GetPlayers()[1].IsPlayersTurn = false;
+    if (CardController.TrumpCards.Count > 2)
+    {
+      gameObject.GetComponent<CardController>().RandomTrumpCardFX();
+    }
     UpdateUI();
   }
 

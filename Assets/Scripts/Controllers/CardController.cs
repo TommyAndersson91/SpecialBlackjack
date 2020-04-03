@@ -13,17 +13,19 @@ public class CardController : MonoBehaviour
 
   public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
   {
+    card.transform.GetChild(1).gameObject.SetActive(true);
     card.transform.position = StartPos.transform.position;
     float elapsedTime = 0;
-    float waitTime = 1.2f;
+    float waitTime = 1.5f;
     endPos.Set(gameObject.GetComponent<HandArranger>().GetX(currentPlayerIndex), gameObject.GetComponent<HandArranger>().GetY(currentPlayerIndex), 10f);
     while (elapsedTime < waitTime)
     {
-      elapsedTime += Time.deltaTime;
-      float fraction = TranslateHelper.GetFraction(elapsedTime, waitTime, "SquareIn");
+      float fraction = TranslateHelper.GetFraction(elapsedTime, waitTime, "CubicOutBack");
       card.transform.position = card.transform.position * (1 - fraction) + (endPos * fraction);
+      elapsedTime += Time.deltaTime;
       yield return null;
     }
+    card.transform.GetChild(1).gameObject.SetActive(false);
     yield break;
   }
 
@@ -195,5 +197,44 @@ public class CardController : MonoBehaviour
     int temp = arr[a];
     arr[a] = arr[b];
     arr[b] = temp;
+  }
+
+  public void RandomTrumpCardFX()
+  {
+    if (TrumpCards.Count > 2)
+    {
+      int glow = 0;
+      foreach (var item in TrumpCards)
+      {
+        if (item != null)
+        {
+          item.transform.GetChild(1).gameObject.SetActive(false);
+        }
+      }
+      foreach (var item in TrumpCards)
+      {
+        if (item != null)
+        {
+          glow++;
+          item.transform.GetChild(1).GetComponent<ParticleSystem>().startDelay = gameObject.GetComponent<GameLogic>().random.Next(0, 3);
+          item.transform.GetChild(1).gameObject.SetActive(true);
+          if (glow == 2)
+          {
+            return;
+          }
+        }
+      }
+    }
+    else
+    {
+      foreach (var item in TrumpCards)
+      {
+        if (item != null)
+        {
+          item.transform.GetChild(1).gameObject.SetActive(true);
+        }
+      }
+    }
+    // TrumpCards[gameObject.GetComponent<GameLogic>().random.Next(0, TrumpCards.Count)].gameObject.SetActive(true);
   }
 }

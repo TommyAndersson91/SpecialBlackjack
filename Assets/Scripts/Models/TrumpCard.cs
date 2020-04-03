@@ -19,7 +19,7 @@ public class TrumpCard : MonoBehaviour, IPointerClickHandler
 
   private void Start()
   {
-    CardController.TrumpCards.Add(this.gameObject);
+    
   }
 
   public void OnPointerClick(PointerEventData eventData)
@@ -33,7 +33,7 @@ public class TrumpCard : MonoBehaviour, IPointerClickHandler
     {
       return;
     }
-    CardController.TrumpCards.Remove(this.gameObject);
+    CardController.TrumpCards.Remove(eventData.pointerPress);
     foreach (var card in CardController.TrumpCards)
     {
       if (card != null)
@@ -50,7 +50,7 @@ public class TrumpCard : MonoBehaviour, IPointerClickHandler
     this.gameObject.name = "CardClicked";
     ClickedCard = this.gameObject;
     ClickedCard.GetComponent<Animator>().Play("enlarge");
-    CardController.TrumpCards.Add(this.gameObject);
+    CardController.TrumpCards.Add(eventData.pointerPress);
     gameLogic.UpdateUI();
 
   }
