@@ -10,6 +10,8 @@ public class CardController : MonoBehaviour
 {
   public static List<GameObject> TrumpCards = new List<GameObject>();
   public static List<GameObject> AITrumpCards = new List<GameObject>();
+  private int otherPlayerIndex = 0;
+  private Component _gameObject;
 
   public IEnumerator CardAdded(GameObject card, int currentPlayerIndex, Text StartPos, Vector3 endPos)
   {
@@ -83,6 +85,32 @@ public class CardController : MonoBehaviour
     StartCoroutine(CardAdded(card, currentPlayerIndex, StartPos, endPos));
   }
 
+  public void OnHandIncrease(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> card)
+  {
+    SoundManager.instance.PlaySingle(SoundManager.instance.EvilLaugh);
+    card.Result.transform.SetParent(gameObject.GetComponent<GameLogic>().winnerText.transform, false);
+    StartCoroutine(CardAdded(card.Result, otherPlayerIndex, gameObject.GetComponent<GameLogic>().GetStartPos(), gameObject.GetComponent<GameLogic>().endPos));
+    gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[otherPlayerIndex].DrawnCards.Add(int.Parse(card.Result.transform.GetComponentInChildren<TMP_Text>().text));
+    GetDrawnCards().Add(int.Parse(card.Result.transform.GetComponentInChildren<TMP_Text>().text));
+  }
+
+  public void OnAddLastCard(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<GameObject> card)
+  {
+    SoundManager.instance.PlaySingle(SoundManager.instance.Kaching);
+    card.Result.transform.SetParent(gameObject.GetComponent<GameLogic>().winnerText.transform, false);
+    if (otherPlayerIndex == 0)
+    {
+      card.Result.transform.GetComponentInChildren<TMP_Text>().SetText(gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards[gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count - 1].ToString());
+    }
+    else
+    {
+      card.Result.transform.GetComponentInChildren<TMP_Text>().SetText(gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards[gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count - 1].ToString());
+    }
+    StartCoroutine(CardAdded(card.Result, otherPlayerIndex, gameObject.GetComponent<GameLogic>().GetStartPos(), gameObject.GetComponent<GameLogic>().endPos));
+    gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[otherPlayerIndex].DrawnCards.Add(int.Parse(card.Result.transform.GetComponentInChildren<TMP_Text>().text));
+    GetDrawnCards().Add(int.Parse(card.Result.transform.GetComponentInChildren<TMP_Text>().text));
+  }
+  
   public void UseTrumpCard(Player currentPlayer, GameObject player1TrumpCards, GameObject player2TrumpCards)
   {
     if (currentPlayer.TrumpCards > 0)
@@ -94,24 +122,28 @@ public class CardController : MonoBehaviour
         gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
         if (gameObject.GetComponent<AIController>().IsUsingHandIncrease)
         {
+          otherPlayerIndex = 0;
+          Addressables.InstantiateAsync("handincrease").Completed += OnHandIncrease;
           gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue + 3;
           for (int i = 0; i < numChildren - 1; i++)
           {
             if (player2TrumpCards.transform.GetChild(i).gameObject.tag == "hand_increase" && gameObject.GetComponent<AIController>().IsUsingHandIncrease == true)
             {
-              player2TrumpCards.transform.GetChild(i).gameObject.GetComponent<Animator>().Play("shrink");
               childNumber = player2TrumpCards.transform.GetChild(i).GetSiblingIndex();
+              player2TrumpCards.transform.GetChild(i).gameObject.GetComponent<Animator>().Play("shrink");
               gameObject.GetComponent<AIController>().IsUsingHandIncrease = false;
             }
-          }
+          }     
         }
         else if (gameObject.GetComponent<AIController>().IsUsingAddLastCard)
         {
+          otherPlayerIndex = 1;
+          Addressables.InstantiateAsync("addlastcard").Completed += OnAddLastCard;
           gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue += gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards[gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].DrawnCards.Count - 1];
           for (int i = 0; i < numChildren - 1; i++)
           {
             if (player2TrumpCards.transform.GetChild(i).gameObject.tag == "add_last_card_value" && gameObject.GetComponent<AIController>().IsUsingAddLastCard == true)
-            {
+            {       
               player2TrumpCards.transform.GetChild(i).gameObject.GetComponent<Animator>().Play("shrink");
               childNumber = player2TrumpCards.transform.GetChild(i).GetSiblingIndex();
               gameObject.GetComponent<AIController>().IsUsingAddLastCard = false;
@@ -128,11 +160,16 @@ public class CardController : MonoBehaviour
           gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[currentPlayer.PlayerIndex] = currentPlayer;
           if (TrumpCard.ClickedCard.tag == "hand_increase")
           {
+            otherPlayerIndex = 1;
+            Addressables.InstantiateAsync("handincrease").Completed += OnHandIncrease;
             gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue = gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].HandValue + 3;
           }
           if (TrumpCard.ClickedCard.tag == "add_last_card_value")
           {
             gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].HandValue += gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards[gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[1].DrawnCards.Count - 1];
+            otherPlayerIndex = 0;
+            Addressables.InstantiateAsync("addlastcard").Completed += OnAddLastCard;
+
           }
           gameObject.GetComponent<GameLogic>().PlayerList.GetPlayers()[0].TrumpCards -= 1;
           TrumpCard.ClickedCard.transform.GetComponent<Animator>().Play("shrink");

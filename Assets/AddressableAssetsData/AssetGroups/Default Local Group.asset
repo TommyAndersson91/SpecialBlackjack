@@ -21,6 +21,10 @@ MonoBehaviour:
     m_Address: cardeffect
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 8556f98ec45484338af208b4c7492242
+    m_Address: addlastcard
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: b66e3ef9953164b0bab78d08186bfc04, type: 2}
   m_SchemaSet:

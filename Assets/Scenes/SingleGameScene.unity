@@ -593,6 +593,8 @@ MonoBehaviour:
   musicSource: {fileID: 1908097299}
   lowPitchRange: 0.95
   highPitchRange: 1.05
+  EvilLaugh: {fileID: 8300000, guid: d3ab0a31bd8bf4db9a81e6c262970f4b, type: 3}
+  Kaching: {fileID: 8300000, guid: 08fd5ccfc72214ec98d702359782910a, type: 3}
 --- !u!82 &1908097299
 AudioSource:
   m_ObjectHideFlags: 0
@@ -603,7 +605,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c9a41d76e81864452bc16673522d1ff5, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 26afed3833b9d498c91f90d869d40d60, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

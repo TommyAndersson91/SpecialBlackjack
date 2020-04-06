@@ -16,8 +16,8 @@ public class HandArranger : MonoBehaviour
   public int CardCounter2 { get; set; }
   public int YCounter { get; set; }
   public int YCounter2 { get; set; }
-  private List<float> Player1Positions = new List<float>();
-  private List<float> Player2Positions = new List<float>();
+  public List<float> Player1Positions = new List<float>();
+  public List<float> Player2Positions = new List<float>();
 
 
   public float GetX(int playerIndex)
@@ -40,7 +40,7 @@ public class HandArranger : MonoBehaviour
         {
           // X = gridLayoutGroup.transform.GetChild(gridLayoutGroup.transform.childCount - 1).position.x + (gridLayoutGroup.cellSize.x * CardCounter) + dist;
           X = Player1Positions[Player1Positions.Count - 1] + dist;
-          Player1Positions.Clear();
+          // Player1Positions.Clear();
         }
         return X;
       }
@@ -65,7 +65,7 @@ public class HandArranger : MonoBehaviour
         else
         {
           X2 = Player2Positions[Player2Positions.Count - 1] + dist;
-          Player2Positions.Clear();
+          // Player2Positions.Clear();
         }
         return X2;
       }

@@ -74,6 +74,11 @@ public class GameLogic : MonoBehaviour
   public AudioClip roundOver1Sound;
   public AudioClip roundOver2Sound;
 
+  public Text GetStartPos()
+  {
+    return StartPos; 
+  }
+
   public void NewGame()
   {
     if (!GameInitiated)
@@ -341,7 +346,7 @@ public class GameLogic : MonoBehaviour
     TrumpCardButton.gameObject.SetActive(false);
     if (CurrentPlayer.TrumpCards > 0)
     {
-      SoundManager.instance.RandomizeSfx(trump1Sound, trump2Sound);
+      // SoundManager.instance.RandomizeSfx(trump1Sound, trump2Sound);
       GetComponent<CardController>().UseTrumpCard(CurrentPlayer, playerPanel.GetTrumpCardPanel(0), playerPanel.GetTrumpCardPanel(1));
     }
     if (PlayingAgainstAI && !RoundOver && PlayerList.GetPlayers()[0].IsPassed)
@@ -567,6 +572,8 @@ public class GameLogic : MonoBehaviour
       player.IsPlayersTurn = false;
       player.IsWinner = false;
     }
+    gameObject.GetComponent<HandArranger>().Player1Positions.Clear();
+    gameObject.GetComponent<HandArranger>().Player2Positions.Clear();
     gameObject.GetComponent<HandArranger>().gridLayoutGroup.enabled = true;
     gameObject.GetComponent<HandArranger>().gridLayoutGroup2.enabled = true;
     gameObject.GetComponent<HandArranger>().X = 0;
